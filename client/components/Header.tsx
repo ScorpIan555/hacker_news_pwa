@@ -21,36 +21,73 @@ export const Header: React.FC<Props> = () => {
 
   return (
     <header>
-      <nav>
-        <Link href="/">
-          <a>Home</a>
-        </Link>{" "}
-        |{" "}
-        <Link href="/register">
-          <a>Register</a>
-        </Link>{" "}
-        |{" "}
-        <Link href="/login">
-          <a>Login</a>
-        </Link>{" "}
-        |{" "}
-        <Link href="/bye">
-          <a>bye</a>
-        </Link>{" "}
-        |{" "}
-        {!loading && data && data.me ? (
-          <button
-            onClick={async () => {
-              await logout();
-              setAccessToken("");
-              await client!.resetStore();
-            }}
-          >
-            logout
-          </button>
-        ) : null}
+      <nav className="container">
+        <div className="item">
+          <Link href="/">
+            <a>Home</a>
+          </Link>{" "}
+          |{" "}
+        </div>
+        <div className="item">
+          <Link href="/register">
+            <a>Register</a>
+          </Link>{" "}
+          |{" "}
+        </div>
+        <div className="item">
+          <Link href="/login">
+            <a>Login</a>
+          </Link>{" "}
+          |{" "}
+        </div>
+        <div className="item">
+          <Link href="/bye">
+            <a>bye</a>
+          </Link>{" "}
+          |{" "}
+        </div>
+        <div className="">
+          {!loading && data && data.me ? (
+            <button
+              className="item login"
+              onClick={async () => {
+                await logout();
+                setAccessToken("");
+                await client!.resetStore();
+              }}
+            >
+              logout
+            </button>
+          ) : null}
+        </div>
       </nav>
       {body}
+      <style jsx>{`
+        // component global
+        background-color: blue;
+        color: white;
+        width: 100%;
+        height: 50px;
+        margin: 0px;
+        padding: 0px;
+        // flex: 1;
+        // flex-direction: column
+
+        // classes
+        .container {
+          display: flex;
+        }
+
+        .item {
+          flex-basis: ;
+        }
+
+        .login {
+          order: 0;
+          align-self: flex-end;
+          width: 20%;
+        }
+      `}</style>
     </header>
   );
 };
