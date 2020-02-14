@@ -60,7 +60,10 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       let serverAccessToken = "";
 
       if (isServer()) {
-        const cookies = cookie.parse(req.headers.cookie);
+        let c = req.headers.cookie;
+
+        const cookies =
+          typeof c === "string" ? cookie.parse(c) : cookie.parse("");
         if (cookies.jid) {
           const response = await fetch("http://localhost:4000/refresh_token", {
             method: "POST",

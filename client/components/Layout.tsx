@@ -4,6 +4,7 @@ import { Header } from "./Header";
 
 type Props = {
   title?: string;
+  isServer?: boolean;
 };
 
 const Layout: React.FunctionComponent<Props> = ({ children }) => (

@@ -1,38 +1,23 @@
 import React from "react";
 import { useByeQuery } from "../generated/graphql";
-import Layout from "../components/Layout";
 
 export default () => {
-  const { data, loading, error } = useByeQuery();
+  const { data, loading, error } = useByeQuery({
+    // fetchPolicy: "cache-first" // default, reminder to check this option for each query hook
+  });
 
   if (loading) {
-    return (
-      <Layout>
-        <div>loading...</div>
-      </Layout>
-    );
+    return <div>loading...</div>;
   }
 
   if (error) {
     console.log(error);
-    return (
-      <Layout>
-        <div>err</div>
-      </Layout>
-    );
+    return <div>err</div>;
   }
 
   if (!data) {
-    return (
-      <Layout>
-        <div>no data</div>
-      </Layout>
-    );
+    return <div>no data</div>;
   }
 
-  return (
-    <Layout>
-      <div>{data.bye}</div>
-    </Layout>
-  );
+  return <div>{data.bye}</div>;
 };

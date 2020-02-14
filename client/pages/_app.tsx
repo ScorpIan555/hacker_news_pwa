@@ -30,16 +30,17 @@ class MyApp extends App<any> {
   }
 
   componentDidMount() {
-    console.log("_app.this.props:::", this.props);
+    // console.log("_app.this.props:::", this.props);
   }
 
   render() {
-    const { Component, pageProps, apolloClient } = this.props;
+    const { Component, isServer, apolloClient } = this.props;
     console.log("this.props:", this.props);
+
     return (
       <ApolloProvider client={apolloClient}>
         <Layout>
-          <Component {...pageProps} />
+          <Component {...isServer} />
         </Layout>
       </ApolloProvider>
     );

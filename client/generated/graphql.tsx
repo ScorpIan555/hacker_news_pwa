@@ -9,7 +9,7 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
-};
+}; 
 
 export type LoginResponse = {
    __typename?: 'LoginResponse',

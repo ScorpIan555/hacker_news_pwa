@@ -1,5 +1,6 @@
 import React from "react";
 import { useUsersQuery } from "../generated/graphql";
+import LinkList from "../components/LinkFeed";
 
 export default () => {
   const { data } = useUsersQuery({ fetchPolicy: "network-only" });
@@ -20,6 +21,7 @@ export default () => {
           );
         })}
       </ul>
+      <LinkList />
     </div>
   );
 };
