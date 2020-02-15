@@ -1,0 +1,3 @@
+mutation($id: Int!, $url: String, $description: String) {
+  updateLink(id: $id, input: { url: $url, description: $description })
+}

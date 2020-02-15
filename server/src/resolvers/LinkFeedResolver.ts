@@ -4,9 +4,7 @@ import { Link } from "../entity";
 @Resolver()
 export class LinkFeedResolver {
   @Query(() => [Link])
-  linkFeed() // @Arg("url", () => String) url: string,
-  // @Arg("description", () => String) description: string
-  {
+  linkFeed() {
     const linkFeed = Link.find();
     return linkFeed;
   }

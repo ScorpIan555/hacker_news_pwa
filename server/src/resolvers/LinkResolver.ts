@@ -89,7 +89,9 @@ export class LinkResolver {
   }
 
   @Query(() => [Link])
-  links() {
-    return Link.find();
+  async links(): Promise<[Link]> {
+    const linkFromLinks: any = await Link.find();
+    console.log("linkFromLinks:::", linkFromLinks);
+    return linkFromLinks;
   }
 }

@@ -6,7 +6,7 @@ import {
   //   Timestamp
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
-import { User } from "./User";
+// import { User } from "./User";
 
 // https://blog.logrocket.com/how-build-graphql-api-typegraphql-typeorm/
 
@@ -27,7 +27,7 @@ export class Link extends BaseEntity {
 
   @Field()
   @Column("text")
-  postedBy: User;
+  postedBy: string;
 
   //   @Field(() => Timestamp, { nullable: false })
   //   @Column("timestamp", { nullable: false })
