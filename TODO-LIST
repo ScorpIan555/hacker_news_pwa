@@ -1,0 +1,6 @@
+1) need to look at creating a context to pass around the isServer boolean (into header)
+    this should be mapped to props, so needs to be passed down as part of props obj
+2) start planning ahead a bit more
+    - the GUI needs work, but maybe start the prototype and get some of the Queries & Mutations up and running
+    - check out Ben Awad's CRUD video to see if there's anything that can be taken (not in Next, though)
+    

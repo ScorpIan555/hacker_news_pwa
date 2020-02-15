@@ -3,12 +3,12 @@ import "reflect-metadata";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
-import { UserResolver } from "./UserResolver";
+import { UserResolver, LinkFeedResolver } from "./resolvers";
 import { createConnection } from "typeorm";
 import cookieParser from "cookie-parser";
 import { verify } from "jsonwebtoken";
 import cors from "cors";
-import { User } from "./entity/User";
+import { User, Link, LinkFeed } from "./entity";
 import { sendRefreshToken } from "./sendRefreshToken";
 import { createAccessToken, createRefreshToken } from "./auth";
 
@@ -39,6 +39,14 @@ import { createAccessToken, createRefreshToken } from "./auth";
     // token is valid and
     // we can send back an access token
     const user = await User.findOne({ id: payload.userId });
+    console.log("index.user:::", user);
+    console.log("index.user:::", payload);
+    // const link: any = await Link.findOne({ id: payload.linkId });
+    // const feed: any = await Link.find();
+    // console.log("feed:::", feed);
+    // console.log("feed:::", link);
+    console.log("Link:::", Link);
+    console.log("Link:::", LinkFeed);
 
     if (!user) {
       return res.send({ ok: false, accessToken: "" });
@@ -55,9 +63,13 @@ import { createAccessToken, createRefreshToken } from "./auth";
 
   await createConnection();
 
+  // const schema = await buildSchema({
+  //   resolvers: [UserResolver, LinkFeedResolver]
+  // });
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver]
+      resolvers: [UserResolver, LinkFeedResolver]
     }),
     context: ({ req, res }) => ({ req, res })
   });

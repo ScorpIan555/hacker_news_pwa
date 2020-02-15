@@ -1,7 +1,6 @@
 import App, { AppContext } from "next/app";
 import React from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
-// import { AppProps } from "next/app";
 
 // import app components
 import { withApollo } from "../lib/apollo";
@@ -35,7 +34,7 @@ class MyApp extends App<any> {
 
   render() {
     const { Component, isServer, apolloClient } = this.props;
-    console.log("this.props:", this.props);
+    console.log("this.props.pageProps:::", this.props.pageProps);
 
     return (
       <ApolloProvider client={apolloClient}>

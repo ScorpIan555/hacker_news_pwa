@@ -19,7 +19,11 @@ export const Header: React.FC<Props> = props => {
     body = <div>not logged in</div>;
   }
 
-  console.log("isServer:::", props);
+  console.log(
+    "Header.renderEmptyProps??? ",
+    props == {} ? "Empty as fuck" : "Full as fuck"
+  );
+  console.log("Header.isServer:::", props);
 
   return (
     <header id="page-header">

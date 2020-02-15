@@ -10,11 +10,11 @@ import {
   Int
 } from "type-graphql";
 import { hash, compare } from "bcryptjs";
-import { User } from "./entity/User";
-import { MyContext } from "./MyContext";
-import { createRefreshToken, createAccessToken } from "./auth";
-import { isAuth } from "./isAuth";
-import { sendRefreshToken } from "./sendRefreshToken";
+import { User } from "../entity/User";
+import { MyContext } from "../MyContext";
+import { createRefreshToken, createAccessToken } from "../auth";
+import { isAuth } from "../isAuth";
+import { sendRefreshToken } from "../sendRefreshToken";
 import { getConnection } from "typeorm";
 import { verify } from "jsonwebtoken";
 
@@ -36,7 +36,7 @@ export class UserResolver {
   @Query(() => String)
   @UseMiddleware(isAuth)
   bye(@Ctx() { payload }: MyContext) {
-    console.log(payload);
+    console.log("UserResolver.Query.bye.payload:::", payload);
     return `your user id is: ${payload!.userId}`;
   }
 
@@ -46,8 +46,10 @@ export class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
-  me(@Ctx() context: MyContext) {
+  async me(@Ctx() context: MyContext) {
+    // can probably strike the 'async' after coding is done
     const authorization = context.req.headers["authorization"];
+    console.log("authorization:::", authorization);
 
     if (!authorization) {
       return null;
@@ -56,7 +58,11 @@ export class UserResolver {
     try {
       const token = authorization.split(" ")[1];
       const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-      return User.findOne(payload.userId);
+      console.log("UserResolver.payload:::", payload);
+      const user = await User.findOne(payload.userId);
+      console.log("UserResolver.payload.userId:::", user);
+
+      return user;
     } catch (err) {
       console.log(err);
       return null;
@@ -86,6 +92,7 @@ export class UserResolver {
     @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } });
+    console.log("UserResover.login.user:::", user);
 
     if (!user) {
       throw new Error("could not find user");
