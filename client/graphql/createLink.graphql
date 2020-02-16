@@ -1,4 +1,4 @@
-mutation($id: Int!, $url: String, $description: String) {
+mutation CreateLink($id: Int!, $url: String!, $description: String!) {
   createLink(options: { url: $url, description: $description }) {
     id
     description
