@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useLinksQuery } from "../generated/graphql";
-import { Item } from "../lib/interfaces/Item";
+import { IItem } from "../lib/interfaces/IItem";
 
 const LinkList: React.FunctionComponent<any> = ({ children }) => {
   console.log("LinkFeed.props.children:::", children);
@@ -15,7 +15,7 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
     body = (
       <div>
         {dataLinks.map<object>(
-          (item: Item): React.ReactElement<Item> => {
+          (item: IItem): React.ReactElement<IItem> => {
             console.log("item:::", item);
 
             return (
