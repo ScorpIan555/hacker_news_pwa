@@ -10,7 +10,7 @@ import {
   Int
 } from "type-graphql";
 import { Link } from "../entity";
-import { MyContext } from "../MyContext";
+import { MyContext } from "../lib/interfaces/MyContext";
 import { isAuth } from "../middleware/isAuthMiddleware";
 
 @InputType()

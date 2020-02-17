@@ -11,7 +11,7 @@ import {
 } from "type-graphql";
 import { hash, compare } from "bcryptjs";
 import { User } from "../entity/User";
-import { MyContext } from "../MyContext";
+import { MyContext } from "../lib/interfaces/MyContext";
 import { createRefreshToken, createAccessToken } from "../middleware/jwTokenMiddleware";
 import { isAuth } from "../middleware/isAuthMiddleware";
 import { sendRefreshToken } from "../sendRefreshToken";

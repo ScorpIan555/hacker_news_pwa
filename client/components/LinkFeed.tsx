@@ -6,20 +6,18 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
   console.log("LinkFeed.props.children:::", children);
   const { data, loading } = useLinksQuery();
 
-  let body: any = null; // any needs to be switched to a generic here
+  let body: any = null; // any needs to be switched to a generic here?
 
   if (loading) {
-    body = null;
+    body = <div>Loading....</div>;
   } else if (data) {
     let dataLinks: Array<object> = data.links;
     body = (
       <div>
         {dataLinks.map<object>(
-          (item: any): React.ReactElement<Item> => {
-            // item: any s/b replaced with a callbackfn type
-
+          (item: Item): React.ReactElement<Item> => {
             console.log("item:::", item);
-            console.log("typeof item:::", typeof item);
+
             return (
               <div>
                 <p>{item.id}</p>
@@ -33,7 +31,7 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
       </div>
     );
   } else {
-    body = null;
+    body = <div>No links available</div>;
   }
 
   console.log("body:", body);
