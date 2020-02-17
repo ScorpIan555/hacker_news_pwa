@@ -7,12 +7,6 @@ import { withApollo } from "../lib/apollo";
 import Layout from "../components/Layout";
 // import { NextPageContext } from "next";
 
-// type AppProps = {
-//   isServer: Boolean;
-//   apolloClient: any;
-//   getInitialProps: any;
-// };
-
 class MyApp extends App<any> {
   constructor(props: any) {
     super(props);

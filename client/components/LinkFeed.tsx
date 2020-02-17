@@ -1,21 +1,12 @@
 import * as React from "react";
 import { useLinksQuery } from "../generated/graphql";
-// import { Item } from "../lib/interfaces/Item";
-
-type Item = {
-  // items?: String?
-  id?: number;
-  url?: string;
-  description?: string;
-  postedBy?: string;
-};
+import { Item } from "../lib/interfaces/Item";
 
 const LinkList: React.FunctionComponent<any> = ({ children }) => {
   console.log("LinkFeed.props.children:::", children);
   const { data, loading } = useLinksQuery();
 
-  // let body: any = null;
-  let body: any = null;
+  let body: any = null; // any needs to be switched to a generic here
 
   if (loading) {
     body = null;
@@ -25,8 +16,10 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
       <div>
         {dataLinks.map<object>(
           (item: any): React.ReactElement<Item> => {
-            // console.log("item:::", item);
-            // console.log("typeof item:::", typeof item);
+            // item: any s/b replaced with a callbackfn type
+
+            console.log("item:::", item);
+            console.log("typeof item:::", typeof item);
             return (
               <div>
                 <p>{item.id}</p>
@@ -45,12 +38,6 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
 
   console.log("body:", body);
   console.log("type of data:::", data);
-  // if (data && typeof data.links === "object") {
-  //   // return data.map((item: React.ReactNode) => <div>{item}</div>);
-  //   <div>Data:::: {data}</div>;
-  // } else {
-  //   <div>Links Empty</div>;
-  // }
 
   return (
     <div>
