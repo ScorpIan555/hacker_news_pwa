@@ -7,7 +7,7 @@ import { setContext } from "apollo-link-context";
 import fetch from "isomorphic-unfetch";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwtDecode from "jwt-decode";
-import { getAccessToken, setAccessToken } from "./accessToken";
+import { getAccessToken, setAccessToken } from "./utils/accessToken";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import cookie from "cookie";

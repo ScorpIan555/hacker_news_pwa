@@ -1,8 +1,14 @@
 import * as React from "react";
 import { useLinksQuery } from "../generated/graphql";
-// type Props = {
-//   items?: String?
-// };
+// import { Item } from "../lib/interfaces/Item";
+
+type Item = {
+  // items?: String?
+  id?: number;
+  url?: string;
+  description?: string;
+  postedBy?: string;
+};
 
 const LinkList: React.FunctionComponent<any> = ({ children }) => {
   console.log("LinkFeed.props.children:::", children);
@@ -14,17 +20,23 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
   if (loading) {
     body = null;
   } else if (data) {
-    let dataLinks: any = data.links;
+    let dataLinks: Array<object> = data.links;
     body = (
       <div>
-        {dataLinks.map((item: any) => (
-          <div>
-            <p>{item.id}</p>
-            <p>{item.url}</p>
-            <p>{item.description}</p>
-            <p>{item.postedBy} </p>
-          </div>
-        ))}
+        {dataLinks.map<object>(
+          (item: any): React.ReactElement<Item> => {
+            // console.log("item:::", item);
+            // console.log("typeof item:::", typeof item);
+            return (
+              <div>
+                <p>{item.id}</p>
+                <p>{item.url}</p>
+                <p>{item.description}</p>
+                <p>{item.postedBy} </p>
+              </div>
+            );
+          }
+        )}
       </div>
     );
   } else {
