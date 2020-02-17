@@ -12,8 +12,8 @@ import {
 import { hash, compare } from "bcryptjs";
 import { User } from "../entity/User";
 import { MyContext } from "../MyContext";
-import { createRefreshToken, createAccessToken } from "../auth";
-import { isAuth } from "../isAuth";
+import { createRefreshToken, createAccessToken } from "../middleware/jwTokenMiddleware";
+import { isAuth } from "../middleware/isAuthMiddleware";
 import { sendRefreshToken } from "../sendRefreshToken";
 import { getConnection } from "typeorm";
 import { verify } from "jsonwebtoken";

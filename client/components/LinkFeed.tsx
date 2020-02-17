@@ -1,18 +1,52 @@
 import * as React from "react";
-// import { useQuery } from "apollo-react-hooks";
-
+import { useLinksQuery } from "../generated/graphql";
 // type Props = {
 //   items?: String?
 // };
 
 const LinkList: React.FunctionComponent<any> = ({ children }) => {
   console.log("LinkFeed.props.children:::", children);
+  const { data, loading } = useLinksQuery();
+
+  // let body: any = null;
+  let body: any = null;
+
+  if (loading) {
+    body = null;
+  } else if (data) {
+    let dataLinks: any = data.links;
+    body = (
+      <div>
+        {dataLinks.map((item: any) => (
+          <div>
+            <p>{item.id}</p>
+            <p>{item.url}</p>
+            <p>{item.description}</p>
+            <p>{item.postedBy} </p>
+          </div>
+        ))}
+      </div>
+    );
+  } else {
+    body = null;
+  }
+
+  console.log("body:", body);
+  console.log("type of data:::", data);
+  // if (data && typeof data.links === "object") {
+  //   // return data.map((item: React.ReactNode) => <div>{item}</div>);
+  //   <div>Data:::: {data}</div>;
+  // } else {
+  //   <div>Links Empty</div>;
+  // }
+
   return (
     <div>
-      <p>Link</p>
-      <p>Link</p>
-      <p>Link</p>
-      <p>Link</p>
+      <div>Link Feed Container</div>
+      <div>Link Feed Container</div>
+      <div>Link Feed Container</div>
+      <div>Link Feed Container</div>
+      <div>{body}</div>
     </div>
   );
 };

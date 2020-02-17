@@ -37,6 +37,6 @@ export class Link extends BaseEntity {
   //   @Column("timestamp", { nullable: false })
   //   updatedAt: Date;
 
-  @Column("int", { default: 0 })
-  tokenVersion: number;
+  // @Column("int", { default: 0 })
+  // tokenVersion: number;
 }

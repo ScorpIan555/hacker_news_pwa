@@ -11,7 +11,7 @@ import {
 } from "type-graphql";
 import { Link } from "../entity";
 import { MyContext } from "../MyContext";
-import { isAuth } from "../isAuth";
+import { isAuth } from "../middleware/isAuthMiddleware";
 
 @InputType()
 class LinkInput {

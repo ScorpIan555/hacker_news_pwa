@@ -10,7 +10,7 @@ import { verify } from "jsonwebtoken";
 import cors from "cors";
 import { User, Link, LinkFeed } from "./entity";
 import { sendRefreshToken } from "./sendRefreshToken";
-import { createAccessToken, createRefreshToken } from "./auth";
+import { createAccessToken, createRefreshToken } from "./middleware/jwTokenMiddleware";
 
 (async () => {
   const app = express();

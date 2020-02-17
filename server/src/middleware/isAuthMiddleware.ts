@@ -1,6 +1,6 @@
 import { MiddlewareFn } from "type-graphql";
 import { verify } from "jsonwebtoken";
-import { MyContext } from "./MyContext";
+import { MyContext } from "../MyContext";
 
 // bearer 102930ajslkdaoq01
 
