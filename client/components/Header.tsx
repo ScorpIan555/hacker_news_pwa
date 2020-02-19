@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import Link from "next/link";
 import { setAccessToken } from "../lib/utils/accessToken";
 
 interface Props {}
 
-export const Header: React.FC<Props> = props => {
+export const Header: FC<Props> = props => {
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
 
@@ -19,10 +19,6 @@ export const Header: React.FC<Props> = props => {
     body = <div>not logged in</div>;
   }
 
-  console.log(
-    "Header.renderEmptyProps??? ",
-    props == {} ? "Empty as fuck" : "Full as fuck"
-  );
   console.log("Header.isServer:::", props);
 
   return (

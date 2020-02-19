@@ -1,12 +1,14 @@
-import * as React from "react";
-import { useLinksQuery } from "../generated/graphql";
-import { IItem } from "../lib/interfaces/IItem";
+import * as React from 'react';
+import { useLinksQuery } from '../generated/graphql';
+import { IItem } from '../lib/interfaces/IItem';
 
-const LinkList: React.FunctionComponent<any> = ({ children }) => {
-  console.log("LinkFeed.props.children:::", children);
+interface Props {}
+
+const LinkList: React.FunctionComponent<Props> = ({ children }) => {
+  console.log('LinkFeed.props.children:::', children);
   const { data, loading } = useLinksQuery();
 
-  let body: any = null; // any needs to be switched to a generic here?
+  let body = <div>Initial value</div>; // any needs to be switched to a generic here?
 
   if (loading) {
     body = <div>Loading....</div>;
@@ -16,15 +18,15 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
       <div>
         {dataLinks.map<object>(
           (item: IItem): React.ReactElement<IItem> => {
-            console.log("item:::", item);
+            console.log('item:::', item);
 
             return (
-              <div>
-                <p>{item.id}</p>
-                <p>{item.url}</p>
-                <p>{item.description}</p>
-                <p>{item.postedBy} </p>
-              </div>
+              <ul>
+                <li>{item.id}</li>
+                <li>{item.url}</li>
+                <li>{item.description}</li>
+                <li>{item.postedBy} </li>
+              </ul>
             );
           }
         )}
@@ -34,8 +36,8 @@ const LinkList: React.FunctionComponent<any> = ({ children }) => {
     body = <div>No links available</div>;
   }
 
-  console.log("body:", body);
-  console.log("type of data:::", data);
+  console.log('body:', body);
+  console.log('type of data:::', data);
 
   return (
     <div>
