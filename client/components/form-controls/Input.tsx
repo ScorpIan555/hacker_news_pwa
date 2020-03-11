@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, FC } from 'react';
 import { useField } from '@unform/core';
-// import { TextField } from 'unform-material-ui';
+import { TextField } from '@material-ui/core';
 
 interface Props {
   name: string;
-  type?: string;
+  type: string;
+  placeholder: string;
   label?: string;
 }
 
 type InputProps = JSX.IntrinsicElements['input'] & Props;
 
-const Input: FC<InputProps> = ({ name, type }) => {
+const Input: FC<InputProps> = ({ name, type, placeholder }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
@@ -33,10 +34,11 @@ const Input: FC<InputProps> = ({ name, type }) => {
   }, [error]);
 
   return (
-    <input
+    <TextField
       id={fieldName}
       name={name}
       type={type}
+      placeholder={placeholder}
       ref={inputRef}
       defaultValue={defaultValue}
     />

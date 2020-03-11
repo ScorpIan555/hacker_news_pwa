@@ -3,4 +3,5 @@ export interface IItem {
   url?: string;
   description?: string;
   postedBy?: string;
+  key?: string;
 }

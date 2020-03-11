@@ -4,11 +4,11 @@ import { IItem } from '../lib/interfaces/IItem';
 
 interface Props {}
 
-const LinkList: React.FunctionComponent<Props> = ({ children }) => {
+const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   console.log('LinkFeed.props.children:::', children);
   const { data, loading } = useLinksQuery();
 
-  let body = <div>Initial value</div>; // any needs to be switched to a generic here?
+  let body = <div></div>;
 
   if (loading) {
     body = <div>Loading....</div>;
@@ -18,15 +18,16 @@ const LinkList: React.FunctionComponent<Props> = ({ children }) => {
       <div>
         {dataLinks.map<object>(
           (item: IItem): React.ReactElement<IItem> => {
+            // item.key = `key-${id}`;
             console.log('item:::', item);
 
             return (
-              <ul>
-                <li>{item.id}</li>
-                <li>{item.url}</li>
-                <li>{item.description}</li>
-                <li>{item.postedBy} </li>
-              </ul>
+              <li key={`key + ${item.id}`}>
+                <p>{item.id}</p>
+                <p>{item.url}</p>
+                <p>{item.description}</p>
+                <p>{item.postedBy} </p>
+              </li>
             );
           }
         )}
@@ -50,4 +51,4 @@ const LinkList: React.FunctionComponent<Props> = ({ children }) => {
   );
 };
 
-export default LinkList;
+export default LinkFeed;
