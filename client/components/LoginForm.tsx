@@ -1,7 +1,6 @@
-import React, { useRef, FC } from 'react';
+import React, { useRef, FC, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { SubmitHandler, FormHandles } from '@unform/core';
-import FormControlInput from './form-controls/Input';
 import ButtonC from './form-controls/Button';
 // import { useRef } from 'react';
 // import * as Yup from 'yup';
@@ -9,7 +8,8 @@ import ButtonC from './form-controls/Button';
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 import { setAccessToken } from '../lib/utils/accessToken';
 import Router from 'next/router';
-import { IUser } from '../lib/interfaces/IUser';
+import { IUser } from '../lib/typescript/IUser';
+import { Input } from './form-controls/Input';
 
 // const schema = Yup.object().shape({
 //   email: Yup.string()
@@ -36,9 +36,13 @@ const LoginForm: FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [login] = useLoginMutation();
 
+  useEffect(() => {
+    console.log('useRef.formRef:::', formRef.current);
+  });
+
   const handleSubmit: SubmitHandler<IUser> = async data => {
     console.log('data:::', data);
-    console.log('formRef:::', formRef.current);
+    console.log('formRef.submit:::', formRef.current);
     // submit logic here
     try {
       handleGraphQLRequest(data);
@@ -49,6 +53,7 @@ const LoginForm: FC = () => {
   };
 
   const handleGraphQLRequest = async (data: { email: any; password: any }) => {
+    console.log('handleGraphqlRequest::', data);
     let { email, password } = data;
 
     try {
@@ -86,10 +91,10 @@ const LoginForm: FC = () => {
   return (
     <Form ref={formRef} onSubmit={handleSubmit} initialData={initialValues}>
       <div>
-        <FormControlInput name="email" type="email" placeholder="email" />
+        <Input name="email" type="email" placeholder="email" />
       </div>
       <div>
-        <FormControlInput
+        <Input
           name="password"
           type="password"
           placeholder="password"

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, FC } from 'react';
 import { useField } from '@unform/core';
-import { TextField } from '@material-ui/core';
+// import { TextField } from '@material-ui/core';
 
 interface Props {
   name: string;
@@ -34,7 +34,7 @@ const Input: FC<InputProps> = ({ name, type, placeholder }) => {
   }, [error]);
 
   return (
-    <TextField
+    <input
       id={fieldName}
       name={name}
       type={type}
@@ -45,4 +45,4 @@ const Input: FC<InputProps> = ({ name, type, placeholder }) => {
   );
 };
 
-export default Input;
+export { Input };

@@ -14,8 +14,18 @@ import { IState } from '../reducers/login-reducer';
 export const authStateContext = createContext({} as IState);
 export const authDispatchContext = createContext({});
 
-export const useAuth = () => {
+export const useAuthState = () => {
   const useAuthStateContext = useContext(authStateContext);
+  if (useAuthStateContext === undefined) {
+    throw new Error('useAuthState must be used within a Provider');
+  }
+  return { useAuthStateContext };
+};
+
+export const useAuthDispatch = () => {
   const useAuthDispatchContext = useContext(authDispatchContext);
-  return { useAuthStateContext, useAuthDispatchContext };
+  if (useAuthDispatchContext === undefined) {
+    throw new Error('useAuthDispatch must be used within a Provider');
+  }
+  return { useAuthDispatchContext };
 };

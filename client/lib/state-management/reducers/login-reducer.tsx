@@ -6,12 +6,7 @@ export interface IContextDispatchProps {
   dispatch?: ({ type }: { type: string }) => void;
 }
 
-// export interface IAction {
-//   type?: string;
-//   payload?: any;
-//   state?: IState;
-//   dispatch?: IContextDispatchProps;
-// }
+export interface IDispatch {}
 
 export interface IState {
   isAuth?: boolean;
@@ -22,8 +17,8 @@ export interface IState {
   username?: string;
   email?: string;
   password?: string;
-  action?: FieldName;
-  index?: FieldName;
+  // action?: FieldName;
+  // index?: FieldName;
   // dispatch?: IContextDispatchProps;
 }
 
@@ -33,7 +28,43 @@ export enum FieldName {
   email = 'email'
 }
 
+export interface IAction {
+  type?: string;
+  payload?: any;
+  // state?: IState;
+  // dispatch?: IContextDispatchProps;
+}
+
+export interface ILoginAction extends IAction {
+  payload: void;
+}
+
+export interface ILogoutAction extends IAction {
+  payload: void;
+}
+
+// export interface
+
+// The Type Guard Functions
+const isLoginAction = (action: IAction): action is ILoginAction => {
+  return action.type === 'login';
+};
+const isLogoutAction = (action: IAction): action is ILogoutAction => {
+  return action.type === 'logout';
+};
+
 export const loginReducer = (draft: IState, action: any) => {
+  if (isLoginAction(action)) {
+    draft.error = '';
+    draft.isLoading = true;
+    return;
+  }
+
+  if (isLogoutAction(action)) {
+    draft.isLoggedIn = false;
+    return;
+  }
+
   switch (action.type) {
     // case 'field': {
     //   // let { fieldName } = action;
@@ -47,11 +78,11 @@ export const loginReducer = (draft: IState, action: any) => {
     //   return;
     // }
 
-    case 'login': {
-      draft.error = '';
-      draft.isLoading = true;
-      return;
-    }
+    // case 'login': {
+    //   draft.error = '';
+    //   draft.isLoading = true;
+    //   return;
+    // }
     case 'success': {
       draft.isLoggedIn = true;
       draft.isLoading = false;
@@ -67,10 +98,10 @@ export const loginReducer = (draft: IState, action: any) => {
       draft.password = '';
       return;
     }
-    case 'logOut': {
-      draft.isLoggedIn = false;
-      return;
-    }
+    // case 'logOut': {
+    //   draft.isLoggedIn = false;
+    //   return;
+    // }
     default:
       throw new Error(`Unhandled action type:${action.type}`);
   }
