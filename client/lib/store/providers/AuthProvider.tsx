@@ -5,7 +5,11 @@ import {
   authDispatchContext
   // authContextDispatch
 } from '../contexts/authContext';
-import { loginReducer, IState } from '../reducers/login-reducer';
+import {
+  // loginReducer,
+  IState,
+  curriedLoginReducer
+} from '../reducers/login-reducer';
 
 import { useImmerReducer } from 'use-immer';
 
@@ -15,7 +19,8 @@ let initialState: IState = {
 };
 
 export const AuthProvider = ({ children }: any) => {
-  const [state, dispatch] = useImmerReducer(loginReducer, initialState);
+  // const [state, dispatch] = useImmerReducer(loginReducer, initialState);
+  const [state, dispatch] = useImmerReducer(curriedLoginReducer, initialState);
 
   return (
     <authStateContext.Provider value={state}>

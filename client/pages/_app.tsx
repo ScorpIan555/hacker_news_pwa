@@ -7,7 +7,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 // import app components
 import { withApollo } from '../lib/apollo';
 import Layout from '../components/layout/Layout';
-import { AuthProvider } from '../lib/state-management/providers/AuthProvider';
+import { AuthProvider } from '../lib/store/providers/AuthProvider';
 // import { NextPageContext } from "next";
 
 class MyApp extends App<any> {

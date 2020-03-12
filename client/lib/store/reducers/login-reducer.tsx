@@ -29,7 +29,7 @@ export enum FieldName {
 }
 
 export interface IAction {
-  type?: string;
+  type: string;
   payload?: any;
   // state?: IState;
   // dispatch?: IContextDispatchProps;
@@ -55,6 +55,9 @@ const isLogoutAction = (action: IAction): action is ILogoutAction => {
 
 export const loginReducer = (draft: IState, action: any) => {
   if (isLoginAction(action)) {
+    // need to take the handleSubmit logic from the component andput it in here...
+    console.log('isLoginAction.action:::', action);
+    console.log('isLoginAction.draft:::', draft);
     draft.error = '';
     draft.isLoading = true;
     return;

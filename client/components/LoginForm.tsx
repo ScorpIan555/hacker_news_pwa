@@ -9,7 +9,7 @@ import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 import { setAccessToken } from '../lib/utils/accessToken';
 import Router from 'next/router';
 import { IUser } from '../lib/typescript/IUser';
-import { Input } from './form-controls/Input';
+import { InputC } from './form-controls/Input';
 
 // const schema = Yup.object().shape({
 //   email: Yup.string()
@@ -91,14 +91,10 @@ const LoginForm: FC = () => {
   return (
     <Form ref={formRef} onSubmit={handleSubmit} initialData={initialValues}>
       <div>
-        <Input name="email" type="email" placeholder="email" />
+        <InputC name="email" type="email" placeholder="email" />
       </div>
       <div>
-        <Input
-          name="password"
-          type="password"
-          placeholder="password"
-        />
+        <InputC name="password" type="password" placeholder="password" />
       </div>
 
       <div>
