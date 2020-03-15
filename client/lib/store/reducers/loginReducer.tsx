@@ -1,8 +1,10 @@
 import produce from 'immer';
+import { Action } from '../contexts/authContext';
 // import { IContextDispatchProps } from '../contexts/authContext';
 // import { Reducer } from 'react';
 
 export interface IContextDispatchProps {
+  state?: IState;
   dispatch?: ({ type }: { type: string }) => void;
 }
 
@@ -36,25 +38,29 @@ export interface IAction {
 }
 
 export interface ILoginAction extends IAction {
-  payload: void;
+  payload: boolean;
 }
 
 export interface ILogoutAction extends IAction {
-  payload: void;
+  payload: boolean;
 }
 
 // export interface
+// ref: https://dev.to/stephencweiss/usereducer-with-typescript-2kf
 
 // The Type Guard Functions
-const isLoginAction = (action: IAction): action is ILoginAction => {
-  return action.type === 'login';
+const isLoginStartAction = (action: IAction): action is ILoginAction => {
+  return action.type === 'login-start';
+};
+const isLoginSuccessAction = (action: IAction): action is ILoginAction => {
+  return action.type === 'login-success';
 };
 const isLogoutAction = (action: IAction): action is ILogoutAction => {
   return action.type === 'logout';
 };
 
-export const loginReducer = (draft: IState, action: any) => {
-  if (isLoginAction(action)) {
+const loginReducer = (draft: IState, action: Action ) => {
+  if (isLoginStartAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
     console.log('isLoginAction.action:::', action);
     console.log('isLoginAction.draft:::', draft);
@@ -62,7 +68,14 @@ export const loginReducer = (draft: IState, action: any) => {
     draft.isLoading = true;
     return;
   }
-
+  if (isLoginSuccessAction(action)) {
+    // need to take the handleSubmit logic from the component andput it in here...
+    console.log('isLoginAction.action:::', action);
+    console.log('isLoginAction.draft:::', draft);
+    draft.error = '';
+    draft.isLoading = true;
+    return;
+  }
   if (isLogoutAction(action)) {
     draft.isLoggedIn = false;
     return;
@@ -86,21 +99,21 @@ export const loginReducer = (draft: IState, action: any) => {
     //   draft.isLoading = true;
     //   return;
     // }
-    case 'success': {
-      draft.isLoggedIn = true;
-      draft.isLoading = false;
-      draft.username = '';
-      draft.password = '';
-      return;
-    }
-    case 'error': {
-      draft.error = 'Incorrect username or password!';
-      draft.isLoggedIn = false;
-      draft.isLoading = false;
-      draft.username = '';
-      draft.password = '';
-      return;
-    }
+    // case 'success': {
+    //   draft.isLoggedIn = true;
+    //   draft.isLoading = false;
+    //   draft.username = '';
+    //   draft.password = '';
+    //   return;
+    // }
+    // case 'error': {
+    //   draft.error = 'Incorrect username or password!';
+    //   draft.isLoggedIn = false;
+    //   draft.isLoading = false;
+    //   draft.username = '';
+    //   draft.password = '';
+    //   return;
+    // }
     // case 'logOut': {
     //   draft.isLoggedIn = false;
     //   return;
