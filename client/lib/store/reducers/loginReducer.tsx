@@ -50,6 +50,7 @@ export interface ILogoutAction extends IAction {
 
 // The Type Guard Functions
 const isLoginStartAction = (action: IAction): action is ILoginAction => {
+  console.log('type check run');
   return action.type === 'login-start';
 };
 const isLoginSuccessAction = (action: IAction): action is ILoginAction => {
@@ -59,7 +60,7 @@ const isLogoutAction = (action: IAction): action is ILogoutAction => {
   return action.type === 'logout';
 };
 
-const loginReducer = (draft: IState, action: Action ) => {
+const loginReducer = (draft: IState, action: Action) => {
   if (isLoginStartAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
     console.log('isLoginAction.action:::', action);
