@@ -56,6 +56,10 @@ const isLoginStartAction = (action: IAction): action is ILoginAction => {
 const isLoginSuccessAction = (action: IAction): action is ILoginAction => {
   return action.type === 'login-success';
 };
+const isLoginFail = (action: IAction): action is ILoginAction => {
+  console.log('type check run on login error');
+  return action.type === 'login-fail';
+};
 const isLogoutAction = (action: IAction): action is ILogoutAction => {
   return action.type === 'logout';
 };
@@ -63,18 +67,30 @@ const isLogoutAction = (action: IAction): action is ILogoutAction => {
 const loginReducer = (draft: IState, action: Action) => {
   if (isLoginStartAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
-    console.log('isLoginAction.action:::', action);
-    console.log('isLoginAction.draft:::', draft);
+    console.log('isLoginStartAction.action:::', action);
+    console.log('isLoginStartAction.draft:::', draft);
     draft.error = '';
     draft.isLoading = true;
     return;
   }
   if (isLoginSuccessAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
-    console.log('isLoginAction.action:::', action);
-    console.log('isLoginAction.draft:::', draft);
-    draft.error = '';
-    draft.isLoading = true;
+    console.log('isLoginSuccessAction.action:::', action);
+    console.log('isLoginSuccessAction.draft:::', draft);
+    draft.isLoggedIn = true;
+    draft.isLoading = false;
+    draft.username = '';
+    draft.password = '';
+    return;
+  }
+  if (isLoginFail(action)) {
+    console.log('login-fail.action::', action);
+    console.log('login-fail.draft', draft);
+    draft.error = 'Incorrect username or password!';
+    draft.isLoggedIn = false;
+    draft.isLoading = false;
+    draft.username = '';
+    draft.password = '';
     return;
   }
   if (isLogoutAction(action)) {

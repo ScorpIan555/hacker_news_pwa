@@ -1,14 +1,16 @@
-export function tryCatch<Props, Result>({
+export async function tryCatch<Props, Result>({
   tryer,
   catcher
 }: {
   tryer: (props: Props) => Result;
   catcher: (props: Props, message: string) => Result;
 }) {
-  return (props: Props) => {
+  return async (props: Props) => {
     try {
-      return tryer(props);
+      const res = await tryer(props);
+      return res;
     } catch (e) {
+      console.log('catcher?', e);
       return catcher(props, e.message);
     }
   };

@@ -8,15 +8,20 @@ import {
   Ctx,
   UseMiddleware,
   Int
-} from "type-graphql";
-import { hash, compare } from "bcryptjs";
-import { User } from "../entity/User";
-import { MyContext } from "../lib/interfaces/MyContext";
-import { createRefreshToken, createAccessToken } from "../middleware/jwTokenMiddleware";
-import { isAuth } from "../middleware/isAuthMiddleware";
-import { sendRefreshToken } from "../sendRefreshToken";
-import { getConnection } from "typeorm";
-import { verify } from "jsonwebtoken";
+} from 'type-graphql';
+import { hash, compare } from 'bcryptjs';
+import { User } from '../entity/User';
+import { MyContext } from '../lib/interfaces/MyContext';
+import {
+  createRefreshToken,
+  createAccessToken
+} from '../middleware/jwTokenMiddleware';
+import { isAuth } from '../middleware/isAuthMiddleware';
+import { sendRefreshToken } from '../sendRefreshToken';
+import { getConnection } from 'typeorm';
+import { verify } from 'jsonwebtoken';
+
+// import {AuthenticationError } from 'apollo-server-express'
 
 @ObjectType()
 class LoginResponse {
@@ -30,13 +35,18 @@ class LoginResponse {
 export class UserResolver {
   @Query(() => String)
   hello() {
-    return "hi!";
+    return 'hi!';
   }
+
+  // @Query(() => String)
+  // authenticationError() {
+  //   return String
+  // }
 
   @Query(() => String)
   @UseMiddleware(isAuth)
   bye(@Ctx() { payload }: MyContext) {
-    console.log("UserResolver.Query.bye.payload:::", payload);
+    console.log('UserResolver.Query.bye.payload:::', payload);
     return `your user id is: ${payload!.userId}`;
   }
 
@@ -48,19 +58,19 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   async me(@Ctx() context: MyContext) {
     // can probably strike the 'async' after coding is done
-    const authorization = context.req.headers["authorization"];
-    console.log("authorization:::", authorization);
+    const authorization = context.req.headers['authorization'];
+    console.log('authorization:::', authorization);
 
     if (!authorization) {
       return null;
     }
 
     try {
-      const token = authorization.split(" ")[1];
+      const token = authorization.split(' ')[1];
       const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-      console.log("UserResolver.payload:::", payload);
+      console.log('UserResolver.payload:::', payload);
       const user = await User.findOne(payload.userId);
-      console.log("UserResolver.payload.userId:::", user);
+      console.log('UserResolver.payload.userId:::', user);
 
       return user;
     } catch (err) {
@@ -71,37 +81,43 @@ export class UserResolver {
 
   @Mutation(() => Boolean)
   async logout(@Ctx() { res }: MyContext) {
-    sendRefreshToken(res, "");
+    sendRefreshToken(res, '');
 
     return true;
   }
 
+  // @Mutation(() => String)
+
+
   @Mutation(() => Boolean)
-  async revokeRefreshTokensForUser(@Arg("userId", () => Int) userId: number) {
+  async revokeRefreshTokensForUser(@Arg('userId', () => Int) userId: number) {
     await getConnection()
       .getRepository(User)
-      .increment({ id: userId }, "tokenVersion", 1);
+      .increment({ id: userId }, 'tokenVersion', 1);
 
     return true;
   }
 
   @Mutation(() => LoginResponse)
   async login(
-    @Arg("email") email: string,
-    @Arg("password") password: string,
+    @Arg('email') email: string,
+    @Arg('password') password: string,
     @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } });
-    console.log("UserResover.login.user:::", user);
+    console.log('UserResolver.login.user:::', user);
+
+    // need to fix these errors
+    // https://www.apollographql.com/docs/apollo-server/data/errors/
 
     if (!user) {
-      throw new Error("could not find user");
+      throw new Error('could not find user');
     }
 
     const valid = await compare(password, user.password);
 
     if (!valid) {
-      throw new Error("bad password");
+      throw new Error('bad password');
     }
 
     // login successful
@@ -116,8 +132,8 @@ export class UserResolver {
 
   @Mutation(() => Boolean)
   async register(
-    @Arg("email") email: string,
-    @Arg("password") password: string
+    @Arg('email') email: string,
+    @Arg('password') password: string
   ) {
     const hashedPassword = await hash(password, 12);
 

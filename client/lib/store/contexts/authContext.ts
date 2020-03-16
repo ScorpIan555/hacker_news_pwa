@@ -14,6 +14,7 @@ import { IState } from '../reducers/loginReducer';
 export type Action =
   | { type: 'login-start' }
   | { type: 'login-success' }
+  | { type: 'login-fail' }
   | { type: 'logout' };
 
 export type Dispatch = (action: Action) => void;

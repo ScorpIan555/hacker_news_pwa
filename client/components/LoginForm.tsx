@@ -8,15 +8,14 @@ import ButtonC from './form-controls/Button';
 // import {componse} from 'lodash/fp'
 
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
-// import { setAccessToken } from '../lib/utils/accessToken';
-// import Router from 'next/router';
+import { setAccessToken } from '../lib/utils/accessToken';
+import Router from 'next/router';
 import { IUser } from '../lib/typescript/IUser';
 import { InputC } from './form-controls/Input';
 import { tryCatch } from '../lib/utils/tryCatch';
 import {
   useAuthDispatch,
   useAuthState
-  // authDispatch
 } from '../lib/store/contexts/authContext';
 
 // const schema = Yup.object().shape({
@@ -49,9 +48,9 @@ const LoginForm: FC = props => {
   const authState = useAuthState();
 
   useEffect(() => {
-    console.log('useRef.formRef:::', formRef.current);
-    console.log('authDispatch::', authDispatch);
-    console.log('authState:::', authState);
+    // console.log('useRef.formRef:::', formRef.current);
+    // console.log('authDispatch::', authDispatch);
+    // console.log('authState:::', authState);
   });
 
   /*
@@ -92,7 +91,7 @@ const LoginForm: FC = props => {
   */
 
   const handleSubmit: SubmitHandler<IUser> = async data => {
-    data.type = 'login';
+    // data.type = 'login';
     // let props = {
     //   data,
     //   login
@@ -100,7 +99,7 @@ const LoginForm: FC = props => {
 
     // signInStart(data); // needs to be a useDispatch()
     authDispatch({ type: 'login-start' });
-    startGraphqlApiCall(data);
+    (await startGraphqlApiCall)(data);
   };
 
   // const updateStateToLoading = () => {
@@ -113,84 +112,100 @@ const LoginForm: FC = props => {
   //   // loginReducer(action);
   // };
 
-  const startGraphqlApiCall = tryCatch({
-    tryer: async (data: IUser) => {
-      console.log('startGraphQLApiCall.data', data);
-      // handleGraphQLRequest(data);
-      let { email, password } = data;
-      const response = await login({
-        variables: {
-          email,
-          password
-        },
-        update: (store, { data }) => {
-          if (!data) {
-            return null;
-          }
-
-          store.writeQuery<MeQuery>({
-            query: MeDocument,
-            data: {
-              me: data.login.user
-            }
-          });
+  const callGraphQLLogin = async (data: IUser) => {
+    console.log('authState:::', authState);
+    let { email, password } = data;
+    const response = await login({
+      variables: {
+        email,
+        password
+      },
+      update: (store, { data }) => {
+        console.log('update.store:::', store);
+        console.log('update.data:::', data);
+        if (!data) {
+          return null;
         }
-      });
 
-      return response;
-    },
-    catcher: (err: any) => {
-      return err;
+        store.writeQuery<MeQuery>({
+          query: MeDocument,
+          data: {
+            me: data.login.user
+          }
+        });
+      }
+    });
+
+    {
+      response != undefined ? handleSuccessfulResponse(response) : null;
+    }
+  };
+
+  const handleSuccessfulResponse = (response: any) => {
+    authDispatch({ type: 'login-success' });
+    if (response && response.data) {
+      setAccessToken(response.data.login.accessToken);
+    }
+
+    Router.push('/'); // prob can abstract this into a utility
+    return response;
+  };
+
+  const startGraphqlApiCall = tryCatch({
+    tryer: async (data: IUser) => callGraphQLLogin(data),
+    // tryer: async (data: IUser) => {
+    //   console.log('startGraphQLApiCall.data', data);
+    //   console.log('startGraphQLApiCall.AuthContext:::', authState);
+
+    //   // handleGraphQLRequest(data);
+    //   /* before memoizing
+    //     reread this: https://kentcdodds.com/blog/usememo-and-usecallback
+
+    //   */
+    //   let { email, password } = data;
+    //   const response = await login({
+    //     variables: {
+    //       email,
+    //       password
+    //     },
+    //     update: (store, { data }) => {
+    //       console.log('update.store:::', store);
+    //       console.log('update.data:::', data);
+    //       if (!data) {
+    //         return null;
+    //       }
+
+    //       store.writeQuery<MeQuery>({
+    //         query: MeDocument,
+    //         data: {
+    //           me: data.login.user
+    //         }
+    //       });
+    //     }
+    //   });
+    //   console.log('log response:::', response);
+
+    //   /*
+    //     @TODO
+    //     pull these into their own functions
+    //   */
+    //   authDispatch({ type: 'login-success' });
+    //   if (response && response.data) {
+    //     setAccessToken(response.data.login.accessToken);
+    //   }
+
+    //   Router.push('/'); // prob can abstract this into a utility
+    //   return response;
+    // },
+    catcher: (props: any, error: any) => {
+      authDispatch({ type: 'login-fail' });
+      console.log('props', props);
+      console.log('err', error);
+      // throw new Error(`Unhandled GraphQL Error.  Fix this:${err.message}`);
+      alert(`${error} you friggin' goober`);
+      return error;
     }
   });
-
-  // const handleSubmit: SubmitHandler<IUser> = async data => {
-  //   // console.log('data:::', data);
-  //   console.log('formRef.submit:::', formRef.current);
-  //   // submit logic here
-  //   try {
-  //     handleGraphQLRequest(data);
-  //     return;
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  // const handleGraphQLRequest = async (data: { email: any; password: any }) => {
-  //   console.log('handleGraphqlRequest::', data);
-  //   let { email, password } = data;
-
-  //   try {
-  //     const response = await login({
-  //       variables: {
-  //         email,
-  //         password
-  //       },
-  //       update: (store, { data }) => {
-  //         if (!data) {
-  //           return null;
-  //         }
-
-  //         store.writeQuery<MeQuery>({
-  //           query: MeDocument,
-  //           data: {
-  //             me: data.login.user
-  //           }
-  //         });
-  //       }
-  //     });
-
-  //     console.log(response);
-
-  //     if (response && response.data) {
-  //       setAccessToken(response.data.login.accessToken);
-  //     }
-
-  //     Router.push('/'); // prob can abstract this into a utility
-  //   } catch (error) {
-  //     console.log('handleGraphQLRequest.error:::', error);
-  //   }
-  // };
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit} initialData={initialValues}>
