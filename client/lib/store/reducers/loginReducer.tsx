@@ -1,49 +1,13 @@
 import produce from 'immer';
-import { Action } from '../contexts/authContext';
+import {
+  IAction,
+  ILoginAction,
+  ILogoutAction,
+  IState,
+  Action
+} from '../../typescript';
 // import { IContextDispatchProps } from '../contexts/authContext';
 // import { Reducer } from 'react';
-
-export interface IContextDispatchProps {
-  state?: IState;
-  dispatch?: ({ type }: { type: string }) => void;
-}
-
-export interface IDispatch {}
-
-export interface IState {
-  isAuth?: boolean;
-  user?: string;
-  error?: string;
-  isLoggedIn?: boolean;
-  isLoading?: boolean;
-  username?: string;
-  email?: string;
-  password?: string;
-  // action?: FieldName;
-  // index?: FieldName;
-  // dispatch?: IContextDispatchProps;
-}
-
-export enum FieldName {
-  password = 'password',
-  username = 'username',
-  email = 'email'
-}
-
-export interface IAction {
-  type: string;
-  payload?: any;
-  // state?: IState;
-  // dispatch?: IContextDispatchProps;
-}
-
-export interface ILoginAction extends IAction {
-  payload: boolean;
-}
-
-export interface ILogoutAction extends IAction {
-  payload: boolean;
-}
 
 // export interface
 // ref: https://dev.to/stephencweiss/usereducer-with-typescript-2kf

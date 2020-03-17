@@ -1,6 +1,5 @@
 import { createContext, useContext } from 'react';
-// import { IUser } from '../../interfaces/IUser';
-import { IState } from '../reducers/loginReducer';
+import { IState, Dispatch } from '../../typescript';
 
 // const initialState: IUser = {
 //   email: '',
@@ -10,14 +9,6 @@ import { IState } from '../reducers/loginReducer';
 // export interface IContextStateProps {
 //   state?: IState;
 // }
-
-export type Action =
-  | { type: 'login-start' }
-  | { type: 'login-success' }
-  | { type: 'login-fail' }
-  | { type: 'logout' };
-
-export type Dispatch = (action: Action) => void;
 
 export const authStateContext = createContext({} as IState);
 export const authDispatchContext = createContext({} as Dispatch);

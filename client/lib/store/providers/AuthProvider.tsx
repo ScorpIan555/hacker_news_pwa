@@ -1,17 +1,8 @@
-// import { useReducer } from 'react';
-import {
-  // useAuth,
-  authStateContext,
-  authDispatchContext
-  // authContextDispatch
-} from '../contexts/authContext';
-import {
-  // loginReducer,
-  IState,
-  curriedLoginReducer
-} from '../reducers/loginReducer';
+import { authStateContext, authDispatchContext } from '../contexts/authContext';
+import { curriedLoginReducer } from '../reducers/loginReducer';
 
 import { useImmerReducer } from 'use-immer';
+import { IState } from '../../typescript';
 
 let initialState: IState = {
   email: '',

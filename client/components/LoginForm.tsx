@@ -5,9 +5,12 @@ import ButtonC from './form-controls/Button';
 // import { useRef } from 'react';
 // import * as Yup from 'yup';
 
-// import {componse} from 'lodash/fp'
-
-import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
+import {
+  useLoginMutation,
+  MeQuery,
+  MeDocument
+  // LoginMutation // won't need if I continue to infer the type of 'response' in api call handler
+} from '../generated/graphql';
 import { setAccessToken } from '../lib/utils/accessToken';
 import Router from 'next/router';
 import { IUser } from '../lib/typescript/IUser';
@@ -26,11 +29,6 @@ import {
 //     .max(11)
 //     .required()
 // });
-
-// interface FormData {
-//   email:string;
-//   password: string
-// }
 
 const LoginForm: FC = props => {
   const initialValues: IUser = {
@@ -99,7 +97,10 @@ const LoginForm: FC = props => {
 
     // signInStart(data); // needs to be a useDispatch()
     authDispatch({ type: 'login-start' });
-    (await startGraphqlApiCall)(data);
+    const res = (await startGraphqlApiCall)(data);
+    {
+      res ? handleSuccessfulResponse(res) : handleGQLError();
+    }
   };
 
   // const updateStateToLoading = () => {
@@ -111,6 +112,12 @@ const LoginForm: FC = props => {
   //   // }
   //   // loginReducer(action);
   // };
+
+  const handleGQLError = () => {
+    console.error(`you shouldn't be seeing this error...`);
+    console.log(`you should NOT be seeing this error`);
+    return 'fuuuuuuuuuuck';
+  };
 
   const callGraphQLLogin = async (data: IUser) => {
     console.log('authState:::', authState);
@@ -137,22 +144,46 @@ const LoginForm: FC = props => {
     });
 
     {
-      response != undefined ? handleSuccessfulResponse(response) : null;
+      response
+        ? response.errors
+          ? console.log('response.errors::', response.errors)
+          : console.log('response.data:::', response.data)
+        : null;
     }
+
+    return response;
+
+    // {
+    //   response != undefined ? handleSuccessfulResponse(response) : null;
+    // }
   };
 
   const handleSuccessfulResponse = (response: any) => {
+    console.log('handleSuccessfulResponse ran...', response);
     authDispatch({ type: 'login-success' });
     if (response && response.data) {
       setAccessToken(response.data.login.accessToken);
+      Router.push('/');
     }
+    console.log('flow control check check', response);
 
-    Router.push('/'); // prob can abstract this into a utility
+    // Router.push('/'); // prob can abstract this into a utility
+    // https://sergiodxa.com/articles/redirects-in-next-the-good-way/
+
     return response;
   };
 
   const startGraphqlApiCall = tryCatch({
     tryer: async (data: IUser) => callGraphQLLogin(data),
+    catcher: (props: any, error: any) => {
+      authDispatch({ type: 'login-fail' });
+      console.log('props', props);
+      console.log('err', error);
+      error.isError = true;
+      // throw new Error(`Unhandled GraphQL Error.  Fix this:${err.message}`);
+      alert(`${error} you friggin' goober`);
+      return error;
+    }
     // tryer: async (data: IUser) => {
     //   console.log('startGraphQLApiCall.data', data);
     //   console.log('startGraphQLApiCall.AuthContext:::', authState);
@@ -197,14 +228,6 @@ const LoginForm: FC = props => {
     //   Router.push('/'); // prob can abstract this into a utility
     //   return response;
     // },
-    catcher: (props: any, error: any) => {
-      authDispatch({ type: 'login-fail' });
-      console.log('props', props);
-      console.log('err', error);
-      // throw new Error(`Unhandled GraphQL Error.  Fix this:${err.message}`);
-      alert(`${error} you friggin' goober`);
-      return error;
-    }
   });
 
   return (
