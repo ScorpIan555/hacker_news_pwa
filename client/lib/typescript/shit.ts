@@ -1,3 +1,5 @@
+import { GraphQLError } from 'graphql';
+
 export interface IContextDispatchProps {
   state?: IState;
   dispatch?: ({ type }: { type: string }) => void;
@@ -48,3 +50,9 @@ export type Action =
   | { type: 'logout' };
 
 export type Dispatch = (action: Action) => void;
+
+export interface ExecutionResult<T = Record<string, any>> {
+  data?: T;
+  extensions?: Record<string, any>;
+  errors?: GraphQLError[];
+}

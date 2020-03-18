@@ -1,6 +1,7 @@
 import React, { useRef, FC, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { SubmitHandler, FormHandles } from '@unform/core';
+// import { ExecutionResult } from '';
 import ButtonC from './form-controls/Button';
 // import { useRef } from 'react';
 // import * as Yup from 'yup';
@@ -20,6 +21,7 @@ import {
   useAuthDispatch,
   useAuthState
 } from '../lib/store/contexts/authContext';
+// import { ExecutionResult } from '../lib/typescript/shit';
 
 // const schema = Yup.object().shape({
 //   email: Yup.string()
@@ -83,35 +85,26 @@ const LoginForm: FC = props => {
   ///
   /// 
   ///
-
+          
 
 
   */
 
   const handleSubmit: SubmitHandler<IUser> = async data => {
-    // data.type = 'login';
-    // let props = {
-    //   data,
-    //   login
-    // };
-
-    // signInStart(data); // needs to be a useDispatch()
     authDispatch({ type: 'login-start' });
-    const res = (await startGraphqlApiCall)(data);
-    {
-      res ? handleSuccessfulResponse(res) : handleGQLError();
+    try {
+      const res: Promise<IUser> = (await startGraphqlApiCall)(data);
+
+      {
+        res ? handleSuccessfulResponse(res) : console.log('res === false ');
+      }
+      return res;
+    } catch (error) {
+      console.log('error:::', error);
+      handleGQLError(); // needs to be rewritten
+      return error;
     }
   };
-
-  // const updateStateToLoading = () => {
-  //   // const action = {
-  //   //   type: 'login-start'
-  //   // };
-  //   // const draft = {
-
-  //   // }
-  //   // loginReducer(action);
-  // };
 
   const handleGQLError = () => {
     console.error(`you shouldn't be seeing this error...`);
@@ -143,13 +136,13 @@ const LoginForm: FC = props => {
       }
     });
 
-    {
-      response
-        ? response.errors
-          ? console.log('response.errors::', response.errors)
-          : console.log('response.data:::', response.data)
-        : null;
-    }
+    // {
+    //   response
+    //     ? response.errors
+    //       ? console.log('response.errors::', response.errors)
+    //       : console.log('response.data:::', response.data)
+    //     : null;
+    // }
 
     return response;
 
@@ -179,7 +172,6 @@ const LoginForm: FC = props => {
       authDispatch({ type: 'login-fail' });
       console.log('props', props);
       console.log('err', error);
-      error.isError = true;
       // throw new Error(`Unhandled GraphQL Error.  Fix this:${err.message}`);
       alert(`${error} you friggin' goober`);
       return error;
