@@ -10,6 +10,9 @@ import Layout from '../components/layout/Layout';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
 // import { NextPageContext } from "next";
 
+// @TODO
+// refactor into a functional component, if possible
+// the issue has been linking apollo client up w/ _app.js as a func component
 class MyApp extends App<any> {
   constructor(props: any) {
     super(props);
@@ -33,7 +36,7 @@ class MyApp extends App<any> {
 
   render() {
     const { Component, isServer, apolloClient } = this.props;
-    console.log('this.props.pageProps:::', this.props.pageProps);
+    console.log('_app.this.props.isServer:::', this.props.isServer);
 
     return (
       <AuthProvider>

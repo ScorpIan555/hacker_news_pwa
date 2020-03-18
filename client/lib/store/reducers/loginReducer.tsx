@@ -14,21 +14,24 @@ import {
 
 // The Type Guard Functions
 const isLoginStartAction = (action: IAction): action is ILoginAction => {
-  console.log('type check run');
+  console.log('type check run -- action.type', action.type);
   return action.type === 'login-start';
 };
 const isLoginSuccessAction = (action: IAction): action is ILoginAction => {
+  console.log('type check run -- action.type', action.type);
   return action.type === 'login-success';
 };
 const isLoginFail = (action: IAction): action is ILoginAction => {
-  console.log('type check run on login error');
+  console.log('type check run -- action.type', action.type);
   return action.type === 'login-fail';
 };
 const isLogoutAction = (action: IAction): action is ILogoutAction => {
+  console.log('type check run -- action.type', action.type);
   return action.type === 'logout';
 };
 
 const loginReducer = (draft: IState, action: Action) => {
+  console.log('loginReducer called -- action.type:::', action.type);
   if (isLoginStartAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
     console.log('isLoginStartAction.action:::', action);
