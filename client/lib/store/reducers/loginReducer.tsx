@@ -32,6 +32,11 @@ const isLogoutAction = (action: IAction): action is ILogoutAction => {
 
 const loginReducer = (draft: IState, action: Action) => {
   console.log('loginReducer called -- action.type:::', action.type);
+  console.log('loginReducer called -- draft:::', draft);
+  console.log('loginReducer called -- action.payload:::', action.payload);
+  //
+  //
+  //
   if (isLoginStartAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
     console.log('isLoginStartAction.action:::', action);
@@ -46,8 +51,8 @@ const loginReducer = (draft: IState, action: Action) => {
     console.log('isLoginSuccessAction.draft:::', draft);
     draft.isLoggedIn = true;
     draft.isLoading = false;
-    draft.username = '';
-    draft.password = '';
+    draft.email = 'fake email';
+    // draft.password = '';
     return;
   }
   if (isLoginFail(action)) {

@@ -28,6 +28,7 @@ export enum FieldName {
 }
 
 export interface IAction {
+  // type: ActionType;
   type: string;
   payload?: any;
   // state?: IState;
@@ -35,21 +36,21 @@ export interface IAction {
 }
 
 export interface ILoginAction extends IAction {
-  payload: boolean;
+  checkType: boolean;
 }
 
 export interface ILogoutAction extends IAction {
-  payload: boolean;
+  checkType: boolean;
 }
 
 // used in authContexts.ts
-export type Action =
+export type ActionType =
   | { type: 'login-start' }
   | { type: 'login-success' }
   | { type: 'login-fail' }
   | { type: 'logout' };
 
-export type Dispatch = (action: Action) => void;
+export type Dispatch = (action: IAction) => void;
 
 export interface ExecutionResult<T = Record<string, any>> {
   data?: T;

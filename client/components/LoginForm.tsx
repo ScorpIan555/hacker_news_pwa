@@ -100,11 +100,16 @@ const LoginForm: FC = () => {
       }
     });
 
+    // manage successful response
     if (response && response.data) {
       console.log(
         'response.data.login.accessToken',
         response.data.login.accessToken
       );
+      authDispatch({
+        type: 'login-success',
+        payload: response.data.login.user
+      });
       setAccessToken(response.data.login.accessToken);
       Router.push('/');
     }

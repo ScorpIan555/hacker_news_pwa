@@ -19,7 +19,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         {dataLinks.map<object>(
           (item: IItem): React.ReactElement<IItem> => {
             // item.key = `key-${id}`;
-            console.log('item:::', item);
+            // console.log('item:::', item);
 
             return (
               <li key={`key + ${item.id}`}>
