@@ -36,12 +36,14 @@ import {
   Client-side state is managed in a React context and updated and accessed with React hooks
 */
 const LoginForm: FC = () => {
+  // unform requires some default data for initial render
   const initialValues: IUser = {
     email: '',
     password: '',
     type: ''
   };
 
+  // initialize React hooks
   const formRef = useRef<FormHandles>(null);
   const [login] = useLoginMutation();
   const authDispatch = useAuthDispatch();
@@ -57,9 +59,7 @@ const LoginForm: FC = () => {
     */
     authDispatch({ type: 'login-start' });
     try {
-      const res = (await callGraphQLLogin)(data);
-
-      return res;
+      callGraphQLLogin(data);
     } catch (error) {
       console.log('error:::', error);
       return error;
@@ -100,17 +100,18 @@ const LoginForm: FC = () => {
       }
     });
 
-    // manage successful response
+    //
+
+    // Manage successful response
     if (response && response.data) {
-      console.log(
-        'response.data.login.accessToken',
-        response.data.login.accessToken
-      );
+      // 1) update client-side state w/ user info
       authDispatch({
         type: 'login-success',
         payload: response.data.login.user
       });
+      // 2) set the access token
       setAccessToken(response.data.login.accessToken);
+      // 3) Push Router state to index page
       Router.push('/');
     }
 
