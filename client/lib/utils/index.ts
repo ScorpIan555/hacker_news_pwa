@@ -2,7 +2,8 @@ import {
   isLoginStartAction,
   isLoginSuccessAction,
   isLoginFail,
-  isLogoutAction
+  isLogoutAction,
+  isMeQueryUserUpdateAction
 } from './reducerTypeGuards';
 
 import { getAccessToken, setAccessToken } from './accessToken';
@@ -12,6 +13,7 @@ export {
   isLoginSuccessAction,
   isLoginFail,
   isLogoutAction,
+  isMeQueryUserUpdateAction,
   getAccessToken,
   setAccessToken
 };

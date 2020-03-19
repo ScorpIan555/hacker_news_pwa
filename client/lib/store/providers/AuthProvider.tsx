@@ -2,11 +2,14 @@ import { authStateContext, authDispatchContext } from '../contexts/authContext';
 import { curriedLoginReducer } from '../reducers/loginReducer';
 
 import { useImmerReducer } from 'use-immer';
-import { IState } from '../../typescript';
+// import { IState } from '../../typescript';
 
-let initialState: IState = {
-  email: '',
-  password: ''
+let initialState = {
+  // fix this typing
+  user: {
+    email: '',
+    password: ''
+  }
 };
 
 export const AuthProvider = ({ children }: any) => {

@@ -16,8 +16,8 @@ export interface IState {
   isLoggedIn?: boolean;
   isLoading?: boolean;
   username?: string;
-  email?: string;
-  password?: string;
+  // email?: string;
+  // password?: string;
   // action?: FieldName;
   // index?: FieldName;
   // dispatch?: IContextDispatchProps;
@@ -37,11 +37,7 @@ export interface IAction {
   // dispatch?: IContextDispatchProps;
 }
 
-export interface ILoginAction extends IAction {
-  checkType: boolean;
-}
-
-export interface ILogoutAction extends IAction {
+export interface IActionTypeGuard extends IAction {
   checkType: boolean;
 }
 

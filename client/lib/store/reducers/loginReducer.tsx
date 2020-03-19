@@ -11,7 +11,8 @@ import {
   isLoginStartAction,
   isLoginSuccessAction,
   isLoginFail,
-  isLogoutAction
+  isLogoutAction,
+  isMeQueryUserUpdateAction
 } from '../../utils';
 
 // import { IContextDispatchProps } from '../contexts/authContext';
@@ -58,6 +59,12 @@ const loginReducer = (draft: IState, action: IAction) => {
   }
   if (isLogoutAction(action)) {
     draft.isLoggedIn = false;
+    return;
+  }
+
+  if (isMeQueryUserUpdateAction(action)) {
+    draft.isLoggedIn = true;
+    draft.user = action.payload;
     return;
   }
 

@@ -1,39 +1,71 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 // get generated custom GraphQL hooks
 import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 // get app libraries
 import { setAccessToken } from '../lib/utils';
-import { useAuthState } from '../lib/store/contexts';
+import { useAuthState, useAuthDispatch } from '../lib/store/contexts';
 
 interface Props {}
 
 export const Header: FC<Props> = () => {
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
-  const authState = useAuthState();
+  const { useAuthStateContext } = useAuthState();
+  const authDispatch = useAuthDispatch();
   let body = <div></div>;
 
-  useEffect(() => {
-    console.log('loading.before.call:::', loading);
-    console.log('data.before call::', data);
-    if (loading) {
-      body = <div>Loading</div>;
-    } else if (data && data.me) {
-      console.log('loading.after.call:::', loading);
-      console.log('data.after call:::', data);
-      body = <div className="row">you are logged in as: {data.me.email}</div>;
-    } else {
-      body = <div>not logged in</div>;
-    }
-  }),
-    [body];
+  console.log('loading.before.call:::', loading);
+  console.log('data.before call::', data);
+  if (loading) {
+    body = <div>Loading</div>;
+  } else if (data && data.me) {
+    console.log('loading.after.call:::', loading);
+    console.log('data.after call:::', data);
+    authDispatch({ type: 'me-query-user-update', payload: data.me });
+    console.log(
+      'after authDispatch.type.me-quer-user-update -- authState:::',
+      useAuthStateContext
+    );
+    body = (
+      <div className="row">
+        you are logged in as: {useAuthStateContext.user?.email}
+      </div>
+    );
+  } else {
+    console.log('not logged in.authState:: ', useAuthStateContext);
+    body = <div>not logged in</div>;
+  }
 
-  console.log('auth:::', authState);
+  // useEffect(() => {
+  //   console.log('loading.before.call:::', loading);
+  //   console.log('data.before call::', data);
+  //   if (loading) {
+  //     body = <div>Loading</div>;
+  //   } else if (data && data.me) {
+  //     console.log('loading.after.call:::', loading);
+  //     console.log('data.after call:::', data);
+  //     authDispatch({ type: 'me-query-user-update', payload: data.me });
+  //     console.log(
+  //       'after authDispatch.type.me-quer-user-update -- authState:::',
+  //       useAuthStateContext
+  //     );
+  //     body = (
+  //       <div className="row">
+  //         you are logged in as: {useAuthStateContext.user?.email}
+  //       </div>
+  //     );
+  //   } else {
+  //     console.log('not logged in.authState:: ', useAuthStateContext);
+  //     body = <div>not logged in</div>;
+  //   }
+  // }),
+  //   [];
 
   const handleClick = async () => {
     await logout();
     setAccessToken('');
+    authDispatch({ type: 'logout' });
     await client!.resetStore();
   };
 
