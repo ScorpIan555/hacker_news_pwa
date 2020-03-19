@@ -5,7 +5,10 @@ import { IItem } from '../lib/typescript/IItem';
 interface Props {}
 
 const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
-  console.log('LinkFeed.props.children:::', children);
+  if (children != undefined || null) {
+    console.log('LinkFeed.props.children:::', children);
+  }
+
   const { data, loading } = useLinksQuery();
 
   let body = <div></div>;
@@ -37,8 +40,8 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     body = <div>No links available</div>;
   }
 
-  console.log('body:', body);
-  console.log('type of data:::', data);
+  // console.log('body:', body);
+  // console.log('type of data:::', data);
 
   return (
     <div>

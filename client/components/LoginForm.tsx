@@ -1,18 +1,19 @@
 import React, { useRef, FC } from 'react';
+import Router from 'next/router';
 import { Form } from '@unform/web';
 import { SubmitHandler, FormHandles } from '@unform/core';
-import ButtonC from './form-controls/Button';
+// @TODO pull in and set up yup
 // import * as Yup from 'yup';
 
+// get form controls used in component
+import { InputC, ButtonC } from './form-controls';
+
+// get generated custom GraphQL hook
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
-import { setAccessToken } from '../lib/utils/accessToken';
-import Router from 'next/router';
-import { IUser } from '../lib/typescript/IUser';
-import { InputC } from './form-controls/Input';
-import {
-  useAuthDispatch,
-  useAuthState
-} from '../lib/store/contexts/authContext';
+// get app librarie
+import { setAccessToken } from '../lib/utils';
+import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
+import { ILoginUser, IUser } from '../lib/typescript';
 
 // @Todo need to add in Yum validations
 // probably set this up in a util
@@ -35,6 +36,7 @@ import {
 
   Client-side state is managed in a React context and updated and accessed with React hooks
 */
+
 const LoginForm: FC = () => {
   // unform requires some default data for initial render
   const initialValues: IUser = {
@@ -49,7 +51,7 @@ const LoginForm: FC = () => {
   const authDispatch = useAuthDispatch();
   const authState = useAuthState();
 
-  const handleSubmit: SubmitHandler<IUser> = async data => {
+  const handleSubmit: SubmitHandler<ILoginUser> = async data => {
     /*
     
     Set client-side to 'login-start'
@@ -66,7 +68,7 @@ const LoginForm: FC = () => {
     }
   };
 
-  const callGraphQLLogin = async (data: IUser) => {
+  const callGraphQLLogin = async (data: ILoginUser) => {
     console.log('authState:::', authState);
     /* 
       Call GraphQL back-end Api

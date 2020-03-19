@@ -8,6 +8,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { withApollo } from '../lib/apollo';
 import Layout from '../components/layout/Layout';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
+import { authStateContext } from '../lib/store/contexts';
+
 // import { NextPageContext } from "next";
 
 // @TODO
@@ -21,17 +23,21 @@ class MyApp extends App<any> {
   // https://spectrum.chat/next-js/general/app-js-getinitialprops-explained~539bdc35-a8b0-4dfa-972b-0dd9a0f1ac67
   // https://www.kohei.dev/posts/7-tips-of-next-js-9-with-typescript?hl=en-US
   static async getInitialProps({ Component, ctx }: AppContext): Promise<any> {
-    console.log('Component:::', Component);
+    console.log('Component:::', Component.displayName);
 
     return {
       isServer: ctx.hasOwnProperty('req')
     };
   }
 
+  static contextType: any = authStateContext;
+
   componentDidMount() {
     // opt-in to immer plugins
     enableMapSet();
     enablePatches();
+
+    console.log('_app.js: contextType::', this.props.contextType);
   }
 
   render() {

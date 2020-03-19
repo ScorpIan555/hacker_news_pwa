@@ -1,36 +1,26 @@
 import produce from 'immer';
 import {
-  IAction,
-  ILoginAction,
-  ILogoutAction,
+  // IAction,
+  // ILoginAction,
+  // ILogoutAction,
   IState,
-  Action
+  // ActionType,
+  IAction
 } from '../../typescript';
+import {
+  isLoginStartAction,
+  isLoginSuccessAction,
+  isLoginFail,
+  isLogoutAction
+} from '../../utils';
+
 // import { IContextDispatchProps } from '../contexts/authContext';
 // import { Reducer } from 'react';
 
 // export interface
 // ref: https://dev.to/stephencweiss/usereducer-with-typescript-2kf
 
-// The Type Guard Functions
-const isLoginStartAction = (action: IAction): action is ILoginAction => {
-  console.log('type check run -- action.type', action.type);
-  return action.type === 'login-start';
-};
-const isLoginSuccessAction = (action: IAction): action is ILoginAction => {
-  console.log('type check run -- action.type', action.type);
-  return action.type === 'login-success';
-};
-const isLoginFail = (action: IAction): action is ILoginAction => {
-  console.log('type check run -- action.type', action.type);
-  return action.type === 'login-fail';
-};
-const isLogoutAction = (action: IAction): action is ILogoutAction => {
-  console.log('type check run -- action.type', action.type);
-  return action.type === 'logout';
-};
-
-const loginReducer = (draft: IState, action: Action) => {
+const loginReducer = (draft: IState, action: IAction) => {
   console.log('loginReducer called -- action.type:::', action.type);
   console.log('loginReducer called -- draft:::', draft);
   console.log('loginReducer called -- action.payload:::', action.payload);
@@ -51,7 +41,7 @@ const loginReducer = (draft: IState, action: Action) => {
     console.log('isLoginSuccessAction.draft:::', draft);
     draft.isLoggedIn = true;
     draft.isLoading = false;
-    draft.email = 'fake email';
+    draft.user = action.payload;
     // draft.password = '';
     return;
   }
@@ -61,8 +51,9 @@ const loginReducer = (draft: IState, action: Action) => {
     draft.error = 'Incorrect username or password!';
     draft.isLoggedIn = false;
     draft.isLoading = false;
-    draft.username = '';
-    draft.password = '';
+    draft.user = { email: '' };
+    // draft.username = '';
+    // draft.password = '';
     return;
   }
   if (isLogoutAction(action)) {

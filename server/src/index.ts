@@ -1,31 +1,34 @@
-import "dotenv/config";
-import "reflect-metadata";
-import express from "express";
-import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
-import { UserResolver, LinkFeedResolver } from "./resolvers";
-import { createConnection } from "typeorm";
-import cookieParser from "cookie-parser";
-import { verify } from "jsonwebtoken";
-import cors from "cors";
-import { User, Link, LinkFeed } from "./entity";
-import { sendRefreshToken } from "./sendRefreshToken";
-import { createAccessToken, createRefreshToken } from "./middleware/jwTokenMiddleware";
+import 'dotenv/config';
+import 'reflect-metadata';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import { buildSchema } from 'type-graphql';
+import { UserResolver, LinkFeedResolver } from './resolvers';
+import { createConnection } from 'typeorm';
+import cookieParser from 'cookie-parser';
+import { verify } from 'jsonwebtoken';
+import cors from 'cors';
+import { User, Link, LinkFeed } from './entity';
+import { sendRefreshToken } from './sendRefreshToken';
+import {
+  createAccessToken,
+  createRefreshToken
+} from './middleware/jwTokenMiddleware';
 
 (async () => {
   const app = express();
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: 'http://localhost:3000',
       credentials: true
     })
   );
   app.use(cookieParser());
-  app.get("/", (_req, res) => res.send("hello"));
-  app.post("/refresh_token", async (req, res) => {
+  // app.get("/", (_req, res) => res.send("hello"));
+  app.post('/refresh_token', async (req, res) => {
     const token = req.cookies.jid;
     if (!token) {
-      return res.send({ ok: false, accessToken: "" });
+      return res.send({ ok: false, accessToken: '' });
     }
 
     let payload: any = null;
@@ -33,27 +36,27 @@ import { createAccessToken, createRefreshToken } from "./middleware/jwTokenMiddl
       payload = verify(token, process.env.REFRESH_TOKEN_SECRET!);
     } catch (err) {
       console.log(err);
-      return res.send({ ok: false, accessToken: "" });
+      return res.send({ ok: false, accessToken: '' });
     }
 
     // token is valid and
     // we can send back an access token
     const user = await User.findOne({ id: payload.userId });
-    console.log("index.user:::", user);
-    console.log("index.user:::", payload);
+    console.log('index.user:::', user);
+    console.log('index.user:::', payload);
     // const link: any = await Link.findOne({ id: payload.linkId });
     // const feed: any = await Link.find();
     // console.log("feed:::", feed);
     // console.log("feed:::", link);
-    console.log("Link:::", Link);
-    console.log("Link:::", LinkFeed);
+    console.log('Link:::', Link);
+    console.log('Link:::', LinkFeed);
 
     if (!user) {
-      return res.send({ ok: false, accessToken: "" });
+      return res.send({ ok: false, accessToken: '' });
     }
 
     if (user.tokenVersion !== payload.tokenVersion) {
-      return res.send({ ok: false, accessToken: "" });
+      return res.send({ ok: false, accessToken: '' });
     }
 
     sendRefreshToken(res, createRefreshToken(user));
@@ -77,7 +80,7 @@ import { createAccessToken, createRefreshToken } from "./middleware/jwTokenMiddl
   apolloServer.applyMiddleware({ app, cors: false });
 
   app.listen(4000, () => {
-    console.log("express server started");
+    console.log('express server started');
   });
 })();
 

@@ -1,4 +1,5 @@
 import { GraphQLError } from 'graphql';
+import { IUser } from './IUser';
 
 export interface IContextDispatchProps {
   state?: IState;
@@ -8,8 +9,9 @@ export interface IContextDispatchProps {
 export interface IDispatch {}
 
 export interface IState {
+  // need to look at all consumers of this interface and refactor this outs
   isAuth?: boolean;
-  user?: string;
+  user?: IUser;
   error?: string;
   isLoggedIn?: boolean;
   isLoading?: boolean;
