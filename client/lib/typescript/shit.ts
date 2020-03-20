@@ -15,7 +15,7 @@ export interface IState {
   error?: string;
   isLoggedIn?: boolean;
   isLoading?: boolean;
-  username?: string;
+  // username?: string;
   // email?: string;
   // password?: string;
   // action?: FieldName;

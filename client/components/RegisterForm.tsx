@@ -2,18 +2,17 @@ import React, { useRef, FC } from 'react';
 import Router from 'next/router';
 import { Form } from '@unform/web';
 import { SubmitHandler, FormHandles } from '@unform/core';
-
 // @TODO pull in and set up yup
 // import * as Yup from 'yup';
 
 // get form controls used in component
 import { InputC, ButtonC } from './form-controls';
 
-// get generated custom GraphQL hook for login page
-import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
+// get generated custom GraphQL hook for register page
+import { useRegisterMutation } from '../generated/graphql';
 
 // get app librarie
-import { setAccessToken } from '../lib/utils';
+// import { setAccessToken } from '../lib/utils';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
 import { ILoginUser, IUser } from '../lib/typescript';
 
@@ -39,7 +38,11 @@ import { ILoginUser, IUser } from '../lib/typescript';
   Client-side state is managed in a React context and updated and accessed with React hooks
 */
 
-const LoginForm: FC = () => {
+// export type RegisterPageProps = {
+//   pageName: 'login-page' | 'register-page';
+// };
+
+const RegisterForm: FC = () => {
   // unform requires some default data for initial render
   const initialValues: IUser = {
     email: '',
@@ -49,7 +52,7 @@ const LoginForm: FC = () => {
 
   // initialize React hooks
   const formRef = useRef<FormHandles>(null);
-  const [login] = useLoginMutation();
+  const [register] = useRegisterMutation();
   const authDispatch = useAuthDispatch();
   const authState = useAuthState();
 
@@ -61,7 +64,7 @@ const LoginForm: FC = () => {
     Handle successful response or throw an error
 
     */
-    authDispatch({ type: 'login-start' });
+    authDispatch({ type: 'register-start' });
     try {
       callGraphQLLogin(data);
     } catch (error) {
@@ -83,39 +86,29 @@ const LoginForm: FC = () => {
 
     */
     let { email, password } = data;
-    const response = await login({
+    const response = await register({
       variables: {
         email,
         password
-      },
-
-      update: (store, { data }) => {
-        if (!data) {
-          return null;
-        }
-
-        store.writeQuery<MeQuery>({
-          query: MeDocument,
-          data: {
-            me: data.login.user
-          }
-        });
       }
     });
 
+    console.log('response::', response);
+
+    //
+
     // Manage successful response
-    if (response && response.data) {
-      //
+    // if (response && response.data && response.data.register) {
+    if (response?.data?.register) {
       // 1) update client-side state w/ user info
       authDispatch({
-        type: 'login-success',
-        payload: response.data.login.user
+        type: 'register-success'
+        // payload: response.data.
       });
-      //
       // 2) set the access token
-      setAccessToken(response.data.login.accessToken);
-      //
+      // setAccessToken(response.data.login.accessToken);
       // 3) Push Router state to index page
+
       Router.push('/');
     }
 
@@ -138,4 +131,4 @@ const LoginForm: FC = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
