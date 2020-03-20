@@ -14,6 +14,10 @@ import {
   isLogoutAction,
   isMeQueryUserUpdateAction
 } from '../../utils';
+import {
+  isRegisterStartAction,
+  isRegisterSuccessAction
+} from '../../utils/reducerTypeGuards';
 
 // import { IContextDispatchProps } from '../contexts/authContext';
 // import { Reducer } from 'react';
@@ -28,6 +32,20 @@ const loginReducer = (draft: IState, action: IAction) => {
   //
   //
   //
+
+  if (isRegisterStartAction(action)) {
+    draft.error = '';
+    draft.isLoading = true;
+
+    return;
+  }
+
+  if (isRegisterSuccessAction(action)) {
+    draft.isLoggedIn = true;
+    draft.isLoading = false;
+    return;
+  }
+
   if (isLoginStartAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
     console.log('isLoginStartAction.action:::', action);
@@ -36,6 +54,7 @@ const loginReducer = (draft: IState, action: IAction) => {
     draft.isLoading = true;
     return;
   }
+
   if (isLoginSuccessAction(action)) {
     // need to take the handleSubmit logic from the component andput it in here...
     console.log('isLoginSuccessAction.action:::', action);
