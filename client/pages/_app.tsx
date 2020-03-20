@@ -13,6 +13,9 @@ import { authStateContext } from '../lib/store/contexts';
 // import { NextPageContext } from "next";
 
 // @TODO
+// ref: profiling https://www.bbc.com/mundo/noticias-51921093
+
+// @TODO
 // refactor into a functional component, if possible
 // the issue has been linking apollo client up w/ _app.js as a func component
 class MyApp extends App<any> {

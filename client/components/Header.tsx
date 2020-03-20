@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Link from 'next/link';
 // get generated custom GraphQL hooks
 import { useMeQuery, useLogoutMutation } from '../generated/graphql';
@@ -22,7 +22,7 @@ export const Header: FC<Props> = () => {
   } else if (data && data.me) {
     console.log('loading.after.call:::', loading);
     console.log('data.after call:::', data);
-    authDispatch({ type: 'me-query-user-update', payload: data.me });
+    // authDispatch({ type: 'me-query-user-update', payload: data.me });
     console.log(
       'after authDispatch.type.me-quer-user-update -- authState:::',
       useAuthStateContext
@@ -37,30 +37,10 @@ export const Header: FC<Props> = () => {
     body = <div>not logged in</div>;
   }
 
-  // useEffect(() => {
-  //   console.log('loading.before.call:::', loading);
-  //   console.log('data.before call::', data);
-  //   if (loading) {
-  //     body = <div>Loading</div>;
-  //   } else if (data && data.me) {
-  //     console.log('loading.after.call:::', loading);
-  //     console.log('data.after call:::', data);
-  //     authDispatch({ type: 'me-query-user-update', payload: data.me });
-  //     console.log(
-  //       'after authDispatch.type.me-quer-user-update -- authState:::',
-  //       useAuthStateContext
-  //     );
-  //     body = (
-  //       <div className="row">
-  //         you are logged in as: {useAuthStateContext.user?.email}
-  //       </div>
-  //     );
-  //   } else {
-  //     console.log('not logged in.authState:: ', useAuthStateContext);
-  //     body = <div>not logged in</div>;
-  //   }
-  // }),
-  //   [];
+  useEffect(() => {
+    authDispatch({ type: 'me-query-user-update', payload: data?.me });
+  }),
+    [data]; // selected data from the destructure of the useMutation query b/c that represents that portion of the app state frmo the Apollo cache
 
   const handleClick = async () => {
     await logout();
