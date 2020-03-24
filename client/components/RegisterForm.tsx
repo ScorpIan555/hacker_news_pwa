@@ -9,12 +9,13 @@ import { SubmitHandler, FormHandles } from '@unform/core';
 import { InputC, ButtonC } from './form-controls';
 
 // get generated custom GraphQL hook for register page
-import { useRegisterMutation } from '../generated/graphql';
+import { useRegisterMutation, MeDocument, MeQuery } from '../generated/graphql';
 
 // get app librarie
 // import { setAccessToken } from '../lib/utils';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
 import { ILoginUser, IUser } from '../lib/typescript';
+import { setAccessToken } from '../lib/utils';
 
 // @Todo need to add in Yum validations
 // probably set this up in a util
@@ -37,10 +38,6 @@ import { ILoginUser, IUser } from '../lib/typescript';
 
   Client-side state is managed in a React context and updated and accessed with React hooks
 */
-
-// export type RegisterPageProps = {
-//   pageName: 'login-page' | 'register-page';
-// };
 
 const RegisterForm: FC = () => {
   // unform requires some default data for initial render
@@ -90,6 +87,18 @@ const RegisterForm: FC = () => {
       variables: {
         email,
         password
+      },
+      update: (store, { data }) => {
+        if (!data) {
+          return null;
+        }
+
+        store.writeQuery<MeQuery>({
+          query: MeDocument,
+          data: {
+            me: data.register.user
+          }
+        });
       }
     });
 
@@ -102,11 +111,11 @@ const RegisterForm: FC = () => {
     if (response?.data?.register) {
       // 1) update client-side state w/ user info
       authDispatch({
-        type: 'register-success'
-        // payload: response.data.
+        type: 'register-success',
+        payload: response.data.register.user
       });
       // 2) set the access token
-      // setAccessToken(response.data.login.accessToken);
+      setAccessToken(response.data.register.accessToken);
       // 3) Push Router state to index page
 
       Router.push('/');
@@ -120,10 +129,17 @@ const RegisterForm: FC = () => {
       <div>
         <InputC name="email" type="email" placeholder="email" />
       </div>
+      <br />
       <div>
         <InputC name="password" type="password" placeholder="password" />
       </div>
-
+      <div>
+        <InputC
+          name="password-confirm"
+          type="password"
+          placeholder="confirm password"
+        />
+      </div>
       <div>
         <ButtonC buttonType="submit" name="submit" />
       </div>

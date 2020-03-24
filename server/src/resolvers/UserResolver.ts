@@ -38,11 +38,6 @@ export class UserResolver {
     return 'hi!';
   }
 
-  // @Query(() => String)
-  // authenticationError() {
-  //   return String
-  // }
-
   @Query(() => String)
   @UseMiddleware(isAuth)
   bye(@Ctx() { payload }: MyContext) {
@@ -88,7 +83,6 @@ export class UserResolver {
 
   // @Mutation(() => String)
 
-
   @Mutation(() => Boolean)
   async revokeRefreshTokensForUser(@Arg('userId', () => Int) userId: number) {
     await getConnection()
@@ -130,10 +124,11 @@ export class UserResolver {
     };
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => LoginResponse)
   async register(
     @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('password') password: string,
+    @Ctx() { res }: MyContext
   ) {
     const hashedPassword = await hash(password, 12);
 
@@ -147,6 +142,23 @@ export class UserResolver {
       return false;
     }
 
-    return true;
+    // in order to log in user after registration, we need to return a user value
+    //    after checking the ORM, it looks like we do need to make this 2nd call :/
+    try {
+      const user = await User.findOne({ where: { email } });
+
+      if (!user) {
+        throw new Error('could not find user');
+      }
+      sendRefreshToken(res, createRefreshToken(user));
+
+      return {
+        accessToken: createAccessToken(user),
+        user
+      };
+    } catch (err) {
+      console.log('error::', err);
+      return err;
+    }
   }
 }

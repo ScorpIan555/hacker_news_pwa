@@ -19,5 +19,5 @@
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "components/LoginForm.js", "lib/store/reducers/login-reducer.js"]
+  "include": ["**/*.ts", "**/*.tsx", "components/LoginForm.js", "lib/store/reducers/login-reducer.js", "lib/store/providers/ThemeProvider.tsx.txt"]
 }

@@ -4,95 +4,95 @@ import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string,
-  String: string,
-  Boolean: boolean,
-  Int: number,
-  Float: number,
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
 };
 
 export type Link = {
-   __typename?: 'Link',
-  id: Scalars['Int'],
-  url: Scalars['String'],
-  description: Scalars['String'],
-  postedBy: Scalars['String'],
+   __typename?: 'Link';
+  id: Scalars['Int'];
+  url: Scalars['String'];
+  description: Scalars['String'];
+  postedBy: Scalars['String'];
 };
 
 export type LinkInput = {
-  url: Scalars['String'],
-  description: Scalars['String'],
+  url: Scalars['String'];
+  description: Scalars['String'];
 };
 
 export type LinkUpdateInput = {
-  url?: Maybe<Scalars['String']>,
-  description?: Maybe<Scalars['String']>,
+  url?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
 };
 
 export type LoginResponse = {
-   __typename?: 'LoginResponse',
-  accessToken: Scalars['String'],
-  user: User,
+   __typename?: 'LoginResponse';
+  accessToken: Scalars['String'];
+  user: User;
 };
 
 export type Mutation = {
-   __typename?: 'Mutation',
-  logout: Scalars['Boolean'],
-  revokeRefreshTokensForUser: Scalars['Boolean'],
-  login: LoginResponse,
-  register: Scalars['Boolean'],
-  createLink: Link,
-  updateLink: Scalars['Boolean'],
-  deleteLink: Scalars['Boolean'],
+   __typename?: 'Mutation';
+  logout: Scalars['Boolean'];
+  revokeRefreshTokensForUser: Scalars['Boolean'];
+  login: LoginResponse;
+  register: LoginResponse;
+  createLink: Link;
+  updateLink: Scalars['Boolean'];
+  deleteLink: Scalars['Boolean'];
 };
 
 
 export type MutationRevokeRefreshTokensForUserArgs = {
-  userId: Scalars['Int']
+  userId: Scalars['Int'];
 };
 
 
 export type MutationLoginArgs = {
-  password: Scalars['String'],
-  email: Scalars['String']
+  password: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
 export type MutationRegisterArgs = {
-  password: Scalars['String'],
-  email: Scalars['String']
+  password: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
 export type MutationCreateLinkArgs = {
-  options: LinkInput
+  options: LinkInput;
 };
 
 
 export type MutationUpdateLinkArgs = {
-  input: LinkUpdateInput,
-  id: Scalars['Int']
+  input: LinkUpdateInput;
+  id: Scalars['Int'];
 };
 
 
 export type MutationDeleteLinkArgs = {
-  id: Scalars['Int']
+  id: Scalars['Int'];
 };
 
 export type Query = {
-   __typename?: 'Query',
-  hello: Scalars['String'],
-  bye: Scalars['String'],
-  users: Array<User>,
-  me?: Maybe<User>,
-  linkFeed: Array<Link>,
-  links: Array<Link>,
+   __typename?: 'Query';
+  hello: Scalars['String'];
+  bye: Scalars['String'];
+  users: Array<User>;
+  me?: Maybe<User>;
+  linkFeed: Array<Link>;
+  links: Array<Link>;
 };
 
 export type User = {
-   __typename?: 'User',
-  id: Scalars['Int'],
-  email: Scalars['String'],
+   __typename?: 'User';
+  id: Scalars['Int'];
+  email: Scalars['String'];
 };
 
 export type ByeQueryVariables = {};
@@ -104,9 +104,9 @@ export type ByeQuery = (
 );
 
 export type CreateLinkMutationVariables = {
-  id: Scalars['Int'],
-  url: Scalars['String'],
-  description: Scalars['String']
+  id: Scalars['Int'];
+  url: Scalars['String'];
+  description: Scalars['String'];
 };
 
 
@@ -119,7 +119,7 @@ export type CreateLinkMutation = (
 );
 
 export type DeleteLinkMutationVariables = {
-  id: Scalars['Int']
+  id: Scalars['Int'];
 };
 
 
@@ -148,8 +148,8 @@ export type LinksQuery = (
 );
 
 export type LoginMutationVariables = {
-  email: Scalars['String'],
-  password: Scalars['String']
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
@@ -178,27 +178,34 @@ export type MeQueryVariables = {};
 
 export type MeQuery = (
   { __typename?: 'Query' }
-  & { me: Maybe<(
+  & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email'>
   )> }
 );
 
 export type RegisterMutationVariables = {
-  email: Scalars['String'],
-  password: Scalars['String']
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'register'>
+  & { register: (
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'accessToken'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email'>
+    ) }
+  ) }
 );
 
 export type UpdateLinkMutationVariables = {
-  id: Scalars['Int'],
-  url?: Maybe<Scalars['String']>,
-  description?: Maybe<Scalars['String']>
+  id: Scalars['Int'];
+  url?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
 };
 
 
@@ -481,7 +488,13 @@ export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($email: String!, $password: String!) {
-  register(email: $email, password: $password)
+  register(email: $email, password: $password) {
+    accessToken
+    user {
+      id
+      email
+    }
+  }
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;

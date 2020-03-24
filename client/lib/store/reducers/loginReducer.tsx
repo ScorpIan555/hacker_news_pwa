@@ -25,6 +25,10 @@ import {
 // export interface
 // ref: https://dev.to/stephencweiss/usereducer-with-typescript-2kf
 
+// @TODO
+// refactor out these 'isLoading' booleans, change to an enum:
+//      ref:  https://egghead.io/lessons/react-use-a-status-enum-instead-of-booleans
+
 const loginReducer = (draft: IState, action: IAction) => {
   console.log('loginReducer called -- action.type:::', action.type);
   console.log('loginReducer called -- draft:::', draft);

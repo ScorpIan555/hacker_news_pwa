@@ -65,7 +65,9 @@ const LoginForm: FC = () => {
     try {
       callGraphQLLogin(data);
     } catch (error) {
-      console.log('error:::', error);
+      console.log('error:::', 
+      error);
+      alert(error.message);
       return error;
     }
   };
