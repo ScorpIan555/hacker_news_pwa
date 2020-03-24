@@ -1,8 +1,8 @@
 import {
-  authStateContext,
-  authDispatchContext,
+  AuthStateContext,
+  AuthDispatchContext,
   useAuthDispatch,
   useAuthState
-} from './authContext';
+} from './AuthContext';
 
-export { authStateContext, authDispatchContext, useAuthDispatch, useAuthState };
+export { AuthStateContext, AuthDispatchContext, useAuthDispatch, useAuthState };

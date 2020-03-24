@@ -15,14 +15,14 @@ import { IAction, IActionTypeGuard } from '../typescript';
 export const isRegisterStartAction = (
   action: IAction
 ): action is IActionTypeGuard => {
-  console.log('type check run -- action.type', action.type);
+  //  console.log('type check run -- action.type', action.type);
   return action.type === 'register-start';
 };
 
 export const isRegisterSuccessAction = (
   action: IAction
 ): action is IActionTypeGuard => {
-  console.log('type check run -- action.type', action.type);
+  // console.log('type check run -- action.type', action.type);
   return action.type === 'register-success';
 };
 
@@ -33,24 +33,24 @@ export const isRegisterSuccessAction = (
 export const isLoginStartAction = (
   action: IAction
 ): action is IActionTypeGuard => {
-  console.log('type check run -- action.type', action.type);
+  //console.log('type check run -- action.type', action.type);
   return action.type === 'login-start';
 };
 
 export const isLoginSuccessAction = (
   action: IAction
 ): action is IActionTypeGuard => {
-  console.log('type check run -- action.type', action.type);
+  //  console.log('type check run -- action.type', action.type);
   return action.type === 'login-success';
 };
 
 export const isLoginFail = (action: IAction): action is IActionTypeGuard => {
-  console.log('type check run -- action.type', action.type);
+  // console.log('type check run -- action.type', action.type);
   return action.type === 'login-fail';
 };
 
 export const isLogoutAction = (action: IAction): action is IActionTypeGuard => {
-  console.log('type check run -- action.type', action.type);
+  //console.log('type check run -- action.type', action.type);
   return action.type === 'logout';
 };
 
@@ -61,6 +61,6 @@ export const isLogoutAction = (action: IAction): action is IActionTypeGuard => {
 export const isMeQueryUserUpdateAction = (
   action: IAction
 ): action is IActionTypeGuard => {
-  console.log('type check run -- action.type', action.type);
+  //console.log('type check run -- action.type', action.type);
   return action.type === 'me-query-user-update';
 };

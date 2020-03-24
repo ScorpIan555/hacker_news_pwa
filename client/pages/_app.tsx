@@ -1,5 +1,5 @@
 import App, { AppContext } from 'next/app';
-import React from 'react';
+import React, { Context } from 'react';
 // state mgt
 import { enableMapSet, enablePatches } from 'immer';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -8,7 +8,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { withApollo } from '../lib/apollo';
 import Layout from '../components/layout/Layout';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
-import { authStateContext } from '../lib/store/contexts';
+import { AuthStateContext } from '../lib/store/contexts';
+import { IState } from '../lib/typescript';
 
 // import {} from 'styled-components'
 // import { NextPageContext } from "next";
@@ -29,12 +30,20 @@ class MyApp extends App<any> {
   static async getInitialProps({ Component, ctx }: AppContext): Promise<any> {
     console.log('Component:::', Component.displayName);
 
+    let pageProps = {};
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+
+    console.log('pageProps:::', pageProps);
+
     return {
-      isServer: ctx.hasOwnProperty('req')
+      isServer: ctx.hasOwnProperty('req'),
+      pageProps
     };
   }
 
-  static contextType: any = authStateContext;
+  static contextType: Context<IState> = AuthStateContext;
 
   componentDidMount() {
     // opt-in to immer plugins
@@ -45,8 +54,9 @@ class MyApp extends App<any> {
   }
 
   render() {
-    const { Component, isServer, apolloClient } = this.props;
+    const { Component, isServer, apolloClient, pageProps } = this.props;
     console.log('_app.this.props.isServer:::', this.props.isServer);
+    console.log('render.pageProps:::', pageProps);
 
     return (
       <AuthProvider>

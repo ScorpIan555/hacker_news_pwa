@@ -1,4 +1,4 @@
-import { authStateContext, authDispatchContext } from '../contexts/authContext';
+import { AuthStateContext, AuthDispatchContext } from '../contexts/AuthContext';
 import { curriedLoginReducer } from '../reducers/loginReducer';
 
 import { useImmerReducer } from 'use-immer';
@@ -20,10 +20,10 @@ export const AuthProvider = ({ children }: any) => {
   // ref: https://github.com/hswolff/youtube/blob/master/videos/why-i-love-usereducer/src/LoginWithContext.js
 
   return (
-    <authStateContext.Provider value={state}>
-      <authDispatchContext.Provider value={dispatch}>
+    <AuthStateContext.Provider value={state}>
+      <AuthDispatchContext.Provider value={dispatch}>
         {children}
-      </authDispatchContext.Provider>
-    </authStateContext.Provider>
+      </AuthDispatchContext.Provider>
+    </AuthStateContext.Provider>
   );
 };
