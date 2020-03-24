@@ -16,6 +16,7 @@ import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 import { setAccessToken } from '../lib/utils';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
 import { ILoginUser, IUser } from '../lib/typescript';
+import { theme } from '../lib/theme';
 
 // @Todo need to add in Yum validations
 // probably set this up in a util
@@ -65,8 +66,7 @@ const LoginForm: FC = () => {
     try {
       callGraphQLLogin(data);
     } catch (error) {
-      console.log('error:::', 
-      error);
+      console.log('error:::', error);
       alert(error.message);
       return error;
     }
@@ -134,7 +134,7 @@ const LoginForm: FC = () => {
       </div>
 
       <div>
-        <ButtonC buttonType="submit" name="submit" />
+        <ButtonC buttonType="submit" name="Login!" theme={theme} />
       </div>
     </Form>
   );

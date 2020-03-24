@@ -11,7 +11,6 @@ import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { AuthStateContext } from '../lib/store/contexts';
 import { IState } from '../lib/typescript';
 
-// import {} from 'styled-components'
 // import { NextPageContext } from "next";
 
 // @TODO
@@ -34,8 +33,6 @@ class MyApp extends App<any> {
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
-
-    console.log('pageProps:::', pageProps);
 
     return {
       isServer: ctx.hasOwnProperty('req'),

@@ -16,6 +16,7 @@ import { useRegisterMutation, MeDocument, MeQuery } from '../generated/graphql';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
 import { ILoginUser, IUser } from '../lib/typescript';
 import { setAccessToken } from '../lib/utils';
+import { theme } from '../lib/theme';
 
 // @Todo need to add in Yum validations
 // probably set this up in a util
@@ -141,7 +142,7 @@ const RegisterForm: FC = () => {
         />
       </div>
       <div>
-        <ButtonC buttonType="submit" name="submit" />
+        <ButtonC buttonType="submit" name="Sign Up!" theme={theme} />
       </div>
     </Form>
   );

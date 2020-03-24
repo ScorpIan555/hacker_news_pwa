@@ -5,6 +5,7 @@ import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 // get app libraries
 import { setAccessToken } from '../lib/utils';
 import { useAuthState, useAuthDispatch } from '../lib/store/contexts';
+import { ButtonC } from './form-controls';
 
 interface Props {}
 
@@ -79,9 +80,11 @@ export const Header: FC<Props> = () => {
           </div>
           <div className="">
             {!loading && data && data.me ? (
-              <button className="item login" onClick={handleClick}>
-                logout
-              </button>
+              <ButtonC
+                name="Logout"
+                className="item login" //
+                onClick={handleClick}
+              />
             ) : null}
           </div>
         </nav>

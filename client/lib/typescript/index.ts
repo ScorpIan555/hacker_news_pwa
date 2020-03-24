@@ -9,6 +9,7 @@ import { IItem } from './IItem';
 import { IUser } from './IUser';
 import { IError } from './IError';
 import { ILoginUser } from './ILoginUser';
+import { ITheme } from './ITheme'
 import {
   IDispatch,
   IState,
@@ -32,5 +33,6 @@ export type {
   IActionTypeGuard,
   Dispatch,
   ActionType,
-  ILoginUser
+  ILoginUser,
+  ITheme
 };
