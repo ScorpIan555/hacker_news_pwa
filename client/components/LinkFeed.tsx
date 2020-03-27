@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLinksQuery } from '../generated/graphql';
-import { IItem } from '../lib/typescript/IItem';
+import { IItem } from '../lib/typescript/interfaces';
 
 interface Props {}
 

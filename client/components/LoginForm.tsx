@@ -12,11 +12,11 @@ import { InputC, ButtonC } from './form-controls';
 // get generated custom GraphQL hook for login page
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 
-// get app librarie
+// get app libraries
 import { setAccessToken } from '../lib/utils';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
-import { ILoginUser, IUser } from '../lib/typescript';
 import { theme } from '../lib/theme';
+import { IUser, ILoginUser } from '../lib/typescript/interfaces';
 
 // @Todo need to add in Yum validations
 // probably set this up in a util

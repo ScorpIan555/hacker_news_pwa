@@ -1,5 +1,5 @@
 import * as styledComponents from 'styled-components';
-import { ITheme } from '../typescript';
+import { ITheme } from '../typescript/interfaces';
 
 const {
   default: styled,

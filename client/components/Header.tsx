@@ -2,17 +2,20 @@ import React, { FC, useEffect } from 'react';
 import Link from 'next/link';
 // get generated custom GraphQL hooks
 import { useMeQuery, useLogoutMutation } from '../generated/graphql';
+// import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 // get app libraries
-import { setAccessToken } from '../lib/utils';
+// import { setAccessToken } from '../lib/utils';
 import { useAuthState, useAuthDispatch } from '../lib/store/contexts';
 import { ButtonC } from './form-controls';
+import { setAccessToken } from '../lib/utils';
 
 interface Props {}
 
 export const Header: FC<Props> = () => {
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
-  const { useAuthStateContext } = useAuthState();
+
+  const { authStateContext } = useAuthState();
   const authDispatch = useAuthDispatch();
   let body = <div></div>;
 
@@ -26,28 +29,48 @@ export const Header: FC<Props> = () => {
     // authDispatch({ type: 'me-query-user-update', payload: data.me });
     console.log(
       'after authDispatch.type.me-quer-user-update -- authState:::',
-      useAuthStateContext
+      authStateContext
     );
     body = (
       <div className="row">
-        you are logged in as: {useAuthStateContext.user?.email}
+        you are logged in as: {authStateContext.user?.email}
       </div>
     );
   } else {
-    console.log('not logged in.authState:: ', useAuthStateContext);
+    console.log('not logged in.authState:: ', authStateContext);
     body = <div>not logged in</div>;
   }
 
   useEffect(() => {
     authDispatch({ type: 'me-query-user-update', payload: data?.me });
+    // console.log('data ** should only run once **:::', data);
   }),
     [data]; // selected data from the destructure of the useMutation query b/c that represents that portion of the app state frmo the Apollo cache
 
-  const handleClick = async () => {
-    await logout();
-    setAccessToken('');
-    authDispatch({ type: 'logout' });
-    await client!.resetStore();
+  // const handleClick = async () => {
+  //   console.log('click! logout::');
+  //   await logout();
+  //   // setAccessToken('');
+  //   // authDispatch({ type: 'logout' });
+  //   // await client!.resetStore();
+  // };
+
+  const handleClick = async (event: {
+    preventDefault: () => void;
+    target: any;
+  }) => {
+    event.preventDefault();
+    console.log('click!', event.target);
+
+    try {
+      await logout();
+      setAccessToken('');
+      authDispatch({ type: 'logout' });
+      await client!.resetStore();
+    } catch (error) {
+      console.log('error::', error);
+      throw new Error('error logging out');
+    }
   };
 
   return (
@@ -81,9 +104,11 @@ export const Header: FC<Props> = () => {
           <div className="">
             {!loading && data && data.me ? (
               <ButtonC
+                buttonType="button"
                 name="Logout"
-                className="item login" //
-                onClick={handleClick}
+                className="item" //
+                // onSubmit={handleSubmit}
+                handleClick={handleClick}
               />
             ) : null}
           </div>

@@ -1,22 +1,24 @@
 import { createContext, useContext } from 'react';
-import { IState, Dispatch } from '../../typescript';
+import { IState } from '../../typescript/interfaces';
+import { Dispatch } from '../../typescript/types';
 
 export const AuthStateContext = createContext({} as IState);
 export const AuthDispatchContext = createContext({} as Dispatch);
 
 export const useAuthState = () => {
-  const useAuthStateContext = useContext(AuthStateContext);
+  const authStateContext = useContext(AuthStateContext);
 
-  if (useAuthStateContext === undefined) {
+  if (authStateContext === undefined) {
+    // s/b changed to authStateContext
     throw new Error('useAuthState must be used within a Provider');
   }
-  return { useAuthStateContext };
+  return { authStateContext };
 };
 
 export const useAuthDispatch = () => {
-  const useAuthDispatchContext = useContext(AuthDispatchContext);
-  if (useAuthDispatchContext === undefined) {
+  const authDispatchContext = useContext(AuthDispatchContext);
+  if (authDispatchContext === undefined) {
     throw new Error('useAuthDispatch must be used within a Provider');
   }
-  return useAuthDispatchContext;
+  return authDispatchContext;
 };

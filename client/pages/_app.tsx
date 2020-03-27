@@ -9,7 +9,7 @@ import { withApollo } from '../lib/apollo';
 import Layout from '../components/layout/Layout';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { AuthStateContext } from '../lib/store/contexts';
-import { IState } from '../lib/typescript';
+import { IState } from '../lib/typescript/interfaces';
 
 // import { NextPageContext } from "next";
 

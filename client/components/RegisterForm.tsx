@@ -14,9 +14,8 @@ import { useRegisterMutation, MeDocument, MeQuery } from '../generated/graphql';
 // get app librarie
 // import { setAccessToken } from '../lib/utils';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
-import { ILoginUser, IUser } from '../lib/typescript';
 import { setAccessToken } from '../lib/utils';
-import { theme } from '../lib/theme';
+import { IUser, ILoginUser } from '../lib/typescript/interfaces';
 
 // @Todo need to add in Yum validations
 // probably set this up in a util
@@ -52,7 +51,7 @@ const RegisterForm: FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [register] = useRegisterMutation();
   const authDispatch = useAuthDispatch();
-  const authState = useAuthState();
+  const { authStateContext } = useAuthState();
 
   const handleSubmit: SubmitHandler<ILoginUser> = async data => {
     /*
@@ -72,7 +71,7 @@ const RegisterForm: FC = () => {
   };
 
   const callGraphQLLogin = async (data: ILoginUser) => {
-    console.log('authState:::', authState);
+    console.log('authState:::', authStateContext);
     /* 
       Call GraphQL back-end Api
       If successful:
@@ -142,7 +141,7 @@ const RegisterForm: FC = () => {
         />
       </div>
       <div>
-        <ButtonC buttonType="submit" name="Sign Up!" theme={theme} />
+        <ButtonC buttonType="submit" name="Sign Up!" />
       </div>
     </Form>
   );

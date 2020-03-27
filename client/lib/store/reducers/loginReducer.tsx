@@ -1,12 +1,5 @@
 import produce from 'immer';
-import {
-  // IAction,
-  // ILoginAction,
-  // ILogoutAction,
-  IState,
-  // ActionType,
-  IAction
-} from '../../typescript';
+
 import {
   isLoginStartAction,
   isLoginSuccessAction,
@@ -17,7 +10,8 @@ import {
 import {
   isRegisterStartAction,
   isRegisterSuccessAction
-} from '../../utils/reducerTypeGuards';
+} from '../../utils/reducerTypeGuards'; // clean up into just utils
+import { IState, IAction } from '../../typescript/interfaces';
 
 // import { IContextDispatchProps } from '../contexts/authContext';
 // import { Reducer } from 'react';
@@ -33,7 +27,7 @@ const loginReducer = (draft: IState, action: IAction) => {
   console.log('loginReducer called -- action.type:::', action.type);
   console.log('loginReducer called -- draft:::', draft);
   console.log('loginReducer called -- action.payload:::', action.payload);
-  //
+  // const actionType = action.type;
   //
   //
 
@@ -47,6 +41,7 @@ const loginReducer = (draft: IState, action: IAction) => {
   if (isRegisterSuccessAction(action)) {
     draft.isLoggedIn = true;
     draft.isLoading = false;
+    draft.user = action.payload;
     return;
   }
 
@@ -89,47 +84,9 @@ const loginReducer = (draft: IState, action: IAction) => {
     draft.isLoggedIn = true;
     draft.user = action.payload;
     return;
-  }
-
-  switch (action.type) {
-    // case 'field': {
-    //   // let { fieldName } = action;
-    //   if (action) {
-    //     if (action != undefined) {
-    //       let index: string = action.fieldName || 'fish';
-    //       draft[index] = action.payload;
-    //     }
-    //   }
-
-    //   return;
-    // }
-
-    // case 'login': {
-    //   draft.error = '';
-    //   draft.isLoading = true;
-    //   return;
-    // }
-    // case 'success': {
-    //   draft.isLoggedIn = true;
-    //   draft.isLoading = false;
-    //   draft.username = '';
-    //   draft.password = '';
-    //   return;
-    // }
-    // case 'error': {
-    //   draft.error = 'Incorrect username or password!';
-    //   draft.isLoggedIn = false;
-    //   draft.isLoading = false;
-    //   draft.username = '';
-    //   draft.password = '';
-    //   return;
-    // }
-    // case 'logOut': {
-    //   draft.isLoggedIn = false;
-    //   return;
-    // }
-    default:
-      throw new Error(`Unhandled action type:${action.type}`);
+    //
+  } else {
+    throw new Error(`Unhandled action type:${action.type}`);
   }
 };
 

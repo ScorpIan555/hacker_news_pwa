@@ -1,9 +1,9 @@
-import React from "react";
-import { useUsersQuery } from "../generated/graphql";
-import LinkList from "../components/LinkFeed";
+import React from 'react';
+import { useUsersQuery } from '../generated/graphql';
+import LinkFeed from '../components/LinkFeed';
 
 export default () => {
-  const { data } = useUsersQuery({ fetchPolicy: "network-only" });
+  const { data } = useUsersQuery({ fetchPolicy: 'network-only' });
 
   if (!data) {
     return <div>loading...</div>;
@@ -21,7 +21,7 @@ export default () => {
           );
         })}
       </ul>
-      <LinkList />
+      <LinkFeed />
     </div>
   );
 };

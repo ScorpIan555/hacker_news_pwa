@@ -1,8 +1,4 @@
-import { IAction, IActionTypeGuard } from '../typescript';
-
-/* 
-
-*/
+import { IAction, IActionTypeGuard } from '../typescript/interfaces';
 
 /* 
   User Action Type Guard Functions
@@ -45,12 +41,12 @@ export const isLoginSuccessAction = (
 };
 
 export const isLoginFail = (action: IAction): action is IActionTypeGuard => {
-  // console.log('type check run -- action.type', action.type);
+  console.log('type check run -- action.type', action.type);
   return action.type === 'login-fail';
 };
 
 export const isLogoutAction = (action: IAction): action is IActionTypeGuard => {
-  //console.log('type check run -- action.type', action.type);
+  console.log('type check run -- action.type', action.type);
   return action.type === 'logout';
 };
 

@@ -1,24 +1,27 @@
 import React from 'react';
-import { Button } from '../../lib/theme';
+// import { theme } from '../../lib/theme';
 // import Button from 'unform-material-ui';
-// import { Button } from '@material-ui/core';
+// import { Button } from '@material-ui/core';\
+// import { useTheme } from 'styled-components';
+import { useCustomTheme } from '../../lib/store/contexts';
+import { ButtonProps } from '../../lib/typescript/interfaces';
 
-interface ButtonProps {
-  buttonType?: any;
-  name: string;
-  theme?: any;
-  onClick?: any;
-  className?: any;
-  // onSubmit()?: Promise<any>;
-}
-
-const ButtonC = ({ buttonType, name, theme }: ButtonProps) => {
+const ButtonC = ({ buttonType, name, handleClick }: ButtonProps) => {
   console.log('buttonType:::', typeof buttonType);
   console.log('buttonType:::', buttonType);
+  const { themeContext } = useCustomTheme();
+  const Button = useCustomTheme();
+  console.log('usedTheme:::', themeContext);
+  console.log('useTheme.Button:::', Button);
+
   return (
-    <Button type="submit" name={name} theme={theme}>
+    <button
+      type={buttonType}
+      name={name}
+      onClick={buttonType === 'button' ? handleClick : null}
+    >
       {name}
-    </Button>
+    </button>
   );
 };
 
