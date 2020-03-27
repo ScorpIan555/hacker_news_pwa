@@ -7,7 +7,7 @@ import { SubmitHandler, FormHandles } from '@unform/core';
 // import * as Yup from 'yup';
 
 // get form controls used in component
-import { InputC, ButtonC } from './form-controls';
+import { InputC, Button } from './form-controls';
 
 // get generated custom GraphQL hook for login page
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
@@ -134,7 +134,7 @@ const LoginForm: FC = () => {
       </div>
 
       <div>
-        <ButtonC buttonType="submit" name="Login!" theme={theme} />
+        <Button buttonType="submit" name="Login!" theme={theme} />
       </div>
     </Form>
   );

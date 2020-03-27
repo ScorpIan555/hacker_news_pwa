@@ -2,17 +2,16 @@ import React, { FC, useEffect } from 'react';
 import Link from 'next/link';
 // get generated custom GraphQL hooks
 import { useMeQuery, useLogoutMutation } from '../generated/graphql';
-// import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 // get app libraries
 // import { setAccessToken } from '../lib/utils';
 import { useAuthState, useAuthDispatch } from '../lib/store/contexts';
-import { ButtonC } from './form-controls';
+import { Button } from './form-controls';
 import { setAccessToken } from '../lib/utils';
 
 interface Props {}
 
 export const Header: FC<Props> = () => {
-  const { data, loading } = useMeQuery();
+  const { data, loading } = useMeQuery(); // @TODO need to memoize this result
   const [logout, { client }] = useLogoutMutation();
 
   const { authStateContext } = useAuthState();
@@ -41,19 +40,12 @@ export const Header: FC<Props> = () => {
     body = <div>not logged in</div>;
   }
 
+  // @TODO figureout the reason this keeps rerunning...
   useEffect(() => {
     authDispatch({ type: 'me-query-user-update', payload: data?.me });
-    // console.log('data ** should only run once **:::', data);
+    console.log('data ** should only run once **:::', data);
   }),
-    [data]; // selected data from the destructure of the useMutation query b/c that represents that portion of the app state frmo the Apollo cache
-
-  // const handleClick = async () => {
-  //   console.log('click! logout::');
-  //   await logout();
-  //   // setAccessToken('');
-  //   // authDispatch({ type: 'logout' });
-  //   // await client!.resetStore();
-  // };
+    [data?.me?.email]; // selected data from the destructure of the useMutation query b/c that represents that portion of the app state frmo the Apollo cache
 
   const handleClick = async (event: {
     preventDefault: () => void;
@@ -103,7 +95,7 @@ export const Header: FC<Props> = () => {
           </div>
           <div className="">
             {!loading && data && data.me ? (
-              <ButtonC
+              <Button
                 buttonType="button"
                 name="Logout"
                 className="item" //

@@ -61,13 +61,6 @@ export interface ILoginUser {
   type?: string;
 }
 
-export interface ITheme {
-  primaryColor?: string;
-  main?: string;
-  button: JSX.Element;
-  // useTheme: any;
-}
-
 export interface IUser {
   id?: number; // optional for development, in production, prefer to pull the email & id from the payload
   email: string;
@@ -75,10 +68,17 @@ export interface IUser {
   type?: string;
 }
 
+export interface ITheme {
+  primaryColor?: string;
+  main?: string;
+  button: JSX.Element;
+  // useTheme: any;
+}
+
 export interface ButtonProps {
   buttonType?: any;
+  theme?: any; // think I prefer this, but...
   name: string;
-  theme?: any;
   onClick?: any;
   className?: any;
   onSubmit?: any;

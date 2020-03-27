@@ -6,7 +6,7 @@ import { SubmitHandler, FormHandles } from '@unform/core';
 // import * as Yup from 'yup';
 
 // get form controls used in component
-import { InputC, ButtonC } from './form-controls';
+import { InputC, Button } from './form-controls';
 
 // get generated custom GraphQL hook for register page
 import { useRegisterMutation, MeDocument, MeQuery } from '../generated/graphql';
@@ -141,7 +141,7 @@ const RegisterForm: FC = () => {
         />
       </div>
       <div>
-        <ButtonC buttonType="submit" name="Sign Up!" />
+        <Button buttonType="submit" name="Sign Up!" />
       </div>
     </Form>
   );
