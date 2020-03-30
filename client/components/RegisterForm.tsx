@@ -11,7 +11,7 @@ import { InputC, Button } from './form-controls';
 // get generated custom GraphQL hook for register page
 import { useRegisterMutation, MeDocument, MeQuery } from '../generated/graphql';
 
-// get app librarie
+// get app libraries
 // import { setAccessToken } from '../lib/utils';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
 import { setAccessToken } from '../lib/utils';

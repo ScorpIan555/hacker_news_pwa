@@ -1,8 +1,9 @@
-import { IAction, ITheme } from './interfaces';
+import { IAction } from './interfaces';
 
 export type CustomThemeProviderProps = {
   children: React.ReactNode;
-  value: ITheme;
+  // value: ITheme;
+  value: any;
 };
 
 // used in authContexts.ts

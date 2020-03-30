@@ -11,7 +11,7 @@ export default () => {
 
   return (
     <div>
-      <div>users:</div>
+      {/* <div>users:</div>
       <ul>
         {data.users.map(x => {
           return (
@@ -20,7 +20,7 @@ export default () => {
             </li>
           );
         })}
-      </ul>
+      </ul> */}
       <LinkFeed />
     </div>
   );
