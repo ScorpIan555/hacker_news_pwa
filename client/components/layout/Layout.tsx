@@ -1,10 +1,11 @@
 import * as React from 'react';
-// import Head from "next/head";
+// import app components
 import { Header } from '../Header';
-// import { useTheme } from 'styled-components';
+
+// import app libraries
 import { GlobalStyle } from '../../lib/theme';
-import { CustomThemeProvider } from '../../lib/store/providers';
 import { useCustomTheme } from '../../lib/store/contexts';
+import { ThemeProvider } from 'styled-components';
 
 interface ILayoutProps {
   title?: string;
@@ -13,26 +14,23 @@ interface ILayoutProps {
   pageProps?: any;
 }
 
-const Layout: React.FunctionComponent<ILayoutProps> = ({
-  Component,
-  pageProps,
-  children
-}) => {
+const Layout: React.FunctionComponent<ILayoutProps> = ({ children }) => {
   // const themeObj = useTheme();
   // console.log('theme:::', themeObj)
   const { themeContext } = useCustomTheme(); // this might be redundant
 
-  console.log('Layout.Component:::', Component);
-  console.log('Layout.pageProps:::', pageProps);
-  console.log('Layout.theme:::', themeContext);
+  // console.log('Layout.Component:::', Component);
+  // console.log('Layout.pageProps:::', pageProps);
+  // console.log('Layout.theme:::', themeContext);
   return (
     <div>
       <Header />
 
-      <CustomThemeProvider value={themeContext}>
-        <GlobalStyle />
+      <ThemeProvider theme={themeContext}>
+        <GlobalStyle theme={themeContext} />
         {children}
-      </CustomThemeProvider>
+      </ThemeProvider>
+
       {/* <style jsx>{`
         #_next {
           margin: 0px;

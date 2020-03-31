@@ -1,14 +1,33 @@
 import React, { FC, useEffect } from 'react';
-import Link from 'next/link';
+// import Link from 'next/link';
 // get generated custom GraphQL hooks
 import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 // get app libraries
 // import { setAccessToken } from '../lib/utils';
-import { useAuthState, useAuthDispatch } from '../lib/store/contexts';
-import { Button } from './form-controls';
+import {
+  useAuthState,
+  useAuthDispatch,
+  useCustomTheme
+} from '../lib/store/contexts';
+// import { Button } from './form-controls';
 import { setAccessToken } from '../lib/utils';
-import { HeaderContainer } from '../lib/theme/header-styles';
-import styled from 'styled-components';
+// import { HeaderContainer } from '../lib/theme/header-styles';
+// import { Nav } from './Nav';
+// import { theme } from '../lib/theme';
+// import { ThemeContext } from 'styled-components';
+// import { AppBar, Toolbar, IconButton } from 'material-ui';
+// import classes from '*.module.css';
+//
+// import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+
+import { Button } from '@material-ui/core';
+
+import Typography from '@material-ui/core/Typography';
+// import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 interface Props {}
 
@@ -18,6 +37,10 @@ export const Header: FC<Props> = () => {
 
   const { authStateContext } = useAuthState();
   const authDispatch = useAuthDispatch();
+  const { themeContext } = useCustomTheme();
+
+  //
+  //
   let body = <div></div>;
 
   console.log('loading.before.call:::', loading);
@@ -67,56 +90,56 @@ export const Header: FC<Props> = () => {
     }
   };
 
-  const Header = styled.header`
-    padding: 4rem;
-    background: papayawhip;
-    width: 100%;
-  `;
-
   return (
     <>
-      <HeaderContainer>
-        <Header id="page-header">
-          <nav className="container">
-            <div className="item">
-              <Link href="/">
-                <a>Home</a>
-              </Link>{' '}
-              |{' '}
-            </div>
-            <div className="item">
-              <Link href="/register">
-                <a>Register</a>
-              </Link>{' '}
-              |{' '}
-            </div>
-            <div className="item">
-              <Link href="/login">
-                <a>Login</a>
-              </Link>{' '}
-              |{' '}
-            </div>
-            <div className="item">
-              <Link href="/bye">
-                <a>bye</a>
-              </Link>{' '}
-              |{' '}
-            </div>
+      <div className={themeContext.palette.primary.main}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              // className={classes.menuButton}
+              style={{ margin: '1rem' }}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Typography
+              variant="h6"
+              // className={classes.title}
+              style={{ flex: 1 }}
+            ></Typography>
+
+            <Typography
+              variant="h6"
+              // className={classes.title}
+              style={{ flex: 1 }}
+            >
+              News
+            </Typography>
+            <Button color="inherit">Login</Button>
             <div className="">
               {!loading && data && data.me ? (
-                <Button
-                  buttonType="button"
+                <button
+                  type="button"
                   name="Logout"
-                  className="item" //
-                  // onSubmit={handleSubmit}
-                  handleClick={handleClick}
+                  className="item"
+                  onClick={handleClick}
                 />
               ) : null}
             </div>
-          </nav>
+          </Toolbar>
+        </AppBar>
+      </div>
+
+      {/* 
+      <HeaderContainer>
+        <header id="page-header">
+          <Nav handleClick={handleClick} data={data} loading={loading} />
           {body}
-        </Header>
-      </HeaderContainer>
+        </header>
+      </HeaderContainer> */}
     </>
   );
 };

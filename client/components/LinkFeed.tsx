@@ -45,10 +45,6 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
   return (
     <div>
-      <div>Link Feed Container</div>
-      <div>Link Feed Container</div>
-      <div>Link Feed Container</div>
-      <div>Link Feed Container</div>
       <div>{body}</div>
     </div>
   );

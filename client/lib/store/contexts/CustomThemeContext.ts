@@ -11,7 +11,7 @@ export const CustomThemeContext = createContext(theme);
 export const useCustomTheme = () => {
   // there is a {useTheme} import in styled components
   const themeContext = useContext(CustomThemeContext);
-  console.log('themeContext from <ThemeContext>', themeContext);
+  // console.log('themeContext from <ThemeContext>', themeContext);
 
   if (themeContext === undefined) {
     throw new Error(

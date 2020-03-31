@@ -1,4 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
+// import { useCustomTheme } from '../store/contexts';
+
+// const { themeContext } = useCustomTheme();
 
 export const GlobalStyle = createGlobalStyle`
 #_next {
@@ -12,7 +15,14 @@ html {
 
 body {
 		font-family: 'Open Sans Condensed';
-		padding: 20px 40px;
+		display: flex;
+		
+		
+
+		
+		// justify-content: center;
+		// aligh-items: center
+
 
 		@media screen and (max-width: 800px) {
 			padding: 10px;
