@@ -12,9 +12,9 @@ import { AuthStateContext } from '../lib/store/contexts';
 import { IState } from '../lib/typescript/interfaces';
 
 // import { NextPageContext } from "next";
-
+   
 // @TODO
-// ref: profiling https://www.bbc.com/mundo/noticias-51921093
+// ref: profiling https://www.bbc.com/mundo/noticias-51921093  
 
 // @TODO
 // refactor into a functional component, if possible
@@ -36,7 +36,7 @@ class MyApp extends App<any> {
 
     return {
       isServer: ctx.hasOwnProperty('req'),
-      pageProps
+      pageProps,
     };
   }
 
@@ -54,6 +54,7 @@ class MyApp extends App<any> {
     const { Component, isServer, apolloClient, pageProps } = this.props;
     console.log('_app.this.props.isServer:::', this.props.isServer);
     console.log('render.pageProps:::', pageProps);
+    console.log('this.props:::', this.props);
 
     return (
       <AuthProvider>

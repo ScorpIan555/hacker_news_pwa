@@ -14,6 +14,8 @@ import cookie from 'cookie';
 
 const isServer = () => typeof window === 'undefined';
 
+const PORT = 4040;
+
 /**
  * Creates and provides the apolloContext
  * to a next.js PageTree. Use it by wrapping
@@ -66,13 +68,16 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
         const cookies =
           typeof c === 'string' ? cookie.parse(c) : cookie.parse('');
         if (cookies.jid) {
-          const response = await fetch('http://localhost:4000/refresh_token', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              cookie: 'jid=' + cookies.jid
+          const response = await fetch(
+            `http://localhost:${PORT}/refresh_token`,
+            {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                cookie: 'jid=' + cookies.jid
+              }
             }
-          });
+          );
           const data = await response.json();
           serverAccessToken = data.accessToken;
         }
@@ -166,7 +171,7 @@ function initApolloClient(initState: any, serverAccessToken?: string) {
  */
 function createApolloClient(initialState = {}, serverAccessToken?: string) {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:4000/graphql',
+    uri: `http://localhost:${PORT}/graphql`,
     credentials: 'include',
     fetch
   });

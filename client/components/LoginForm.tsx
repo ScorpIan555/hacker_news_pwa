@@ -45,16 +45,16 @@ const LoginForm: FC = () => {
   const initialValues: IUser = {
     email: '',
     password: '',
-    type: ''
+    type: '',
   };
 
-  // initialize React hooks
+  // initialize React/GraphQL hooks
   const formRef = useRef<FormHandles>(null);
   const [login] = useLoginMutation();
   const authDispatch = useAuthDispatch();
   const authState = useAuthState();
 
-  const handleSubmit: SubmitHandler<ILoginUser> = async data => {
+  const handleSubmit: SubmitHandler<ILoginUser> = async (data) => {
     /*
     
     Set client-side to 'login-start'
@@ -88,7 +88,7 @@ const LoginForm: FC = () => {
     const response = await login({
       variables: {
         email,
-        password
+        password,
       },
 
       update: (store, { data }) => {
@@ -99,10 +99,10 @@ const LoginForm: FC = () => {
         store.writeQuery<MeQuery>({
           query: MeDocument,
           data: {
-            me: data.login.user
-          }
+            me: data.login.user,
+          },
         });
-      }
+      },
     });
 
     // Manage successful response
@@ -111,7 +111,7 @@ const LoginForm: FC = () => {
       // 1) update client-side state w/ user info
       authDispatch({
         type: 'login-success',
-        payload: response.data.login.user
+        payload: response.data.login.user,
       });
       //
       // 2) set the access token

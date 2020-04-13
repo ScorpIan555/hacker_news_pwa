@@ -104,7 +104,6 @@ export type ByeQuery = (
 );
 
 export type CreateLinkMutationVariables = {
-  id: Scalars['Int'];
   url: Scalars['String'];
   description: Scalars['String'];
 };
@@ -257,7 +256,7 @@ export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CreateLinkDocument = gql`
-    mutation CreateLink($id: Int!, $url: String!, $description: String!) {
+    mutation CreateLink($url: String!, $description: String!) {
   createLink(options: {url: $url, description: $description}) {
     id
     description
@@ -280,7 +279,6 @@ export type CreateLinkMutationFn = ApolloReactCommon.MutationFunction<CreateLink
  * @example
  * const [createLinkMutation, { data, loading, error }] = useCreateLinkMutation({
  *   variables: {
- *      id: // value for 'id'
  *      url: // value for 'url'
  *      description: // value for 'description'
  *   },

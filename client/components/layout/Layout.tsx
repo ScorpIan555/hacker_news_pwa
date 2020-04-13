@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Header } from '../Header';
 
 // import app libraries
-import { GlobalStyle } from '../../lib/theme';
+// import { GlobalStyle } from '../../lib/theme';
 import { useCustomTheme } from '../../lib/store/contexts';
 import { ThemeProvider } from 'styled-components';
 
@@ -23,11 +23,10 @@ const Layout: React.FunctionComponent<ILayoutProps> = ({ children }) => {
   // console.log('Layout.pageProps:::', pageProps);
   // console.log('Layout.theme:::', themeContext);
   return (
-    <div>
-      <Header />
-
+    <>
       <ThemeProvider theme={themeContext}>
-        <GlobalStyle theme={themeContext} />
+        {/* <GlobalStyle theme={themeContext} /> */}
+        <Header />
         {children}
       </ThemeProvider>
 
@@ -42,7 +41,7 @@ const Layout: React.FunctionComponent<ILayoutProps> = ({ children }) => {
           font-size: 62.5%;
         }
       `}</style> */}
-    </div>
+    </>
   );
 };
 
