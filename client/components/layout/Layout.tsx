@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Header } from '../Header';
 
 // import app libraries
-// import { GlobalStyle } from '../../lib/theme';
+import { GlobalStyle } from '../../lib/theme';
 import { useCustomTheme } from '../../lib/store/contexts';
 import { ThemeProvider } from 'styled-components';
 
@@ -21,11 +21,11 @@ const Layout: React.FunctionComponent<ILayoutProps> = ({ children }) => {
 
   // console.log('Layout.Component:::', Component);
   // console.log('Layout.pageProps:::', pageProps);
-  // console.log('Layout.theme:::', themeContext);
+  console.log('Layout.theme:::', themeContext);
   return (
     <>
       <ThemeProvider theme={themeContext}>
-        {/* <GlobalStyle theme={themeContext} /> */}
+        <GlobalStyle />
         <Header />
         {children}
       </ThemeProvider>

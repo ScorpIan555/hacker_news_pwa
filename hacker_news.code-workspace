@@ -1,20 +1,20 @@
 {
   "folders": [
-	{
-		"name": "e-clothing",
-		"path": "/home/vandaley80/PROJECTS/udemy/e-clothing"
-	},
-	{
-		"name": "advanced-css-course",
-		"path": "/home/vandaley80/PROJECTS/udemy/advanced-css-course"
-	},
-	{
-		"name": "slackernooze",
-		"path": "/home/vandaley80/PROJECTS/slackernooze"
-	},
-	{
-		"name": "hacker_news_pwa",
-		"path": "."
-	}
-]
+    {
+      "name": "pickbazarTheme",
+      "path": "../_Themes/pickbazarTheme"
+    },
+    {
+      "name": "e-clothing",
+      "path": "../udemy/e-clothing"
+    },
+    {
+      "name": "slackernooze",
+      "path": "../slackernooze"
+    },
+    {
+      "name": "hacker_news_pwa",
+      "path": "."
+    }
+  ]
 }

@@ -33,7 +33,9 @@ import {
 import Typography from '@material-ui/core/Typography';
 // import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import Link from 'next/link';
+import NavLink from './form-controls/NavLink';
+// import MenuIcon from '@material-ui/icons/Menu';
 
 interface Props {}
 
@@ -152,22 +154,22 @@ export const Header: FC<Props> = () => {
               color="inherit"
               aria-label="menu"
             >
-              <MenuIcon />
+              <Typography
+                variant="h6"
+                // className={classes.title}
+                // style={{ flex: 1 }}
+              >
+                <Link href="/">H_N</Link>
+              </Typography>
             </IconButton>
 
-            <Typography
-              variant="h6"
+            <NavLink className="menu-item" href="/" label="Home" />
+
+            {/* <Typography
+              variant="h4"
 
               // style={{ flex: 1 }}
-            ></Typography>
-
-            <Typography
-              variant="h6"
-              // className={classes.title}
-              // style={{ flex: 1 }}
-            >
-              HACKER_NEWS
-            </Typography>
+            ></Typography> */}
 
             <Typography
               variant="h6"

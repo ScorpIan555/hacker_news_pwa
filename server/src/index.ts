@@ -12,15 +12,15 @@ import { User, Link, LinkFeed } from './entity';
 import { sendRefreshToken } from './sendRefreshToken';
 import {
   createAccessToken,
-  createRefreshToken
+  createRefreshToken,
 } from './middleware/jwTokenMiddleware';
 
 (async () => {
   const app = express();
   app.use(
     cors({
-      origin: 'http://localhost:3000',
-      credentials: true
+      origin: 'http://localhost:8000',
+      credentials: true,
     })
   );
   app.use(cookieParser());
@@ -72,15 +72,18 @@ import {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, LinkFeedResolver]
+      resolvers: [UserResolver, LinkFeedResolver],
     }),
-    context: ({ req, res }) => ({ req, res })
+    context: ({ req, res }) => ({ req, res }),
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
 
-  app.listen(4000, () => {
+  const PORT = 4040;
+
+  app.listen(PORT, () => {
     console.log('express server started');
+    console.log(`running on http://localhost:${PORT}/graphql`);
   });
 })();
 
