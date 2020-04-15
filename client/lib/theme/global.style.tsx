@@ -29,6 +29,7 @@ export const GlobalStyle = createGlobalStyle`
 
   p,a,span,button,li,div  {
     font-family: ${themeGet('fontFamily.0', 'sans-serif')};
+    
     margin: 0;
   }
   ul{
@@ -41,6 +42,11 @@ export const GlobalStyle = createGlobalStyle`
 
   a{
     text-decoration: none;
+    
+  }
+
+  header-link{
+    color: ${themeGet('palette.primary.main')};
   }
 
   .quick-view-overlay{

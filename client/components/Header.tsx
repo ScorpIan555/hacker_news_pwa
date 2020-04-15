@@ -32,8 +32,8 @@ import {
 
 import Typography from '@material-ui/core/Typography';
 // import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Link from 'next/link';
+// import IconButton from '@material-ui/core/IconButton';
+// import Link from 'next/link';
 import NavLink from './form-controls/NavLink';
 // import MenuIcon from '@material-ui/icons/Menu';
 
@@ -44,13 +44,15 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
       display: 'safe',
-
+      // backgroundColor:
       // display: 'flex',
       // justifyContent: 'flex-end',
     },
     toolbar: {
       // display: 'flex',
       flexWrap: 'wrap',
+      backgroundColor: theme.palette.background.paper,
+      // color: theme.palette.info.contrastText,
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -61,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     logoutButton: {
-      color: 'default',
+      // color: 'default',
       // flex: 'flex-end',
       // alignSelf: 'flex-end',
     },
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
       // justifySelf: 'flex-end',
       position: 'absolute',
       right: '0',
-      // alignSelf: 'flex-end',
+      color: theme.palette.info.main,
     },
   })
 );
@@ -84,6 +86,7 @@ export const Header: FC<Props> = () => {
   // const { themeContext } = useCustomTheme();
 
   const classes = useStyles(theme);
+  console.log('theme:::', theme);
   console.log('classes:::', classes);
 
   //
@@ -147,44 +150,26 @@ export const Header: FC<Props> = () => {
       >
         <AppBar position="static" style={{ width: '100%' }}>
           <Toolbar className={classes.toolbar}>
-            <IconButton
+            {/* <IconButton
               edge="start"
               className={classes.menuButton}
               style={{ margin: '1rem' }}
               color="inherit"
               aria-label="menu"
             >
-              <Typography
-                variant="h6"
-                // className={classes.title}
-                // style={{ flex: 1 }}
-              >
-                <Link href="/">H_N</Link>
-              </Typography>
-            </IconButton>
-
-            <NavLink className="menu-item" href="/" label="Home" />
-
-            {/* <Typography
-              variant="h4"
-
-              // style={{ flex: 1 }}
-            ></Typography> */}
+              
+            </IconButton> */}
 
             <Typography
               variant="h6"
-              className={classes.title}
+              // className={classes.title}
               // style={{ flex: 1 }}
             >
-              NEW
+              <NavLink className="header-link" href="/" label="Hacker_News" />
             </Typography>
 
-            <Typography
-              variant="h6"
-              className={classes.title}
-              // style={{ flex: 1 }}
-            >
-              SUBMIT
+            <Typography variant="h6" className={classes.title}>
+              <NavLink className="menu-item" href="/submit" label="Submit" />
             </Typography>
 
             <Typography variant="button" className={classes.loginLogoutButton}>
