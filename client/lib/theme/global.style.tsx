@@ -32,25 +32,38 @@ export const GlobalStyle = createGlobalStyle`
     
     margin: 0;
   }
-  ul{
+  ul {
     margin: 0;
     padding: 0;
   }
-  li{
+  li {
     list-style: none;
   }
 
-  a{
+  a {
     text-decoration: none;
     
   }
 
-  header-link{
-    color: ${themeGet('palette.primary.main')};
+  // user
+  .header-link{
+    
+
+    a {
+      color: rgba(255, 255, 255, 1);
+      margin-left: 1rem;
+    }
   }
 
+  .toolbar {
+    flex-wrap: wrap;
+    background-color: rgba(255,0,50,.5); 
+  }
+
+
+
   .quick-view-overlay{
-    background-color: rgba(0,0,0,.5)
+    background-color: rgba(0,0,0,.5);
   }
 
   .add-address-modal,

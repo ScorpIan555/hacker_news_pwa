@@ -51,16 +51,16 @@ const useStyles = makeStyles((theme: Theme) =>
     toolbar: {
       // display: 'flex',
       flexWrap: 'wrap',
-      backgroundColor: theme.palette.background.paper,
+      // backgroundColor: theme.palette.background.paper,
       // color: theme.palette.info.contrastText,
     },
     menuButton: {
       marginRight: theme.spacing(2),
       color: 'red',
     },
-    title: {
-      marginLeft: '.1rem',
-    },
+    // title: {
+    //   marginLeft: '.1rem',
+    // },
 
     logoutButton: {
       // color: 'default',
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
       // justifySelf: 'flex-end',
       position: 'absolute',
       right: '0',
-      color: theme.palette.info.main,
+      // color: theme.palette.info.main,
     },
   })
 );
@@ -149,7 +149,7 @@ export const Header: FC<Props> = () => {
         // style={{ flexGrow: 1 }}
       >
         <AppBar position="static" style={{ width: '100%' }}>
-          <Toolbar className={classes.toolbar}>
+          <Toolbar className="toolbar">
             {/* <IconButton
               edge="start"
               className={classes.menuButton}
@@ -168,7 +168,7 @@ export const Header: FC<Props> = () => {
               <NavLink className="header-link" href="/" label="Hacker_News" />
             </Typography>
 
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className="header-link">
               <NavLink className="menu-item" href="/submit" label="Submit" />
             </Typography>
 
