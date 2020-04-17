@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Table from 'rc-table';
+
 import { useLinksQuery } from '../generated/graphql';
 import { IItem } from '../lib/typescript/interfaces';
 
@@ -40,11 +42,21 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     body = <div>No links available</div>;
   }
 
+  const columns: any = [
+    {
+      dataIndex: '',
+      ellipsis: true,
+      key: "items",
+      
+    },
+  ]
+
   // console.log('body:', body);
   // console.log('type of data:::', data);
 
   return (
     <div>
+      <Table columns={columns} data={tableData} />
       <div>{body}</div>
     </div>
   );

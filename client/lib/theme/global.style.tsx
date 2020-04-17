@@ -57,6 +57,7 @@ export const GlobalStyle = createGlobalStyle`
 
   .toolbar {
     flex-wrap: wrap;
+    position: right;
     background-color: rgba(255,0,50,.5); 
   }
 
