@@ -1,8 +1,20 @@
 import * as React from 'react';
-import Table from 'rc-table';
+// import Table from 'rc-table';
+
+import { FormattedMessage } from 'react-intl';
 
 import { useLinksQuery } from '../generated/graphql';
 import { IItem } from '../lib/typescript/interfaces';
+import {
+  ItemWrapper,
+  ItemName,
+  ItemDetails,
+  ItemSize,
+  ItemPrice,
+  // ImageWrapper,
+  OrderBox,
+} from './orders/Order.style';
+import OrderDetails from './orders/OrderDetails';
 
 interface Props {}
 
@@ -27,12 +39,19 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
             // console.log('item:::', item);
 
             return (
-              <li key={`key + ${item.id}`}>
-                <p>{item.id}</p>
-                <p>{item.url}</p>
-                <p>{item.description}</p>
-                <p>{item.postedBy} </p>
-              </li>
+              <ItemWrapper>
+                <ItemDetails>
+                  {/* <li key={`key + ${item.id}`}>
+                  <p>{item.id}</p>
+                  <p>{item.url}</p>
+                  <p>{item.description}</p>
+                  <p>{item.postedBy} </p>
+                </li> */}
+                  <ItemName>{item.id}</ItemName>
+                  <ItemSize>{item.url}</ItemSize>
+                  <ItemPrice>{item.description}</ItemPrice>
+                </ItemDetails>
+              </ItemWrapper>
             );
           }
         )}
@@ -42,22 +61,70 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     body = <div>No links available</div>;
   }
 
-  const columns: any = [
-    {
-      dataIndex: '',
-      ellipsis: true,
-      key: "items",
-      
-    },
-  ]
+  // const columns: any = [
+  //   {
+  //     dataIndex: '',
+  //     ellipsis: true,
+  //     key: 'items',
+  //   },
+  // ];
 
   // console.log('body:', body);
   // console.log('type of data:::', data);
 
+  const orderTableColumns = [
+    {
+      title: <FormattedMessage id="cartItems" defaultMessage="ID" />,
+      dataIndex: 'id',
+      align: 'right',
+      // width: 10,
+      render: (text: any, record: any) => {
+        console.log('text:::', typeof text, text);
+        console.log('record::', record);
+
+        return (
+          <ItemDetails>
+            <ItemName> {record.id} </ItemName>
+          </ItemDetails>
+        );
+      },
+    },
+
+    {
+      title: <FormattedMessage id="cartItems" defaultMessage="Items" />,
+      dataIndex: '',
+      key: 'items',
+      // width: 250,
+      ellipsis: true,
+      render: (text: any, record: any, foo: any, bar: any) => {
+        console.log('text:::', typeof text, text);
+        console.log('record::', record);
+        console.log('foo::', foo);
+        console.log('bar:::', bar);
+
+        return (
+          <ItemWrapper>
+            <ItemDetails>
+              <ItemSize>
+                {' '}
+                {record.description} ({record.url}){' '}
+              </ItemSize>
+            </ItemDetails>
+          </ItemWrapper>
+        );
+      },
+    },
+  ];
+
+  console.log('boddy:', body);
+
   return (
-    <div>
-      <Table columns={columns} data={tableData} />
-      <div>{body}</div>
+    <div id="results-body">
+      <OrderBox>
+        <OrderDetails columns={orderTableColumns} tableData={data?.links} />
+      </OrderBox>
+
+      {/* <div id="body-only-method">{body}</div> */}
     </div>
   );
 };
