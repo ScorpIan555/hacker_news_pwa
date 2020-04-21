@@ -59,7 +59,7 @@ class MyApp extends App<any> {
     return (
       <AuthProvider>
         <ApolloProvider client={apolloClient}>
-          <Layout>
+          <Layout> 
             <Component {...isServer} />
           </Layout>
         </ApolloProvider>

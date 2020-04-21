@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 // import Table from 'rc-table';
 
 import { FormattedMessage } from 'react-intl';
@@ -23,7 +23,15 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     console.log('LinkFeed.props.children:::', children);
   }
 
-  const { data, loading } = useLinksQuery();
+  const { data, loading, refetch } = useLinksQuery();
+
+  useEffect(() => {
+    let links = data?.links;
+    console.log('data was rerun:::', data);
+    console.log('links lenght', links?.length);
+    refetch();
+  }),
+    [data?.links];
 
   let body = <div></div>;
 
@@ -78,8 +86,12 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       dataIndex: 'id',
       align: 'right',
       // width: 10,
-      render: (text: any, record: any) => {
-        console.log('text:::', typeof text, text);
+      render: (record: any) => {
+        //
+        // this needs something like this
+        //  in order to get the results to point to the data object
+        //let dataLinks: Array<object> = data.links;
+ 
         console.log('record::', record);
 
         return (
@@ -96,11 +108,11 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       key: 'items',
       // width: 250,
       ellipsis: true,
-      render: (text: any, record: any, foo: any, bar: any) => {
-        console.log('text:::', typeof text, text);
-        console.log('record::', record);
-        console.log('foo::', foo);
-        console.log('bar:::', bar);
+      render: (record: any) => {
+        // console.log('text:::', typeof text, text);
+        // console.log('record::', record);
+        // console.log('foo::', foo);
+        // console.log('bar:::', bar);
 
         return (
           <ItemWrapper>
@@ -123,8 +135,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       <OrderBox>
         <OrderDetails columns={orderTableColumns} tableData={data?.links} />
       </OrderBox>
-
-      {/* <div id="body-only-method">{body}</div> */}
+      \{/* <div id="body-only-method">{body}</div> */}
     </div>
   );
 };

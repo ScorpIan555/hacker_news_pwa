@@ -39,6 +39,7 @@ import NavLink from './form-controls/NavLink';
 
 interface Props {}
 
+// probably need to get rid of this. it's cllient side only
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -48,13 +49,14 @@ const useStyles = makeStyles((theme: Theme) =>
       // display: 'flex',
       // justifyContent: 'flex-end',
     },
-    toolbar: {
-      // display: 'flex',
-      flexWrap: 'wrap',
-      // backgroundColor: theme.palette.background.paper,
-      // color: theme.palette.info.contrastText,
-    },
+    // toolbar: {
+    //   // display: 'flex',
+    //   flexWrap: 'wrap',
+    //   // backgroundColor: theme.palette.background.paper,
+    //   // color: theme.palette.info.contrastText,
+    // },
     menuButton: {
+      // not in use
       marginRight: theme.spacing(2),
       color: 'red',
     },
@@ -62,11 +64,11 @@ const useStyles = makeStyles((theme: Theme) =>
     //   marginLeft: '.1rem',
     // },
 
-    logoutButton: {
-      // color: 'default',
-      // flex: 'flex-end',
-      // alignSelf: 'flex-end',
-    },
+    // logoutButton: {
+    //   // color: 'default',
+    //   // flex: 'flex-end',
+    //   // alignSelf: 'flex-end',
+    // },
     loginLogoutButton: {
       // justifyContent: 'flex-end',
       // justifySelf: 'flex-end',
@@ -81,7 +83,7 @@ export const Header: FC<Props> = () => {
   const { data, loading } = useMeQuery(); // @TODO need to memoize this result
   const [logout, { client }] = useLogoutMutation();
 
-  const { authStateContext } = useAuthState();
+  const { authStateContext } = useAuthState(); // I could prob refactor this hook so I can pull both State/Dispatch out in one destructure
   const authDispatch = useAuthDispatch();
   // const { themeContext } = useCustomTheme();
 
@@ -171,13 +173,14 @@ export const Header: FC<Props> = () => {
             <Typography variant="h6" className="header-link">
               <NavLink className="menu-item" href="/submit" label="Submit" />
             </Typography>
-
-            <Typography variant="button" className={classes.loginLogoutButton}>
+            {/* 
+            <Typography variant="button" className="login-logout-button">
               <Button color="inherit" onClick={handleClickForLogout}>
                 {' '}
                 Logout{' '}
               </Button>
-            </Typography>
+            </Typography> */}
+
             {/* 
             <Button
               color="inherit"
@@ -187,27 +190,24 @@ export const Header: FC<Props> = () => {
               Logout
             </Button> */}
 
-            {/* {!loading && data && data.me ? (
-              <Typography variant="button" className={classes.logoutButton}>
-                <Button
-                  color="inherit"
-                  onClick={handleClickForLogout}
-                >
+            {!loading && data && data.me ? (
+              <Typography variant="button" className="logout-button">
+                <Button color="inherit" onClick={handleClickForLogout}>
                   {' '}
                   Logout{' '}
                 </Button>
               </Typography>
             ) : (
-              <div>
+              <div className="login-signup">
                 <Button color="inherit" href="/login">
                   Login
                 </Button>
                 <span> or </span>
                 <Button color="inherit" href="/register">
-                  Login
+                  Sign Up
                 </Button>
               </div>
-            )} */}
+            )}
           </Toolbar>
         </AppBar>
         {body}

@@ -61,7 +61,17 @@ export const GlobalStyle = createGlobalStyle`
     background-color: rgba(255,0,50,.5); 
   }
 
+  .logout-button {
+    position: absolute;
+    right: 0;
+    flex-wrap: wrap;
+  }
 
+  .login-signup {
+    position: absolute;
+    right: 0;
+    flex-wrap: wrap;
+  }
 
   .quick-view-overlay{
     background-color: rgba(0,0,0,.5);
