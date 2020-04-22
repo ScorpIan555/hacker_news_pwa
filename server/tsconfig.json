@@ -32,6 +32,6 @@
   ],
   "include": [
     "./src/**/*.tsx",
-    "./src/**/*.ts"
+    "./src/**/*.ts", "src/entity/Vote.ts.txt"
   ]
 }

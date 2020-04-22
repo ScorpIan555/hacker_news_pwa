@@ -7,11 +7,11 @@ import {
   Query,
   Field,
   InputType,
-  Int
-} from "type-graphql";
-import { Link } from "../entity";
-import { MyContext } from "../lib/interfaces/MyContext";
-import { isAuth } from "../middleware/isAuthMiddleware";
+  Int,
+} from 'type-graphql';
+import { Link } from '../entity';
+import { MyContext } from '../lib/interfaces/MyContext';
+import { isAuth } from '../middleware/isAuthMiddleware';
 
 @InputType()
 class LinkInput {
@@ -31,6 +31,12 @@ class LinkUpdateInput {
   description?: string;
 }
 
+// @InputType()
+// class VoteInput {
+//   @Field(() => String, { nullable: true })
+//   votes: number;
+// }
+
 @Resolver()
 export class LinkResolver {
   //
@@ -40,16 +46,16 @@ export class LinkResolver {
   @UseMiddleware(isAuth)
   async createLink(
     @Ctx() { payload }: MyContext,
-    @Arg("options", () => LinkInput) options: LinkInput
+    @Arg('options', () => LinkInput) options: LinkInput
   ) {
-    console.log("LinkResolver.payload (User) object:::", payload);
+    console.log('LinkResolver.payload (User) object:::', payload);
     const postedBy: any = payload?.userEmail;
     const { url, description } = options;
 
     try {
       const link = await Link.create({ url, description, postedBy }).save();
-      console.log("LinkResolver.postedBy:::", postedBy);
-      console.log("link:::", link);
+      console.log('LinkResolver.postedBy:::', postedBy);
+      console.log('link:::', link);
 
       return link;
     } catch (error) {
@@ -63,12 +69,12 @@ export class LinkResolver {
   @UseMiddleware(isAuth)
   async updateLink(
     @Ctx() { payload }: MyContext,
-    @Arg("id", () => Int) id: number,
-    @Arg("input", () => LinkUpdateInput) input: LinkUpdateInput
+    @Arg('id', () => Int) id: number,
+    @Arg('input', () => LinkUpdateInput) input: LinkUpdateInput
   ) {
-    console.log("LinkResolver.payload (User) object:::", payload);
+    console.log('LinkResolver.payload (User) object:::', payload);
     const updatedBy: any = payload?.userEmail;
-    console.log("updatedBy:::", updatedBy);
+    console.log('updatedBy:::', updatedBy);
     //
     // const link = await Link.update({ id }, input).save();
     try {
@@ -76,22 +82,29 @@ export class LinkResolver {
       // return true if update successfull
       return true;
     } catch (error) {
-      console.log("LinkResolver.updateLink.error:::", error);
-      console.error("LinkResolver.updateLink.error:::", error);
+      console.log('LinkResolver.updateLink.error:::', error);
+      console.error('LinkResolver.updateLink.error:::', error);
       return false;
     }
   }
 
-  @Mutation(() => Boolean)
-  async deleteLink(@Arg("id", () => Int) id: number) {
-    await Link.delete({ id });
-    return true;
+  // @Mutation(() => Boolean) // look at updateLink and copy over what's needed out of that...
+  // async deleteLink(@Arg('id', () => Int) id: number) {
+  //   await Link.delete({ id });
+  //   return true;
+  // }
+
+  @Mutation(() => Link)
+  async voteForLink(@Arg('id', () => Int) id: number) {
+    let link = await Link.findOne({ id });
+    console.log('link:::', link);
+    return link;
   }
 
   @Query(() => [Link])
   async links(): Promise<[Link]> {
     const linkFromLinks: any = await Link.find();
-    console.log("linkFromLinks:::", linkFromLinks);
+    console.log('linkFromLinks:::', linkFromLinks);
     return linkFromLinks;
   }
 }

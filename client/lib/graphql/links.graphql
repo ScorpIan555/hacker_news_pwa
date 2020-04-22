@@ -4,5 +4,9 @@ query Links {
     url
     description
     postedBy
+    # votes {
+    #   id
+    #   user  // s/b user's email, but need to check this object
+    # }
   }
 }

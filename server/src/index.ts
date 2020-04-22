@@ -82,6 +82,7 @@ import {
   const PORT = 4040;
 
   app.listen(PORT, () => {
+    // need to figure out how to host this on heroku or something
     console.log('express server started');
     console.log(`running on http://localhost:${PORT}/graphql`);
   });

@@ -91,12 +91,12 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         // this needs something like this
         //  in order to get the results to point to the data object
         //let dataLinks: Array<object> = data.links;
- 
-        console.log('record::', record);
+
+        // console.log('record::', record);
 
         return (
           <ItemDetails>
-            <ItemName> {record.id} </ItemName>
+            <ItemName> {record} </ItemName>
           </ItemDetails>
         );
       },
@@ -119,7 +119,12 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
             <ItemDetails>
               <ItemSize>
                 {' '}
-                {record.description} ({record.url}){' '}
+                <div className="ml1 gray f11">
+                  ▲{' '}
+                  <span>
+                    {record.description} ({record.url}){' '}
+                  </span>{' '}
+                </div>
               </ItemSize>
             </ItemDetails>
           </ItemWrapper>

@@ -2,32 +2,46 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  BaseEntity
+  BaseEntity,
+  CreateDateColumn,
+  UpdateDateColumn,
   //   Timestamp
-} from "typeorm";
-import { ObjectType, Field, Int } from "type-graphql";
+} from 'typeorm';
+import { ObjectType, Field, Int } from 'type-graphql';
 // import { User } from "./User";
 
 // https://blog.logrocket.com/how-build-graphql-api-typegraphql-typeorm/
 
 @ObjectType()
-@Entity("links")
+@Entity('links')
 export class Link extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
-  @Column("text")
+  @Column('text')
   url: string;
 
   @Field()
-  @Column("text")
+  @Column('text')
   description: string;
 
   @Field()
-  @Column("text")
+  @Column('text')
   postedBy: string;
+
+  @Field(() => Int)
+  @Column({ default: 0 }) // not sure if it can infer numbers?
+  votes: number;
+
+  @Field()
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
 
   //   @Field(() => Timestamp, { nullable: false })
   //   @Column("timestamp", { nullable: false })
