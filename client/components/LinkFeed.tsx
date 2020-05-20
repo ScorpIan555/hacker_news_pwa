@@ -133,14 +133,14 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     },
   ];
 
-  console.log('boddy:', body);
+  // console.log('boddy:', body);
 
   return (
     <div id="results-body">
       <OrderBox>
         <OrderDetails columns={orderTableColumns} tableData={data?.links} />
       </OrderBox>
-      \{/* <div id="body-only-method">{body}</div> */}
+      <div id="body-only-method">{body}</div>
     </div>
   );
 };

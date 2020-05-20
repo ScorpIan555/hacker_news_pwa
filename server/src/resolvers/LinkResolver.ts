@@ -94,17 +94,88 @@ export class LinkResolver {
   //   return true;
   // }
 
-  @Mutation(() => Link)
-  async voteForLink(@Arg('id', () => Int) id: number) {
-    let link = await Link.findOne({ id });
-    console.log('link:::', link);
-    return link;
+  @Mutation(() => Number)
+  @UseMiddleware(isAuth)
+  async voteForLink(
+    @Ctx() { payload }: MyContext,
+    @Arg('id', () => Int) id: number
+  ) {
+    // type LinkResult
+    let link: Link | undefined = await Link.findOne({ id });
+    let user = payload;
+
+    if (link != undefined) {
+      let v: any = link.voters;
+      let votersArray: Array<string> = v;
+
+      let votes: number = link.votes;
+      votes++;
+      link['votes'] = votes;
+
+      console.log('user', user);
+      console.log('votersArray:::', votersArray);
+      console.log('typeof votersArray', typeof votersArray);
+      console.log('link:::', link);
+
+      return votes;
+    } else {
+      return 100;
+    }
+
+    // console.log('vote payload:::', payload);
+    // console.log('vote payload:::', payload?.userEmail);
+    // console.log('type of link', typeof link);
+    // console.log('type of link.voters', typeof link?.voters);
+    // console.log('type of link.createdAt', typeof link?.createdAt);
+    // // let user: any = payload?.userEmail;  // need the whole user obj becasue need to add something to track the votes
+    // let user: any = payload;
+    // console.log('link:::', link);
+    // console.log('user:::', user);
+    // let linkVoters = link?.voters;
+    // console.log('linkVotes - type:::', typeof link?.voters);
+    // console.log('linkVotes :::', linkVoters);
+
+    // let linkV: any = link?.votes;
+    // let voted: any = linkV + 1;
+    // let votersArray: Array<string> = [];
+
+    // votersArray = link?.voters != undefined ? link?.voters : ['fish'];
+    // console.log('votersArray - 1:::', votersArray);
+    // console.log('type of votersArray - 1:::', typeof votersArray);
+    // // console.log(
+    // //   'user.userEmail in votersArray???',
+    // //   user.userEmail in votersArray
+    // // );
+
+    // {
+    //   user.userEmail in votersArray
+    //     ? console.log('error, user already voted for this')
+    //     : votersArray.push(user.userEmail);
+    // }
+
+    // // {
+    // //   link?.voters != undefined
+    // //     ?
+    // //     : votersArray.push(user.userEmail);
+    // // }
+
+    // // let linkVotesArray = linkVotes?.split(',');
+    // // let newCount = linkVotesArray?.push(user);
+    // // let newCount = linkVotes;
+
+    // console.log('linkV::', linkV);
+    // console.log('voted::', voted);
+    // console.log('Link::', link);
+    // console.log('user:::', user);
+
+    // // return newCount;
+    // return true;
   }
 
   @Query(() => [Link])
   async links(): Promise<[Link]> {
     const linkFromLinks: any = await Link.find();
-    console.log('linkFromLinks:::', linkFromLinks);
+    // console.log('linkFromLinks:::', linkFromLinks);
     return linkFromLinks;
   }
 }

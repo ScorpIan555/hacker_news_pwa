@@ -35,6 +35,10 @@ export class Link extends BaseEntity {
   @Column({ default: 0 }) // not sure if it can infer numbers?
   votes: number;
 
+  @Field(() => [String])
+  @Column('text', { default: [] })
+  voters: string[];
+
   @Field()
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

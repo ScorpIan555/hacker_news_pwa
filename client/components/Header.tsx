@@ -88,8 +88,8 @@ export const Header: FC<Props> = () => {
   // const { themeContext } = useCustomTheme();
 
   const classes = useStyles(theme);
-  console.log('theme:::', theme);
-  console.log('classes:::', classes);
+  // console.log('theme:::', theme);
+  // console.log('classes:::', classes);
 
   //
   //
