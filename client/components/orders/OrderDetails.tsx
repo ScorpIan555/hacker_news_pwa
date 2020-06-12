@@ -35,6 +35,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ tableData, columns }) => {
     <>
       <OrderTableWrapper>
         <Table
+          showHeader={false}
           columns={columns}
           data={tableData}
           rowKey={(record) => record.id}

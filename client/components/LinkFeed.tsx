@@ -82,9 +82,10 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
   const orderTableColumns = [
     {
-      title: <FormattedMessage id="cartItems" defaultMessage="ID" />,
+      title: <FormattedMessage id="cartItems" defaultMessage="Id" />,
       dataIndex: 'id',
       align: 'right',
+      display: 'none',
       // width: 10,
       render: (record: any) => {
         //

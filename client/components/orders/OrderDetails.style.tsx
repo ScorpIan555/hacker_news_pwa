@@ -141,7 +141,7 @@ export const OrderTable = styled('table')`
         font-weight: ${themeGet('fontWeights.3', '400')};
         color: ${themeGet('colors.darkBold', '#0D1136')};
         border-bottom: 0;
-        border: 0.1rem solid black;
+        border: 0rem solid black;
       }
     }
   }

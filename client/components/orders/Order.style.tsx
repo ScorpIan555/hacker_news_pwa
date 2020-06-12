@@ -40,8 +40,7 @@ const OrderList = styled.div`
     background-color: transparent;
     border-radius: 0;
     border: 0;
-
-    > .rc-collapse-item {
+    https://www.washingtonpost.com/opinions/2020/06/12/tech-industry-has-an-ugly-master-slave-problem/em {
       margin-bottom: 15px;
       background-color: ${themeGet('colors.lightColor', '#F7F7F7')};
       border-radius: 6px;
