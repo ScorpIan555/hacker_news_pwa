@@ -1,20 +1,7 @@
 {
-  "folders": [
-    {
-      "name": "pickbazarTheme",
-      "path": "../_Themes/pickbazarTheme"
-    },
-    {
-      "name": "e-clothing",
-      "path": "../udemy/e-clothing"
-    },
-    {
-      "name": "slackernooze",
-      "path": "../slackernooze"
-    },
-    {
-      "name": "hacker_news_pwa",
-      "path": "."
-    }
-  ]
+	"folders": [
+		{
+			"path": "."
+		}
+	]
 }

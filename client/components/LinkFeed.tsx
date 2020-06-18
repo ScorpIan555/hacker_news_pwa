@@ -15,6 +15,7 @@ import {
   OrderBox,
 } from './orders/Order.style';
 import OrderDetails from './orders/OrderDetails';
+import VoteCarrot from './form-controls/VoteCarrot';
 
 interface Props {}
 
@@ -114,6 +115,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         // console.log('record::', record);
         // console.log('foo::', foo);
         // console.log('bar:::', bar);
+        
 
         return (
           <ItemWrapper>
@@ -121,7 +123,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
               <ItemSize>
                 {' '}
                 <div className="ml1 gray f11">
-                  ▲{' '}
+                  <VoteCarrot link={record} />
                   <span>
                     {record.description} ({record.url}){' '}
                   </span>{' '}
