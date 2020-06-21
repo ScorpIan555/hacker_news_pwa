@@ -9,6 +9,25 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
+};
+
+export type Query = {
+   __typename?: 'Query';
+  hello: Scalars['String'];
+  bye: Scalars['String'];
+  users: Array<User>;
+  me?: Maybe<User>;
+  linkFeed: Array<Link>;
+  links: Array<Link>;
+};
+
+export type User = {
+   __typename?: 'User';
+  id: Scalars['Int'];
+  email: Scalars['String'];
+  linksUserHasVotedFor: Scalars['String'];
 };
 
 export type Link = {
@@ -17,23 +36,12 @@ export type Link = {
   url: Scalars['String'];
   description: Scalars['String'];
   postedBy: Scalars['String'];
+  votes: Scalars['Int'];
+  voters: Array<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
-export type LinkInput = {
-  url: Scalars['String'];
-  description: Scalars['String'];
-};
-
-export type LinkUpdateInput = {
-  url?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-};
-
-export type LoginResponse = {
-   __typename?: 'LoginResponse';
-  accessToken: Scalars['String'];
-  user: User;
-};
 
 export type Mutation = {
    __typename?: 'Mutation';
@@ -41,9 +49,11 @@ export type Mutation = {
   revokeRefreshTokensForUser: Scalars['Boolean'];
   login: LoginResponse;
   register: LoginResponse;
+  voteUp: Scalars['Boolean'];
   createLink: Link;
   updateLink: Scalars['Boolean'];
   deleteLink: Scalars['Boolean'];
+  voteForLink: Scalars['Boolean'];
 };
 
 
@@ -64,6 +74,11 @@ export type MutationRegisterArgs = {
 };
 
 
+export type MutationVoteUpArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationCreateLinkArgs = {
   options: LinkInput;
 };
@@ -79,20 +94,30 @@ export type MutationDeleteLinkArgs = {
   id: Scalars['Int'];
 };
 
-export type Query = {
-   __typename?: 'Query';
-  hello: Scalars['String'];
-  bye: Scalars['String'];
-  users: Array<User>;
-  me?: Maybe<User>;
-  linkFeed: Array<Link>;
-  links: Array<Link>;
+
+export type MutationVoteForLinkArgs = {
+  id: Scalars['Int'];
 };
 
-export type User = {
-   __typename?: 'User';
-  id: Scalars['Int'];
-  email: Scalars['String'];
+export type LoginResponse = {
+   __typename?: 'LoginResponse';
+  accessToken: Scalars['String'];
+  user: User;
+};
+
+export type LinkInput = {
+  url: Scalars['String'];
+  description: Scalars['String'];
+};
+
+export type LinkUpdateInput = {
+  url?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  votes?: Maybe<Scalars['Int']>;
+};
+
+export type VoteInput = {
+  votes?: Maybe<Scalars['String']>;
 };
 
 export type ByeQueryVariables = {};
@@ -142,7 +167,7 @@ export type LinksQuery = (
   { __typename?: 'Query' }
   & { links: Array<(
     { __typename?: 'Link' }
-    & Pick<Link, 'id' | 'url' | 'description' | 'postedBy'>
+    & Pick<Link, 'id' | 'url' | 'description' | 'postedBy' | 'votes'>
   )> }
 );
 
@@ -179,7 +204,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email'>
+    & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor'>
   )> }
 );
 
@@ -220,8 +245,18 @@ export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email'>
+    & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor'>
   )> }
+);
+
+export type VoteUpMutationVariables = {
+  id: Scalars['Int'];
+};
+
+
+export type VoteUpMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'voteUp'>
 );
 
 
@@ -235,7 +270,7 @@ export const ByeDocument = gql`
  * __useByeQuery__
  *
  * To run a query within a React component, call `useByeQuery` and pass it any options that fit your needs.
- * When your component renders, `useByeQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useByeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -330,7 +365,7 @@ export const HelloDocument = gql`
  * __useHelloQuery__
  *
  * To run a query within a React component, call `useHelloQuery` and pass it any options that fit your needs.
- * When your component renders, `useHelloQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useHelloQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -357,6 +392,7 @@ export const LinksDocument = gql`
     url
     description
     postedBy
+    votes
   }
 }
     `;
@@ -365,7 +401,7 @@ export const LinksDocument = gql`
  * __useLinksQuery__
  *
  * To run a query within a React component, call `useLinksQuery` and pass it any options that fit your needs.
- * When your component renders, `useLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -456,6 +492,7 @@ export const MeDocument = gql`
   me {
     id
     email
+    linksUserHasVotedFor
   }
 }
     `;
@@ -464,7 +501,7 @@ export const MeDocument = gql`
  * __useMeQuery__
  *
  * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -558,6 +595,7 @@ export const UsersDocument = gql`
   users {
     id
     email
+    linksUserHasVotedFor
   }
 }
     `;
@@ -566,7 +604,7 @@ export const UsersDocument = gql`
  * __useUsersQuery__
  *
  * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -586,3 +624,33 @@ export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = ApolloReactCommon.QueryResult<UsersQuery, UsersQueryVariables>;
+export const VoteUpDocument = gql`
+    mutation VoteUp($id: Int!) {
+  voteUp(id: $id)
+}
+    `;
+export type VoteUpMutationFn = ApolloReactCommon.MutationFunction<VoteUpMutation, VoteUpMutationVariables>;
+
+/**
+ * __useVoteUpMutation__
+ *
+ * To run a mutation, you first call `useVoteUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVoteUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [voteUpMutation, { data, loading, error }] = useVoteUpMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useVoteUpMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<VoteUpMutation, VoteUpMutationVariables>) {
+        return ApolloReactHooks.useMutation<VoteUpMutation, VoteUpMutationVariables>(VoteUpDocument, baseOptions);
+      }
+export type VoteUpMutationHookResult = ReturnType<typeof useVoteUpMutation>;
+export type VoteUpMutationResult = ApolloReactCommon.MutationResult<VoteUpMutation>;
+export type VoteUpMutationOptions = ApolloReactCommon.BaseMutationOptions<VoteUpMutation, VoteUpMutationVariables>;

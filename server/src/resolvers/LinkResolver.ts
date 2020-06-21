@@ -94,11 +94,11 @@ export class LinkResolver {
     }
   }
 
-  // @Mutation(() => Boolean) // look at updateLink and copy over what's needed out of that...
-  // async deleteLink(@Arg('id', () => Int) id: number) {
-  //   await Link.delete({ id });
-  //   return true;
-  // }
+  @Mutation(() => Boolean) // look at updateLink and copy over what's needed out of that...
+  async deleteLink(@Arg('id', () => Int) id: number) {
+    await Link.delete({ id });
+    return true;
+  }
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)

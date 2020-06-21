@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 import { ObjectType, Field, Int } from 'type-graphql';
+// import { Link } from '.';
 
 // interface ArrayOfUsers {
 //  https://typegraphql.com/
@@ -19,9 +20,9 @@ export class User extends BaseEntity {
   @Column('text')
   password: string;
 
-  @Field(() => [User])
+  @Field()
   @Column('text', { default: [] })
-  links_voted_for: string[];
+  linksUserHasVotedFor: string;
 
   @Column('int', { default: 0 })
   tokenVersion: number;

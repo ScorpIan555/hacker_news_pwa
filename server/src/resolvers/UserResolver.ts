@@ -7,14 +7,14 @@ import {
   Field,
   Ctx,
   UseMiddleware,
-  Int
+  Int,
 } from 'type-graphql';
 import { hash, compare } from 'bcryptjs';
 import { User } from '../entity/User';
 import { MyContext } from '../lib/interfaces/MyContext';
 import {
   createRefreshToken,
-  createAccessToken
+  createAccessToken,
 } from '../middleware/jwTokenMiddleware';
 import { isAuth } from '../middleware/isAuthMiddleware';
 import { sendRefreshToken } from '../sendRefreshToken';
@@ -65,7 +65,7 @@ export class UserResolver {
       const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
       console.log('UserResolver.payload:::', payload);
       const user = await User.findOne(payload.userId);
-      console.log('UserResolver.payload.userId:::', user);
+      console.log('UserResolver.payload.user:::', user);
 
       return user;
     } catch (err) {
@@ -120,7 +120,7 @@ export class UserResolver {
 
     return {
       accessToken: createAccessToken(user),
-      user
+      user,
     };
   }
 
@@ -135,7 +135,7 @@ export class UserResolver {
     try {
       await User.insert({
         email,
-        password: hashedPassword
+        password: hashedPassword,
       });
     } catch (err) {
       console.log(err);
@@ -154,11 +154,32 @@ export class UserResolver {
 
       return {
         accessToken: createAccessToken(user),
-        user
+        user,
       };
     } catch (err) {
       console.log('error::', err);
       return err;
+    }
+  }
+
+  // build this out from the clientside first...
+  @Mutation(() => Boolean)
+  async voteUp(
+    @Arg('id', () => Int) id: number,
+    // @Arg('userId', () => Int) userId: number)
+    @Ctx() { payload }: MyContext
+  ) {
+    // const linksUserHasVotedFor = User.find({id:})
+    console.log('voteUp.payload:::', payload);
+    try {
+      // const { linksUserHasVotedFor } = payload;
+      console.log('link id:::', id);
+      // console.log('linksUserHasVotedFor:::  ', linksUserHasVotedFor);
+      return true;
+    } catch (error) {
+      console.log(error);
+      console.error(error);
+      return false;
     }
   }
 }

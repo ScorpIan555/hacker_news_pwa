@@ -115,7 +115,6 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         // console.log('record::', record);
         // console.log('foo::', foo);
         // console.log('bar:::', bar);
-        
 
         return (
           <ItemWrapper>
@@ -127,6 +126,10 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
                   <span>
                     {record.description} ({record.url}){' '}
                   </span>{' '}
+                  <div className="ml1 green f11">
+                    <span>{record.votes} votes </span>
+                    <span>posted by: {record.postedBy} </span>
+                  </div>
                 </div>
               </ItemSize>
             </ItemDetails>

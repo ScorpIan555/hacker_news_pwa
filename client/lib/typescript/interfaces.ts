@@ -52,6 +52,7 @@ export interface IItem {
   description?: string;
   postedBy?: string;
   key?: string;
+  votes?: number;
 }
 
 export interface ILoginUser {
@@ -66,6 +67,7 @@ export interface IUser {
   email: string;
   password?: string; // shouldn't be required b/c don't wanna pass this around client state
   type?: string;
+  linksUserVotedFor?: string;
 }
 
 export interface ITheme {

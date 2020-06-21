@@ -1,0 +1,3 @@
+mutation VoteUp($id: Int!) {
+  voteUp(id: $id)
+}
