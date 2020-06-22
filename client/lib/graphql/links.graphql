@@ -1,9 +1,10 @@
 query Links {
-  links {
+  linkFeed {
     id
     url
     description
     postedBy
     votes
+    createdAt
   }
 }
