@@ -3,12 +3,12 @@ import 'reflect-metadata';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { UserResolver, LinkFeedResolver } from './resolvers';
+import { UserResolver, LinkFeedResolver, LinkResolver } from './resolvers';
 import { createConnection } from 'typeorm';
 import cookieParser from 'cookie-parser';
 import { verify } from 'jsonwebtoken';
 import cors from 'cors';
-import { User, Link, LinkFeed } from './entity';
+import { User } from './entity';
 import { sendRefreshToken } from './sendRefreshToken';
 import {
   createAccessToken,
@@ -48,8 +48,8 @@ import {
     // const feed: any = await Link.find();
     // console.log("feed:::", feed);
     // console.log("feed:::", link);
-    console.log('Link:::', Link);
-    console.log('Link:::', LinkFeed);
+    // console.log('Link:::', Link);
+    // console.log('Link:::', LinkFeed);
 
     if (!user) {
       return res.send({ ok: false, accessToken: '' });
@@ -72,7 +72,7 @@ import {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, LinkFeedResolver],
+      resolvers: [UserResolver, LinkFeedResolver, LinkResolver],
     }),
     context: ({ req, res }) => ({ req, res }),
   });
