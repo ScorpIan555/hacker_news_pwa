@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
-import { useLinksQuery } from '../generated/graphql';
+import { useLinkFeedQuery } from '../generated/graphql';
 import { IItem } from '../lib/typescript/interfaces';
 import {
   ItemWrapper,
@@ -24,22 +24,22 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     console.log('LinkFeed.props.children:::', children);
   }
 
-  const { data, loading, refetch } = useLinksQuery();
+  const { data, loading, refetch } = useLinkFeedQuery();
 
   useEffect(() => {
-    let links = data?.links;
+    let links = data?.linkFeed;
     console.log('data was rerun:::', data);
     console.log('links lenght', links?.length);
     refetch();
   }),
-    [data?.links];
+    [data?.linkFeed];
 
   let body = <div></div>;
 
   if (loading) {
     body = <div>Loading....</div>;
   } else if (data) {
-    let dataLinks: Array<object> = data.links;
+    let dataLinks: Array<object> = data.linkFeed;
     body = (
       <div>
         {dataLinks.map<object>(
@@ -144,7 +144,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   return (
     <div id="results-body">
       <OrderBox>
-        <OrderDetails columns={orderTableColumns} tableData={data?.links} />
+        <OrderDetails columns={orderTableColumns} tableData={data?.linkFeed} />
       </OrderBox>
       <div id="body-only-method">{body}</div>
     </div>

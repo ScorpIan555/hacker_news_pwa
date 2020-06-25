@@ -4,7 +4,7 @@ import {
   Arg,
   Ctx,
   UseMiddleware,
-  Query,
+  // Query,
   Field,
   InputType,
   Int,
@@ -102,7 +102,7 @@ export class LinkResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async voteForLink(
+  async voteUp(
     @Ctx() { payload }: MyContext,
     @Arg('id', () => Int) id: number
     // @Arg('input', () => LinkUpdateInput) input: LinkUpdateInput
@@ -220,10 +220,10 @@ export class LinkResolver {
     // return true;
   }
 
-  @Query(() => [Link])
-  async linkFeed(): Promise<[Link]> {
-    const linkFromLinks: any = await Link.find();
-    console.log('linkFromLinks:::', linkFromLinks);
-    return linkFromLinks;
-  }
+  // @Query(() => [Link])
+  // async linkFeed(): Promise<[Link]> {
+  //   const linkFromLinks: any = await Link.find();
+  //   console.log('linkFromLinks:::', linkFromLinks);
+  //   return linkFromLinks;
+  // }
 }

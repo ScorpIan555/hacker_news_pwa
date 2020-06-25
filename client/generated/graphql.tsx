@@ -20,7 +20,6 @@ export type Query = {
   users: Array<User>;
   me?: Maybe<User>;
   linkFeed: Array<Link>;
-  links: Array<Link>;
 };
 
 export type User = {
@@ -53,7 +52,6 @@ export type Mutation = {
   createLink: Link;
   updateLink: Scalars['Boolean'];
   deleteLink: Scalars['Boolean'];
-  voteForLink: Scalars['Boolean'];
 };
 
 
@@ -94,11 +92,6 @@ export type MutationDeleteLinkArgs = {
   id: Scalars['Int'];
 };
 
-
-export type MutationVoteForLinkArgs = {
-  id: Scalars['Int'];
-};
-
 export type LoginResponse = {
    __typename?: 'LoginResponse';
   accessToken: Scalars['String'];
@@ -114,10 +107,6 @@ export type LinkUpdateInput = {
   url?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   votes?: Maybe<Scalars['Int']>;
-};
-
-export type VoteInput = {
-  votes?: Maybe<Scalars['String']>;
 };
 
 export type ByeQueryVariables = {};
@@ -160,14 +149,14 @@ export type HelloQuery = (
   & Pick<Query, 'hello'>
 );
 
-export type LinksQueryVariables = {};
+export type LinkFeedQueryVariables = {};
 
 
-export type LinksQuery = (
+export type LinkFeedQuery = (
   { __typename?: 'Query' }
-  & { links: Array<(
+  & { linkFeed: Array<(
     { __typename?: 'Link' }
-    & Pick<Link, 'id' | 'url' | 'description' | 'postedBy' | 'votes'>
+    & Pick<Link, 'id' | 'url' | 'description' | 'postedBy' | 'votes' | 'createdAt'>
   )> }
 );
 
@@ -385,42 +374,43 @@ export function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
-export const LinksDocument = gql`
-    query Links {
-  links {
+export const LinkFeedDocument = gql`
+    query LinkFeed {
+  linkFeed {
     id
     url
     description
     postedBy
     votes
+    createdAt
   }
 }
     `;
 
 /**
- * __useLinksQuery__
+ * __useLinkFeedQuery__
  *
- * To run a query within a React component, call `useLinksQuery` and pass it any options that fit your needs.
- * When your component renders, `useLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useLinkFeedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLinkFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLinksQuery({
+ * const { data, loading, error } = useLinkFeedQuery({
  *   variables: {
  *   },
  * });
  */
-export function useLinksQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LinksQuery, LinksQueryVariables>) {
-        return ApolloReactHooks.useQuery<LinksQuery, LinksQueryVariables>(LinksDocument, baseOptions);
+export function useLinkFeedQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LinkFeedQuery, LinkFeedQueryVariables>) {
+        return ApolloReactHooks.useQuery<LinkFeedQuery, LinkFeedQueryVariables>(LinkFeedDocument, baseOptions);
       }
-export function useLinksLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LinksQuery, LinksQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LinksQuery, LinksQueryVariables>(LinksDocument, baseOptions);
+export function useLinkFeedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LinkFeedQuery, LinkFeedQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<LinkFeedQuery, LinkFeedQueryVariables>(LinkFeedDocument, baseOptions);
         }
-export type LinksQueryHookResult = ReturnType<typeof useLinksQuery>;
-export type LinksLazyQueryHookResult = ReturnType<typeof useLinksLazyQuery>;
-export type LinksQueryResult = ApolloReactCommon.QueryResult<LinksQuery, LinksQueryVariables>;
+export type LinkFeedQueryHookResult = ReturnType<typeof useLinkFeedQuery>;
+export type LinkFeedLazyQueryHookResult = ReturnType<typeof useLinkFeedLazyQuery>;
+export type LinkFeedQueryResult = ApolloReactCommon.QueryResult<LinkFeedQuery, LinkFeedQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
