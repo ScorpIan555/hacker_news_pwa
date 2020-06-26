@@ -112,7 +112,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       ellipsis: true,
       render: (record: any) => {
         // console.log('text:::', typeof text, text);
-        // console.log('record::', record);
+        console.log('record::', record);
         // console.log('foo::', foo);
         // console.log('bar:::', bar);
 

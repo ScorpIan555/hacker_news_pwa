@@ -67,7 +67,7 @@ export interface IUser {
   email: string;
   password?: string; // shouldn't be required b/c don't wanna pass this around client state
   type?: string;
-  linksUserVotedFor?: string;
+  linksUserHasVotedFor?: string;
 }
 
 export interface ITheme {
