@@ -100,7 +100,7 @@ export class LinkResolver {
     return true;
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Link)
   @UseMiddleware(isAuth)
   async voteUp(
     @Ctx() { payload }: MyContext,
@@ -132,11 +132,11 @@ export class LinkResolver {
       };
 
       try {
-        await Link.update({ id }, input);
-        console.log('link:::', link);
+        let res = await Link.update({ id }, input);
+        console.log('voteUp.res:::', res);
         // console.log('newLink:::', newLink);
         // return newLink;
-        return true;
+        return { id, votes };
       } catch (error) {
         console.log('error writing to db');
         console.log('error::: ', error);

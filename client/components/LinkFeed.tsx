@@ -24,10 +24,16 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     console.log('LinkFeed.props.children:::', children);
   }
 
-  const { data, loading, refetch } = useLinkFeedQuery();
+  const { data, loading, refetch } = useLinkFeedQuery({
+    variables: {
+      limit: 20,
+      skip: 0,
+    },
+  });
 
   useEffect(() => {
     let links = data?.linkFeed;
+
     console.log('data was rerun:::', data);
     console.log('links lenght', links?.length);
     refetch();

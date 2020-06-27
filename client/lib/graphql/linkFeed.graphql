@@ -1,0 +1,10 @@
+query LinkFeed($limit: Int!, $skip: Int!) {
+  linkFeed(limit: $limit, skip: $skip) {
+    id
+    url
+    description
+    postedBy
+    votes
+    createdAt
+  }
+}

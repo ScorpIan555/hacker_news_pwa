@@ -22,6 +22,12 @@ export type Query = {
   linkFeed: Array<Link>;
 };
 
+
+export type QueryLinkFeedArgs = {
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+};
+
 export type User = {
    __typename?: 'User';
   id: Scalars['Int'];
@@ -48,7 +54,7 @@ export type Mutation = {
   revokeRefreshTokensForUser: Scalars['Boolean'];
   login: LoginResponse;
   register: LoginResponse;
-  voteUp: Scalars['Boolean'];
+  voteUp: Link;
   createLink: Link;
   updateLink: Scalars['Boolean'];
   deleteLink: Scalars['Boolean'];
@@ -149,7 +155,10 @@ export type HelloQuery = (
   & Pick<Query, 'hello'>
 );
 
-export type LinkFeedQueryVariables = {};
+export type LinkFeedQueryVariables = {
+  limit: Scalars['Int'];
+  skip: Scalars['Int'];
+};
 
 
 export type LinkFeedQuery = (
@@ -245,7 +254,10 @@ export type VoteUpMutationVariables = {
 
 export type VoteUpMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'voteUp'>
+  & { voteUp: (
+    { __typename?: 'Link' }
+    & Pick<Link, 'id' | 'votes'>
+  ) }
 );
 
 
@@ -375,8 +387,8 @@ export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
 export const LinkFeedDocument = gql`
-    query LinkFeed {
-  linkFeed {
+    query LinkFeed($limit: Int!, $skip: Int!) {
+  linkFeed(limit: $limit, skip: $skip) {
     id
     url
     description
@@ -399,6 +411,8 @@ export const LinkFeedDocument = gql`
  * @example
  * const { data, loading, error } = useLinkFeedQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      skip: // value for 'skip'
  *   },
  * });
  */
@@ -616,7 +630,10 @@ export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = ApolloReactCommon.QueryResult<UsersQuery, UsersQueryVariables>;
 export const VoteUpDocument = gql`
     mutation VoteUp($id: Int!) {
-  voteUp(id: $id)
+  voteUp(id: $id) {
+    id
+    votes
+  }
 }
     `;
 export type VoteUpMutationFn = ApolloReactCommon.MutationFunction<VoteUpMutation, VoteUpMutationVariables>;
