@@ -51,8 +51,8 @@ const VoteCarrot = ({ link }: any) => {
   console.log('authStateContext', authStateContext);
   console.log('authStateContext.user', authStateContext.user);
   // let userId: any = authStateContext?.user?.id;
-  // let linksUserHasVotedFor: any = authStateContext?.user?.linksUserHasVotedFor;
-  // console.log('linksUserHasVotedFor:::', linksUserHasVotedFor);
+  let linksUserHasVotedFor: any = authStateContext?.user?.linksUserHasVotedFor;
+  console.log('linksUserHasVotedFor:::', linksUserHasVotedFor);
 
   return (
     <VoteCarrotWrapper>

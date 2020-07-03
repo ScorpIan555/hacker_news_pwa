@@ -60,6 +60,7 @@ export interface ILoginUser {
   email: string;
   password: string;
   type?: string;
+  linksUserHAsVotedFor?: string;
 }
 
 export interface IUser {

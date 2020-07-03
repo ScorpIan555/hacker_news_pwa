@@ -16,7 +16,7 @@ import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
 import { setAccessToken } from '../lib/utils';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
 import { theme } from '../lib/theme';
-import { IUser, ILoginUser } from '../lib/typescript/interfaces';
+import { ILoginUser } from '../lib/typescript/interfaces';
 
 // @Todo need to add in Yum validations
 // probably set this up in a util
@@ -42,7 +42,7 @@ import { IUser, ILoginUser } from '../lib/typescript/interfaces';
 
 const LoginForm: FC = () => {
   // unform requires some default data for initial render
-  const initialValues: IUser = {
+  const initialValues: any = {
     email: '',
     password: '',
     type: '',

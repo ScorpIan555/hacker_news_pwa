@@ -182,7 +182,7 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email'>
+      & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor'>
     ) }
   ) }
 );
@@ -219,7 +219,7 @@ export type RegisterMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email'>
+      & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor'>
     ) }
   ) }
 );
@@ -432,6 +432,7 @@ export const LoginDocument = gql`
     user {
       id
       email
+      linksUserHasVotedFor
     }
   }
 }
@@ -532,6 +533,7 @@ export const RegisterDocument = gql`
     user {
       id
       email
+      linksUserHasVotedFor
     }
   }
 }
