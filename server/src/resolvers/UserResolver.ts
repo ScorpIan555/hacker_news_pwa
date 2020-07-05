@@ -161,25 +161,67 @@ export class UserResolver {
       return err;
     }
   }
-
-  // build this out from the clientside first...
-  @Mutation(() => Boolean)
-  async voteUp(
-    @Arg('id', () => Int) id: number,
-    // @Arg('userId', () => Int) userId: number)
+  @Mutation(() => User)
+  async updateLinksUserHasVotedForField(
+    @Arg('email') email: string,
+    @Arg('id') id: number,
     @Ctx() { payload }: MyContext
   ) {
-    // const linksUserHasVotedFor = User.find({id:})
-    console.log('voteUp.payload:::', payload);
     try {
-      // const { linksUserHasVotedFor } = payload;
-      console.log('link id:::', id);
-      // console.log('linksUserHasVotedFor:::  ', linksUserHasVotedFor);
-      return true;
-    } catch (error) {
-      console.log(error);
-      console.error(error);
-      return false;
+      // console.log('updateLinksUserHasVotedForField.id:::', id);
+      console.log('updateLinksUserHasVotedForField.payload:::', payload);
+      console.log('id & email', id, email);
+      // console.log(
+      //   'updateLinksUserHasVotedForField.payload:::',
+      //   payload.userEmail
+      // );
+      // if (payload != undefined) {
+      //   let { userEmail } = payload;
+
+      const user: any = await User.findOne({ where: { email } });
+      console.log('UserResolver.login.user:::', user);
+      return user;
+      // } else {
+      //   let user: any = {
+      //     id: 0,
+      //     email: 'na',
+      //     linksUserHasVotedFor: 'na',
+      //   };
+      //   console.log('payload undefined...', user);
+      //   console.error('payload undefined, chucklehead');
+      //   return user;
+      // }
+    } catch (err) {
+      // let { userEmail, userId, linksUserHasVotedFor } = payload;
+      // let user: any = {
+      //   id: userId,
+      //   email: userEmail,
+      //   linksUserHasVotedFor: linksUserHasVotedFor,
+      // };
+      console.log('error trying to update linksUserHasVotedForField');
+      console.error(err);
+      return err;
     }
   }
+
+  // // build this out from the clientside first...
+  // @Mutation(() => Boolean)
+  // async voteUp(
+  //   @Arg('id', () => Int) id: number,
+  //   // @Arg('userId', () => Int) userId: number)
+  //   @Ctx() { payload }: MyContext
+  // ) {
+  //   // const linksUserHasVotedFor = User.find({id:})
+  //   console.log('voteUp.payload:::', payload);
+  //   try {
+  //     // const { linksUserHasVotedFor } = payload;
+  //     console.log('link id:::', id);
+  //     // console.log('linksUserHasVotedFor:::  ', linksUserHasVotedFor);
+  //     return true;
+  //   } catch (error) {
+  //     console.log(error);
+  //     console.error(error);
+  //     return false;
+  //   }
+  // }
 }

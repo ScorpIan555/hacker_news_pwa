@@ -30,10 +30,28 @@ const voteForLink = async (
       variables: { id },
     });
     console.log('res:::', res);
+    updateLinksUserHasVotedForField();
+
     return;
   } catch (error) {
     console.log('error:::', error);
     console.error(error);
+  }
+};
+
+const updateLinksUserHasVotedForField = () => {
+  try {
+    const { authStateContext } = useAuthState();
+    let user = authStateContext?.user;
+    console.log('updateLinksUserHasVotedForField.user', user);
+
+    // need to insert mutation
+
+    return;
+  } catch (error) {
+    console.log('error updateing UserHasVotedForField', error);
+    console.error(error);
+    return false;
   }
 };
 
@@ -51,6 +69,7 @@ const VoteCarrot = ({ link }: any) => {
   console.log('authStateContext', authStateContext);
   console.log('authStateContext.user', authStateContext.user);
   // let userId: any = authStateContext?.user?.id;
+
   let linksUserHasVotedFor: any = authStateContext?.user?.linksUserHasVotedFor;
   console.log('linksUserHasVotedFor:::', linksUserHasVotedFor);
 

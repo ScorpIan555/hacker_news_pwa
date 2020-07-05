@@ -154,8 +154,8 @@ export class LinkResolver {
       };
 
       try {
-        let res = await Link.update({ id }, input);
-        console.log('voteUp.res:::', res);
+        let resLink = await Link.update({ id }, input);
+        console.log('voteUp.res:::', resLink);
         // console.log('newLink:::', newLink);
         // return newLink;
         return { id, votes };

@@ -1,0 +1,9 @@
+mutation UpdateLinksUserHasVotedForField($id: String, $email: String) {
+  updateLinksUserHasVotedForField(id: $id, email: $email) {
+    user {
+      id
+      email
+      linksUserHasVotedFor
+    }
+  }
+}

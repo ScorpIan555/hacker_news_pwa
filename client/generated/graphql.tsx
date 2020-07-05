@@ -54,10 +54,11 @@ export type Mutation = {
   revokeRefreshTokensForUser: Scalars['Boolean'];
   login: LoginResponse;
   register: LoginResponse;
-  voteUp: Link;
+  updateLinksUserHasVotedForField: Scalars['String'];
   createLink: Link;
   updateLink: Scalars['Boolean'];
   deleteLink: Scalars['Boolean'];
+  voteUp: Link;
 };
 
 
@@ -78,11 +79,6 @@ export type MutationRegisterArgs = {
 };
 
 
-export type MutationVoteUpArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type MutationCreateLinkArgs = {
   options: LinkInput;
 };
@@ -95,6 +91,11 @@ export type MutationUpdateLinkArgs = {
 
 
 export type MutationDeleteLinkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationVoteUpArgs = {
   id: Scalars['Int'];
 };
 
