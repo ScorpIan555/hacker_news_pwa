@@ -121,17 +121,29 @@ export class LinkResolver {
     let linksUserAlreadyVotedFor = user.linksUserHasVotedFor;
     console.log('linksUserAlreadyVotedFor', linksUserAlreadyVotedFor);
     console.log('linksUserAlreadyVotedFor', typeof linksUserAlreadyVotedFor);
-    let linksUserAlreadyVotedForArray = linksUserAlreadyVotedFor.split(
-      ',',
-      linksUserAlreadyVotedFor.length
-    );
+    let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor
+      .slice(1, linksUserAlreadyVotedFor.length - 1)
+      .split(',');
     console.log('linksUserAlreadyVotedFor', linksUserAlreadyVotedForArray);
     console.log(
       'linksUserAlreadyVotedFor',
       typeof linksUserAlreadyVotedForArray
     );
 
-    if (link != undefined) {
+    console.log(
+      'linksUserAlreadyVotedForArray::: is array?  ',
+      linksUserAlreadyVotedForArray instanceof Array
+    );
+
+    let hasUserAlreadyVotedForThisLink: boolean = linksUserAlreadyVotedForArray.includes(
+      id.toString()
+    );
+    console.log(
+      'hasUserAlreadyVotedForThisLink :::',
+      hasUserAlreadyVotedForThisLink
+    );
+
+    if (link != undefined && hasUserAlreadyVotedForThisLink === false) {
       let votes: number = link.votes;
       console.log('votes1:::', votes);
       votes++;
@@ -154,7 +166,8 @@ export class LinkResolver {
       }
     } else {
       console.log('vote not successful'!);
-      return false;
+      let votes = link?.votes;
+      return { id, votes };
     }
   }
 
