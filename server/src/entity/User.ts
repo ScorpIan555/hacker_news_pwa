@@ -20,7 +20,7 @@ export class User extends BaseEntity {
   @Column('text')
   password: string;
 
-  @Field()
+  @Field(() => String)
   @Column('text', { default: [] })
   linksUserHasVotedFor: string;
 

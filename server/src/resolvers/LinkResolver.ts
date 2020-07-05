@@ -105,8 +105,6 @@ export class LinkResolver {
   async voteUp(
     @Ctx() { payload }: MyContext,
     @Arg('id', () => Int) id: number
-    // @Arg('userId', () => Int) userId: number
-    // @Arg('input', () => LinkUpdateInput) input: LinkUpdateInput
   ) {
     console.log('payload:::', payload);
     // type LinkResult
@@ -120,6 +118,18 @@ export class LinkResolver {
     */
 
     // let userId: number = parseInt(user.userId);
+    let linksUserAlreadyVotedFor = user.linksUserHasVotedFor;
+    console.log('linksUserAlreadyVotedFor', linksUserAlreadyVotedFor);
+    console.log('linksUserAlreadyVotedFor', typeof linksUserAlreadyVotedFor);
+    let linksUserAlreadyVotedForArray = linksUserAlreadyVotedFor.split(
+      ',',
+      linksUserAlreadyVotedFor.length
+    );
+    console.log('linksUserAlreadyVotedFor', linksUserAlreadyVotedForArray);
+    console.log(
+      'linksUserAlreadyVotedFor',
+      typeof linksUserAlreadyVotedForArray
+    );
 
     if (link != undefined) {
       let votes: number = link.votes;

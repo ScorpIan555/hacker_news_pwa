@@ -14,7 +14,7 @@ export class LinkFeedResolver {
 
     const linkFeed = await Link.find({
       order: {
-        id: 'ASC',
+        id: -1,
       },
       take: limit,
       skip: skip,
