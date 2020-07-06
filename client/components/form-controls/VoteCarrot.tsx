@@ -4,13 +4,15 @@ import { useAuthState } from '../../lib/store/contexts';
 import { VoteCarrotWrapper } from './VoteCarrot.style';
 
 import { useVoteUpMutation } from '../../generated/graphql';
+import { IUser } from '../../lib/typescript/interfaces';
 // import { IItem } from '../../lib/typescript/interfaces';
 
 // import { IItem } from '../../lib/typescript/interfaces';
 
 const voteForLink = async (
   id: number,
-  voteUp: any
+  voteUp: any,
+  user: IUser | undefined
   // userId: number,
   // linksUserHasVotedFor: string
 ) => {
@@ -22,7 +24,7 @@ const voteForLink = async (
   // };
 
   console.log('VoteCarrot.voteForLink.votes:::', votes);
-  console.log('VoteCarrot.id:::', id);
+  console.log('VoteCarrot.id & user:::', id, user);
   console.log('typeof VoteCarrot.id:::', typeof id);
   // console.log('linksUserHasVotedFor:::', linksUserHasVotedFor);
   try {
@@ -30,7 +32,7 @@ const voteForLink = async (
       variables: { id },
     });
     console.log('res:::', res);
-    updateLinksUserHasVotedForField();
+    updateLinksUserHasVotedForField(user);
 
     return;
   } catch (error) {
@@ -39,10 +41,8 @@ const voteForLink = async (
   }
 };
 
-const updateLinksUserHasVotedForField = () => {
+const updateLinksUserHasVotedForField = (user: IUser | undefined) => {
   try {
-    const { authStateContext } = useAuthState();
-    let user = authStateContext?.user;
     console.log('updateLinksUserHasVotedForField.user', user);
 
     // need to insert mutation
@@ -70,12 +70,14 @@ const VoteCarrot = ({ link }: any) => {
   console.log('authStateContext.user', authStateContext.user);
   // let userId: any = authStateContext?.user?.id;
 
+  let user: IUser | undefined = authStateContext?.user;
+
   let linksUserHasVotedFor: any = authStateContext?.user?.linksUserHasVotedFor;
-  console.log('linksUserHasVotedFor:::', linksUserHasVotedFor);
+  console.log('linksUserHasVotedFor:::', linksUserHasVotedFor, user);
 
   return (
     <VoteCarrotWrapper>
-      <a onClick={() => voteForLink(id, voteUp)}>▲</a>
+      <a onClick={() => voteForLink(id, voteUp, user)}>▲</a>
     </VoteCarrotWrapper>
   );
 };

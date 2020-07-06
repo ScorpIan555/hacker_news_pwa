@@ -163,14 +163,15 @@ export class UserResolver {
   }
   @Mutation(() => User)
   async updateLinksUserHasVotedForField(
+    @Arg('id', () => Int) id: number,
+    @Arg('userId', () => Int) userId: number,
     @Arg('email') email: string,
-    @Arg('id') id: number,
     @Ctx() { payload }: MyContext
   ) {
     try {
       // console.log('updateLinksUserHasVotedForField.id:::', id);
       console.log('updateLinksUserHasVotedForField.payload:::', payload);
-      console.log('id & email', id, email);
+      console.log('id & email & userId', id, email, userId);
       // console.log(
       //   'updateLinksUserHasVotedForField.payload:::',
       //   payload.userEmail
@@ -178,19 +179,19 @@ export class UserResolver {
       // if (payload != undefined) {
       //   let { userEmail } = payload;
 
-      const user: any = await User.findOne({ where: { email } });
-      console.log('UserResolver.login.user:::', user);
-      return user;
-      // } else {
-      //   let user: any = {
-      //     id: 0,
-      //     email: 'na',
-      //     linksUserHasVotedFor: 'na',
-      //   };
-      //   console.log('payload undefined...', user);
-      //   console.error('payload undefined, chucklehead');
-      //   return user;
-      // }
+      const user: User | undefined = await User.findOne({ where: { email } });
+      if (user != undefined) {
+        console.log('UserResolver.login.user:::', user);
+        let { linksUserHasVotedFor } = user;
+        console.log(
+          'UserResolver.user.linksUserHasVotedFor:::',
+          linksUserHasVotedFor
+        );
+        return user;
+      } else {
+        console.log('Error: User not found:::   , ', user);
+        throw Error('could not retreive user');
+      }
     } catch (err) {
       // let { userEmail, userId, linksUserHasVotedFor } = payload;
       // let user: any = {
