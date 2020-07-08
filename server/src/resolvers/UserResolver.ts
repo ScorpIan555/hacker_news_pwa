@@ -187,6 +187,18 @@ export class UserResolver {
           'UserResolver.user.linksUserHasVotedFor:::',
           linksUserHasVotedFor
         );
+
+        /*
+
+          Right here, 
+          1) need to actually add the bit that'll insert the link id into the field
+          2) double check that it's inserted correctly
+          3) return newly-updated user object
+          4) double-check that this is going back out to the client if/as needed.
+
+
+        */
+
         return user;
       } else {
         console.log('Error: User not found:::   , ', user);

@@ -3,25 +3,29 @@ import { useAuthState } from '../../lib/store/contexts';
 
 import { VoteCarrotWrapper } from './VoteCarrot.style';
 
-import { useVoteUpMutation } from '../../generated/graphql';
+import {
+  useVoteUpMutation,
+  useUpdateLinksUserHasVotedForFieldMutation,
+} from '../../generated/graphql';
 import { IUser } from '../../lib/typescript/interfaces';
 // import { IItem } from '../../lib/typescript/interfaces';
 
 // import { IItem } from '../../lib/typescript/interfaces';
 
-const voteForLink = async (
-  id: number,
-  voteUp: any,
-  user: IUser | undefined
-  // userId: number,
-  // linksUserHasVotedFor: string
-) => {
+const voteForLink = async (voteForLinkProps: {
+  id: any;
+  voteUp: any;
+  user: any;
+  updateLinksUserHasVotedForField: any;
+}) => {
+  const {
+    id,
+    user,
+    voteUp,
+    updateLinksUserHasVotedForField,
+  } = voteForLinkProps;
   let numVotes = 0;
   let votes = numVotes + 1;
-  // let input: any = {
-  //   id: link?.id,
-  //   linksUserHasVotedFor: linksUserHasVotedFor,
-  // };
 
   console.log('VoteCarrot.voteForLink.votes:::', votes);
   console.log('VoteCarrot.id & user:::', id, user);
@@ -32,7 +36,7 @@ const voteForLink = async (
       variables: { id },
     });
     console.log('res:::', res);
-    updateLinksUserHasVotedForField(user);
+    addLink(user, updateLinksUserHasVotedForField);
 
     return;
   } catch (error) {
@@ -41,13 +45,17 @@ const voteForLink = async (
   }
 };
 
-const updateLinksUserHasVotedForField = (user: IUser | undefined) => {
+const addLink = async (
+  user: IUser | undefined,
+  updateLinksUserHasVotedForField: any
+) => {
   try {
     console.log('updateLinksUserHasVotedForField.user', user);
 
     // need to insert mutation
+    await updateLinksUserHasVotedForField(user);
 
-    return;
+    return true;
   } catch (error) {
     console.log('error updateing UserHasVotedForField', error);
     console.error(error);
@@ -58,6 +66,9 @@ const updateLinksUserHasVotedForField = (user: IUser | undefined) => {
 const VoteCarrot = ({ link }: any) => {
   // instantiate gql query
   const [voteUp] = useVoteUpMutation();
+  const [
+    updateLinksUserHasVotedForField,
+  ] = useUpdateLinksUserHasVotedForFieldMutation();
   // const { link } = link;
   // let id: number = link?.id;
   // console.log('VoteCarrot.record', record);
@@ -75,9 +86,16 @@ const VoteCarrot = ({ link }: any) => {
   let linksUserHasVotedFor: any = authStateContext?.user?.linksUserHasVotedFor;
   console.log('linksUserHasVotedFor:::', linksUserHasVotedFor, user);
 
+  const voteForLinkProps = {
+    id,
+    voteUp,
+    user,
+    updateLinksUserHasVotedForField,
+  };
+
   return (
     <VoteCarrotWrapper>
-      <a onClick={() => voteForLink(id, voteUp, user)}>▲</a>
+      <a onClick={() => voteForLink(voteForLinkProps)}>▲</a>
     </VoteCarrotWrapper>
   );
 };
