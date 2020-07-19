@@ -6,8 +6,6 @@ export const NotLoggedIn: FC = () => {
     <div>
       <h3>You must be logged in to do that</h3>
       <Link href="/login">Login</Link>
-      <p>or</p>
-      <Link href="register">Register</Link>
     </div>
   );
 };

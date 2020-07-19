@@ -202,10 +202,6 @@ export const Header: FC<Props> = () => {
                 <Button color="inherit" href="/login">
                   Login
                 </Button>
-                <span> or </span>
-                <Button color="inherit" href="/register">
-                  Sign Up
-                </Button>
               </div>
             )}
           </Toolbar>

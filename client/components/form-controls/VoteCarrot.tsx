@@ -8,6 +8,9 @@ import {
   useUpdateLinksUserHasVotedForFieldMutation,
 } from '../../generated/graphql';
 import { IUser } from '../../lib/typescript/interfaces';
+import Router from 'next/router';
+// import { Router } from 'next/router';
+// import { Redirect } from '../../lib/utils/redirect';
 // import { IItem } from '../../lib/typescript/interfaces';
 
 // import { IItem } from '../../lib/typescript/interfaces';
@@ -26,6 +29,13 @@ const voteForLink = async (voteForLinkProps: {
   } = voteForLinkProps;
   let numVotes = 0;
   let votes = numVotes + 1;
+
+  if (user === null) {
+    alert('user not logged in, goober!');
+    //  https://stackoverflow.com/questions/58173809/next-js-redirect-from-to-another-page
+    Router.push('/login');
+    return;
+  }
 
   console.log('VoteCarrot.voteForLink.votes:::', votes);
   console.log('VoteCarrot.id & user:::', id, user);
@@ -64,7 +74,7 @@ const addLink = async (
 };
 
 const VoteCarrot = ({ link }: any) => {
-  // instantiate gql query
+  // instantiate gql queries
   const [voteUp] = useVoteUpMutation();
   const [
     updateLinksUserHasVotedForField,
