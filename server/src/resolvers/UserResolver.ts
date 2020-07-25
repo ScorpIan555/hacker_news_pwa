@@ -180,6 +180,9 @@ export class UserResolver {
       //   let { userEmail } = payload;
 
       const user: User | undefined = await User.findOne({ where: { email } });
+
+      // https://stackoverflow.com/questions/47792808/typeorm-update-item-and-return-it
+
       if (user != undefined) {
         console.log('UserResolver.login.user:::', user);
         let { linksUserHasVotedFor } = user;
@@ -188,6 +191,9 @@ export class UserResolver {
           linksUserHasVotedFor
         );
 
+        let input: any = {
+          linksUserHasVotedFor: linksUserHasVotedFor,
+        };
         /*
 
           Right here, 
@@ -198,6 +204,27 @@ export class UserResolver {
 
 
         */
+
+        if (linksUserHasVotedFor === '[]') {
+          let userIdString: string = userId.toString();
+          console.log('userIdString', userIdString);
+          try {
+            // let res = await User.update({ id: userIdString }, input);
+            console.log(' id ????::', id, userId);
+            input = {
+              linksUserHasVotedFor: '[' + id + ']',
+            };
+            let resLink = await User.update({ id: userId }, input);
+            let find = await User.findOne(userId);
+            // console.log('linkUserhasVotedFor.res::', res);
+            console.log('linkUserhasVotedFor.res::', resLink);
+            console.log('find:::', find);
+            return { id: userId, linksUserHasVotedFor };
+          } catch (error) {
+            console.log('linksUserHasVotedFor.error', error);
+            console.error(error);
+          }
+        }
 
         return user;
       } else {

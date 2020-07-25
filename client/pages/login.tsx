@@ -5,9 +5,9 @@ import RegisterForm from '../components/RegisterForm';
 export default () => {
   return (
     <div>
-      <RegisterForm />
-      <br />
       <LoginForm />
+      <br />
+      <RegisterForm />
     </div>
   );
 };

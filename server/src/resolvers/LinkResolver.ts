@@ -119,14 +119,14 @@ export class LinkResolver {
 
     // let userId: number = parseInt(user.userId);
     let linksUserAlreadyVotedFor = user.linksUserHasVotedFor;
-    console.log('linksUserAlreadyVotedFor', linksUserAlreadyVotedFor);
-    console.log('linksUserAlreadyVotedFor', typeof linksUserAlreadyVotedFor);
+    console.log('linksUserAlreadyVotedFor1', linksUserAlreadyVotedFor);
+    console.log('linksUserAlreadyVotedFor1', typeof linksUserAlreadyVotedFor);
     let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor
       .slice(1, linksUserAlreadyVotedFor.length - 1)
       .split(',');
-    console.log('linksUserAlreadyVotedFor', linksUserAlreadyVotedForArray);
+    console.log('linksUserAlreadyVotedFor2', linksUserAlreadyVotedForArray);
     console.log(
-      'linksUserAlreadyVotedFor',
+      'linksUserAlreadyVotedFor2',
       typeof linksUserAlreadyVotedForArray
     );
 
