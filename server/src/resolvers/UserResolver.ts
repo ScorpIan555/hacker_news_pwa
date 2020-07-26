@@ -214,18 +214,106 @@ export class UserResolver {
             input = {
               linksUserHasVotedFor: '[' + id + ']',
             };
-            let resLink = await User.update({ id: userId }, input);
+            let res = await User.update({ id: userId }, input);
             let find = await User.findOne(userId);
             // console.log('linkUserhasVotedFor.res::', res);
-            console.log('linkUserhasVotedFor.res::', resLink);
+            console.log('linkUserhasVotedFor.res::', res);
             console.log('find:::', find);
-            return { id: userId, linksUserHasVotedFor };
+            return find;
           } catch (error) {
             console.log('linksUserHasVotedFor.error', error);
             console.error(error);
           }
         }
 
+        console.log(
+          'linksUserHAsVotedFor.length::',
+          linksUserHasVotedFor.length
+        );
+
+        if (
+          typeof linksUserHasVotedFor === 'string' &&
+          linksUserHasVotedFor.length > 3
+        ) {
+          console.log(
+            'length of linksUserHAsVotedFor',
+            linksUserHasVotedFor.length
+          );
+          console.log('linksUserHAsVotedFor', linksUserHasVotedFor);
+
+          // input = {
+          //   linksUserHasVotedFor: '[' + id + ']',
+          // };
+
+          //
+          //
+          //
+          //
+          // paste the code form LinkREsolver here
+
+          //
+          //
+
+          let linksUserAlreadyVotedFor = user.linksUserHasVotedFor;
+          console.log('linksUserAlreadyVotedFor1', linksUserAlreadyVotedFor);
+          console.log(
+            'linksUserAlreadyVotedFor1',
+            typeof linksUserAlreadyVotedFor
+          );
+          let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor
+            .slice(0, linksUserAlreadyVotedFor.length)
+            .split(',');
+          console.log(
+            'linksUserAlreadyVotedFor2',
+            linksUserAlreadyVotedForArray
+          );
+          console.log(
+            'linksUserAlreadyVotedFor2',
+            typeof linksUserAlreadyVotedForArray
+          );
+
+          console.log(
+            'linksUserAlreadyVotedForArray::: is array?  ',
+            linksUserAlreadyVotedForArray instanceof Array
+          );
+
+          let hasUserAlreadyVotedForThisLink: boolean = linksUserAlreadyVotedForArray.includes(
+            id.toString()
+          );
+
+          if (hasUserAlreadyVotedForThisLink === false) {
+            console.log(
+              'ok, we are getting close',
+              linksUserAlreadyVotedForArray
+            );
+
+            //
+            /*
+              1)  need to check to make sure user hasn't voted for this link yet
+              2) need to add the new member to the array
+              3) need to convert the array into a string, then return it 
+            */
+              
+            //
+            try {
+              input = {
+                linksUserHasVotedFor: linksUserAlreadyVotedForArray,
+              };
+              let res = await User.update({ id: userId }, input);
+              let find = await User.findOne(userId);
+              // console.log('linkUserhasVotedFor.res::', res);
+              console.log('linkUserhasVotedFor.res::', res);
+              console.log('find:::', find);
+              return { id: userId, email, linksUserHasVotedFor };
+            } catch (error) {
+              console.log('linksUserHasVotedFor.error', error);
+              console.error(error);
+            }
+          } // if(hasUser... === false)
+        }
+        console.log(
+          'line 253 error in User Resolver!!  field didnt meet either criteria'
+        );
         return user;
       } else {
         console.log('Error: User not found:::   , ', user);
