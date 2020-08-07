@@ -260,9 +260,33 @@ export class UserResolver {
             'linksUserAlreadyVotedFor1',
             typeof linksUserAlreadyVotedFor
           );
-          let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor
-            .slice(0, linksUserAlreadyVotedFor.length)
+          let splitFirstBracket: any = linksUserAlreadyVotedFor.split('[');
+          console.log('splitFirstBracket:::', splitFirstBracket);
+          console.log('splitFirstBracket:::', typeof splitFirstBracket);
+          // let captureString1: any = {  ? splitFirstBracket[1] : splitFirstBracket};
+
+          let captureString1: any;
+          if (splitFirstBracket.length > 0) {
+            console.log('splitFirstBracket[1]');
+            captureString1 = splitFirstBracket[1];
+          } else {
+            console.log('splitFirstBracket');
+            captureString1 = splitFirstBracket;
+          }
+
+          console.log('captureSTring1:: ', captureString1);
+          console.log('captureSTring1:: ', typeof captureString1);
+          let splitSecondBracket: any = captureString1.split(']');
+          console.log('splitSecondBracket::: ', splitSecondBracket);
+          let captureString2: any = splitSecondBracket[0];
+          console.log('captureString2', captureString2);
+
+          let linksUserAlreadyVotedForArray: Array<string> = captureString2
+            // .slice(0, linksUserAlreadyVotedFor.length)
+            // .split('[')
+            // .split(']');
             .split(',');
+
           console.log(
             'linksUserAlreadyVotedFor2',
             linksUserAlreadyVotedForArray
@@ -287,13 +311,36 @@ export class UserResolver {
               linksUserAlreadyVotedForArray
             );
 
+            console.log(
+              'add new id! :::',
+              linksUserAlreadyVotedForArray.push(id.toString())
+            );
+
             //
             /*
               1)  need to check to make sure user hasn't voted for this link yet
               2) need to add the new member to the array
               3) need to convert the array into a string, then return it 
+
+              probably the best way to do this is to treat it like an array, 
+              just add the new member, then directly convert to a string.
+               mannually adding the string is creating a bunch of extra bullshit
+
+               8/1/29 update
+
+               right now the code is just putting the new string with that last vote in
+               it's not adding a member to an array and then converting bck to a string.
+               
+
+               also, check the "find" value being returned.  that's a problem 
+
+               8/7/20 update
+
+               I need to just hack out all the crap related to the return of a string in this function
+
+               This should have been about returning an array.  I need to figure out how that works with POSTGres, too.
             */
-              
+
             //
             try {
               input = {
@@ -304,6 +351,10 @@ export class UserResolver {
               // console.log('linkUserhasVotedFor.res::', res);
               console.log('linkUserhasVotedFor.res::', res);
               console.log('find:::', find);
+
+              // this needs to be looked at, linksUserHAsVotedFor is just coping over the old array, not adding a member
+
+              // go back and look at the first one and basically try to extrapolate that out to this one...
               return { id: userId, email, linksUserHasVotedFor };
             } catch (error) {
               console.log('linksUserHasVotedFor.error', error);
