@@ -161,6 +161,73 @@ export class UserResolver {
       return err;
     }
   }
+
+  @Mutation(() => Boolean)
+  // @UseMiddleware(isAuth)
+  async updateLinksArray(
+    @Arg('id', () => Int) id: number,
+    @Arg('userId', () => Int) userId: number,
+    @Arg('email') email: string
+
+    // @Ctx() { payload }: MyContext
+  ) {
+    console.log('id, userId, email:::', id, userId, email);
+
+    //  return user
+    try {
+      const user = await User.findOne({ where: { email } });
+
+      // typecheck user object, eliminate undefined/null objects
+      if (!user) {
+        throw new Error('could not find user');
+      }
+      // destructure out linksArray field from user object
+      const { linksArray } = user;
+
+      console.log('user object::: ', user, linksArray);
+
+      if (linksArray.length === 0) {
+        linksArray.push(id);
+        console.log('linksArray::: ', linksArray);
+        await User.update({ id: userId }, { linksArray: linksArray });
+        return true;
+      }
+
+      if (linksArray.length > 0) {
+        let idCheck = linksArray.includes(id);
+        //
+        //
+        if (idCheck === false) {
+          linksArray.push(id);
+          console.log('linksArray::: ', linksArray);
+          await User.update({ id: userId }, { linksArray: linksArray });
+          return true;
+        }
+        //
+        //
+        if (idCheck === true) {
+          alert('this item exists already in this array ');
+          console.log('linksArray::: ', linksArray);
+          return false;
+        }
+      } else {
+        console.log('ELSE!!! WTF????');
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.log('error::', err);
+      return false;
+    }
+  }
+
+  //
+  //
+  //
+  //  T/B deleted
+  //
+
   @Mutation(() => User)
   async updateLinksUserHasVotedForField(
     @Arg('id', () => Int) id: number,

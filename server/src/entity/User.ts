@@ -24,6 +24,11 @@ export class User extends BaseEntity {
   @Column('text', { default: [] })
   linksUserHasVotedFor: string;
 
+  @Field(() => [Int])
+  // https://stackoverflow.com/questions/57611633/typeorm-array-is-not-supported-in-postgres
+  @Column('int', { array: true, default: {} })
+  linksArray: number[];
+
   @Column('int', { default: 0 })
   tokenVersion: number;
 }
