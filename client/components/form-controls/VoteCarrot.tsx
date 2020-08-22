@@ -31,7 +31,6 @@ const voteForLink = async (voteForLinkProps: {
   let votes = numVotes + 1;
 
   if (user === null) {
-    alert('user not logged in, goober!');
     //  https://stackoverflow.com/questions/58173809/next-js-redirect-from-to-another-page
     Router.push('/login');
     return;

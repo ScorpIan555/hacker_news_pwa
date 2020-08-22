@@ -35,11 +35,15 @@ const SubmitLinkForm: FC = () => {
     console.log('authState:::', authStateContext);
     console.log('data::: ', data); // not sure if I wanna use the query directly or can i just use the authStateContext
 
-    try {
-      submitToGraphQL(link);
-    } catch (error) {
-      console.log('error:::', error);
-      return error;
+    if (data?.me === null) {
+      router.push('/login');
+    } else {
+      try {
+        submitToGraphQL(link);
+      } catch (error) {
+        console.log('error:::', error);
+        return error;
+      }
     }
   };
 
