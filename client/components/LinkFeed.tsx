@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-// import Table from 'rc-table';
+
 
 import { FormattedMessage } from 'react-intl';
 
 import { useLinkFeedQuery } from '../generated/graphql';
-import { IItem } from '../lib/typescript/interfaces';
+
 import {
   ItemWrapper,
   ItemName,
   ItemDetails,
   ItemSize,
-  ItemPrice,
-  // ImageWrapper,
   OrderBox,
 } from './orders/Order.style';
 import OrderDetails from './orders/OrderDetails';
@@ -24,12 +22,13 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     console.log('LinkFeed.props.children:::', children);
   }
 
-  const { data, loading, refetch } = useLinkFeedQuery({
+  const { data, refetch } = useLinkFeedQuery({
     variables: {
       limit: 20,
       skip: 0,
     },
   });
+
 
   useEffect(() => {
     let links = data?.linkFeed;
@@ -40,52 +39,6 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   }),
     [data?.linkFeed];
 
-  let body = <div></div>;
-
-  if (loading) {
-    body = <div>Loading....</div>;
-  } else if (data) {
-    let dataLinks: Array<object> = data.linkFeed;
-    body = (
-      <div>
-        {dataLinks.map<object>(
-          (item: IItem): React.ReactElement<IItem> => {
-            // item.key = `key-${id}`;
-            // console.log('item:::', item);
-
-            return (
-              <ItemWrapper>
-                <ItemDetails>
-                  {/* <li key={`key + ${item.id}`}>
-                  <p>{item.id}</p>
-                  <p>{item.url}</p>
-                  <p>{item.description}</p>
-                  <p>{item.postedBy} </p>
-                </li> */}
-                  <ItemName>{item.id}</ItemName>
-                  <ItemSize>{item.url}</ItemSize>
-                  <ItemPrice>{item.description}</ItemPrice>
-                </ItemDetails>
-              </ItemWrapper>
-            );
-          }
-        )}
-      </div>
-    );
-  } else {
-    body = <div>No links available</div>;
-  }
-
-  // const columns: any = [
-  //   {
-  //     dataIndex: '',
-  //     ellipsis: true,
-  //     key: 'items',
-  //   },
-  // ];
-
-  // console.log('body:', body);
-  // console.log('type of data:::', data);
 
   const orderTableColumns = [
     {
@@ -98,9 +51,6 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         //
         // this needs something like this
         //  in order to get the results to point to the data object
-        //let dataLinks: Array<object> = data.links;
-
-        // console.log('record::', record);
 
         return (
           <ItemDetails>
@@ -117,10 +67,8 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       // width: 250,
       ellipsis: true,
       render: (record: any) => {
-        // console.log('text:::', typeof text, text);
+        
         console.log('record::', record);
-        // console.log('foo::', foo);
-        // console.log('bar:::', bar);
 
         return (
           <ItemWrapper>
@@ -145,14 +93,13 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     },
   ];
 
-  // console.log('boddy:', body);
+  
 
   return (
     <div id="results-body">
       <OrderBox>
         <OrderDetails columns={orderTableColumns} tableData={data?.linkFeed} />
       </OrderBox>
-      <div id="body-only-method">{body}</div>
     </div>
   );
 };
