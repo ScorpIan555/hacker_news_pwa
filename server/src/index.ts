@@ -19,7 +19,7 @@ import {
   const app = express();
   app.use(
     cors({
-      origin: 'http://localhost:8000',
+      origin: `${process.env.ORIGIN}` , // need to replace with env variable
       credentials: true,
     })
   );
@@ -85,6 +85,8 @@ import {
     // need to figure out how to host this on heroku or something
     console.log('express server started');
     console.log(`running on http://localhost:${PORT}/graphql`);
+    console.log(`process.env:::`, process.env.NODE_ENV)
+    console.log(`process.env::: + ${process.env.ORIGIN}`)
   });
 })();
 
