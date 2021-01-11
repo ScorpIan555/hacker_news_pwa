@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { ThemeProvider } from 'styled-components';
+import { useCustomTheme } from '../../lib/store/contexts';
+// import app libraries
+import { GlobalStyle } from '../../lib/theme';
 // import app components
 import { Header } from '../Header';
 
-// import app libraries
-import { GlobalStyle } from '../../lib/theme';
-import { useCustomTheme } from '../../lib/store/contexts';
-import { ThemeProvider } from 'styled-components';
 
 interface ILayoutProps {
   title?: string;

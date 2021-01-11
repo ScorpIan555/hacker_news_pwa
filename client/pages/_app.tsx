@@ -1,15 +1,15 @@
-import App, { AppContext } from 'next/app';
-import React, { Context } from 'react';
+import { ApolloProvider } from '@apollo/react-hooks';
 // state mgt
 import { enableMapSet, enablePatches } from 'immer';
-import { ApolloProvider } from '@apollo/react-hooks';
-
+import App, { AppContext } from 'next/app';
+import React, { Context } from 'react';
+import Layout from '../components/layout/Layout';
 // import app components
 import { withApollo } from '../lib/apollo';
-import Layout from '../components/layout/Layout';
-import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { AuthStateContext } from '../lib/store/contexts';
+import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { IState } from '../lib/typescript/interfaces';
+
 
 // import { NextPageContext } from "next";
    

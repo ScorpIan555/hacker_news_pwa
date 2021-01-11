@@ -39,10 +39,15 @@ volumes:
 # Refs:
 # good general walkthru:
 # https://towardsdatascience.com/tricks-for-postgres-and-docker-that-will-make-your-life-easier-fc7bfcba5082
+
 # handy demo of some docker cli commands:
 # https://linuxhint.com/run_postgresql_docker_compose/
+
 # general docker tutorial, some good explanations:
 # https://medium.com/@wkrzywiec/database-in-a-docker-container-how-to-start-and-whats-it-about-5e3ceea77e50
+
+# in-depth series on containers from the perspective of the kernel 
+# https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504
 
 # remember if there's a running port on Postgres default, use sudo: https://stackoverflow.com/questions/38249434/docker-postgres-failed-to-bind-tcp-0-0-0-05432-address-already-in-use
 # sudo lsof -i:5432

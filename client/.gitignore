@@ -1,3 +1,7 @@
 node_modules
 .next
 .lint_
+
+#  App ref
+_theme-material-app
+package-copy.txt
