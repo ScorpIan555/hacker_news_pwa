@@ -1,21 +1,18 @@
 import { ApolloProvider } from '@apollo/react-hooks';
-import { BaseProvider } from 'baseui';
 // state mgt
 import { enableMapSet, enablePatches } from 'immer';
 import App, { AppContext } from 'next/app';
 import React, { Context } from 'react';
-import 'react-flexbox-grid/dist/react-flexbox-grid.css';
-// import { Client as Styletron } from 'styletron-engine-atomic';
-import { Provider as StyletronProvider } from 'styletron-react';
-import Layout from '../components/layout/Layout';
+import { defaultTheme } from 'site-settings/site-theme/default';
+import { ThemeProvider } from 'styled-components';
+import 'theme/global.css';
 // import app components
 import { withApollo } from '../lib/apollo';
 import { AuthStateContext } from '../lib/store/contexts';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { IState } from '../lib/typescript/interfaces';
-import { theme } from '../theme';
-import '../theme/global.css';
-import { styletron } from '../theme/styletron';
+
+
 // import { NextPageContext } from "next";
    
 // @TODO
@@ -58,23 +55,21 @@ class MyApp extends App<any> {
 
   render() {
     const { Component, isServer, apolloClient, pageProps } = this.props;
-    console.log('_app.this.props.isServer:::', this.props.isServer);
+    console.log('_app.this.props.isServer:::', isServer);
     // const engine = new Styletron();
     // console.log('render.pageProps:::', pageProps);
     // console.log('this.props:::', this.props);
 
     return (
-      <AuthProvider>
+      
         <ApolloProvider client={apolloClient}>
-        <StyletronProvider value={styletron}>
-        <BaseProvider theme={theme}>
-          <Layout> 
-            <Component {...isServer} />
-          </Layout>
-          </BaseProvider>
-      </StyletronProvider>
+        <ThemeProvider theme={defaultTheme}>
+        <AuthProvider>
+            <Component { ...pageProps} />
+            </AuthProvider>
+    </ThemeProvider>
         </ApolloProvider>
-      </AuthProvider>
+      
     );
   }
 }
