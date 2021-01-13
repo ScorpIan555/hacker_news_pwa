@@ -1,6 +1,6 @@
 import React from 'react';
+import LinkFeed from '../components/link-feed/LinkFeed';
 import { useUsersQuery } from '../generated/graphql';
-import LinkFeed from '../components/LinkFeed';
 
 export default () => {
   const { data } = useUsersQuery({ fetchPolicy: 'network-only' });

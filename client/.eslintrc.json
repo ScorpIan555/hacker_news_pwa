@@ -22,7 +22,6 @@
     "react",
     "prettier",
     "graphql",
-    "better-styled-components"
   ],
   "rules": {
     "prettier/prettier": "error",
@@ -42,7 +41,6 @@
         "env": "literal"
       }
     ],
-    "better-styled-components/sort-declarations-alphabetically": 2
   },
   "settings": {
     "import/resolver": {

@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react';
-
-
 import { FormattedMessage } from 'react-intl';
-
 import { useLinkFeedQuery } from '../generated/graphql';
-
+import VoteCarrot from './form-controls/VoteCarrot';
 import {
-  ItemWrapper,
-  ItemName,
-  ItemDetails,
-  ItemSize,
-  OrderBox,
+    ItemDetails, ItemName,
+
+    ItemSize, ItemWrapper,
+
+
+
+    OrderBox
 } from './orders/Order.style';
 import OrderDetails from './orders/OrderDetails';
-import VoteCarrot from './form-controls/VoteCarrot';
+
+
+
+
 
 interface Props {}
 
