@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 
 # Use postgres/example user/password credentials
 services:
@@ -8,7 +8,7 @@ services:
     restart: always
     volumes:
       # - jwt-auth-db-data:/var/lib/postgresql/data:rw
-      - hacker-news-db:/var/lib/docker/volumes/hacker-news-db/_data
+      - hacker-news-db:/var/lib/docker/volumes/hacker-news-db/_data:rw
     environment:
       POSTGRES_DB: hacker-news-db
       POSTGRES_USER: postgres
@@ -27,6 +27,7 @@ services:
 volumes:
   hacker-news-db:
     driver: local
+    
 #
 #
 #

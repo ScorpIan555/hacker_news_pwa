@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useLinkFeedQuery } from '../../generated/graphql';
+import { StyledCell } from './LinkFeed.style';
 
 
 const StyledGrid = styled.button`
@@ -91,7 +92,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
                   // <DataRow index={index} item={item} />
                   <React.Fragment>
                     <DataRow item={item} index={index} >{id}</DataRow>
-                    <div>{url}</div>
+                    <StyledCell>{url}</StyledCell>
                     <div>{description}</div>
                     <div>{postedBy}</div>
                     <div>{votes}</div>
