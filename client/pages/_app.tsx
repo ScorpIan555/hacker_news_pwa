@@ -6,12 +6,12 @@ import React, { Context } from 'react';
 import { defaultTheme } from 'site-settings/site-theme/default';
 import { ThemeProvider } from 'styled-components';
 import 'theme/global.css';
+import Layout from '../components/layout/Layout';
 // import app components
 import { withApollo } from '../lib/apollo';
 import { AuthStateContext } from '../lib/store/contexts';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { IState } from '../lib/typescript/interfaces';
-
 
 // import { NextPageContext } from "next";
    
@@ -60,18 +60,25 @@ class MyApp extends App<any> {
     // console.log('render.pageProps:::', pageProps);
     // console.log('this.props:::', this.props);
 
+
+
+    // NEXT STEPS
+    /* 
+    I am going to just add in the MUI components here
+    later, I can break them all out into other parts, etc.
+    */
     return (
-      
-        <ApolloProvider client={apolloClient}>
-        <ThemeProvider theme={defaultTheme}>
         <AuthProvider>
-            <Component { ...pageProps} />
-            </AuthProvider>
-    </ThemeProvider>
-        </ApolloProvider>
-      
+          <ApolloProvider client={apolloClient}>
+            <ThemeProvider theme={defaultTheme}>       
+                <Layout>
+                  <Component { ...pageProps} />
+                </Layout>
+            </ThemeProvider>
+          </ApolloProvider> 
+        </AuthProvider>
     );
   }
-}
+}    
 
 export default withApollo(MyApp);

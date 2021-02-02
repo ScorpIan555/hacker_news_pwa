@@ -1,15 +1,16 @@
-version: "3.6"
+version: "3.7"
 
 # Use postgres/example user/password credentials
 services:
-  jwt-auth-db-data:
+  hacker-news-db:
     image: postgres
-    container_name: jwt-auth-db-container-two
+    container_name: hacker-news_container
     restart: always
     volumes:
-      - jwt-auth-db-data:/var/lib/postgresql/data:rw
+      # - jwt-auth-db-data:/var/lib/postgresql/data:rw
+      - hacker-news-db:/var/lib/docker/volumes/hacker-news-db/_data
     environment:
-      POSTGRES_DB: jwt-auth
+      POSTGRES_DB: hacker-news-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
@@ -24,7 +25,7 @@ services:
   #     - 8080:8080
 
 volumes:
-  jwt-auth-db-data:
+  hacker-news-db:
     driver: local
 #
 #

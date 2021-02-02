@@ -4,7 +4,7 @@
   "port": 5432,
   "username": "postgres",
   "password": "postgres",
-  "database": "jwt-auth",
+  "database": "hacker-news-db",
   "synchronize": true,
   "logging": false,
   "entities": ["src/entity/**/*.ts"],

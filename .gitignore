@@ -1,6 +1,12 @@
-TODO_LIST
-BUGS
-voteArrow.css
-package.json
-yarn.lock
+
+# node_modules
+
 node_modules/
+
+# env 
+
+server/.env
+
+# app admin
+
+TODO_LIST

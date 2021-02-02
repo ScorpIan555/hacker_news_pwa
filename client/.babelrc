@@ -8,7 +8,6 @@
         "displayName": true, // add component name to generated CSS
         "preprocess": false
       }
-    ],
-    "inline-react-svg"
+    ]
   ]
 }

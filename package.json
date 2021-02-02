@@ -1,0 +1,11 @@
+{
+  "name": "hacker_news_pwa",
+  "version": "1.0.0",
+  "description": "Hacker News PWA workspace folder packages",
+  "main": "index.js",
+  "repository": "git@github.com:ScorpIan555/hacker_news_pwa.git",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.17.0"
+  }
+}

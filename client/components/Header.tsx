@@ -1,19 +1,10 @@
-import React, { FC, useEffect } from 'react';
-// import Link from 'next/link';
-// get generated custom GraphQL hooks
-import { useMeQuery, useLogoutMutation } from '../generated/graphql';
-// get app libraries
-// import { setAccessToken } from '../lib/utils';
 import {
-  useAuthState,
-  useAuthDispatch,
-  // useCustomTheme
-} from '../lib/store/contexts';
-// import { Button } from './form-controls';
-import { setAccessToken } from '../lib/utils';
-// import { HeaderContainer } from '../lib/theme/header-styles';
-// import { Nav } from './Nav';
-import { theme } from '../lib/theme';
+  Button,
+
+  createStyles, makeStyles,
+
+  Theme
+} from '@material-ui/core';
 // import { ThemeContext } from 'styled-components';
 // import { AppBar, Toolbar, IconButton } from 'material-ui';
 // import classes from '*.module.css';
@@ -21,20 +12,27 @@ import { theme } from '../lib/theme';
 // import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
-import {
-  Button,
-  makeStyles,
-  createStyles,
-  Theme,
-  // ButtonBase
-} from '@material-ui/core';
-
 import Typography from '@material-ui/core/Typography';
+import React, { FC, useEffect } from 'react';
+// import Link from 'next/link';
+// get generated custom GraphQL hooks
+import { useLogoutMutation, useMeQuery } from '../generated/graphql';
+// get app libraries
+// import { setAccessToken } from '../lib/utils';
+import {
+  useAuthDispatch, useAuthState
+} from '../lib/store/contexts';
+// import { HeaderContainer } from '../lib/theme/header-styles';
+// import { Nav } from './Nav';
+import { theme } from '../lib/theme';
+// import { Button } from './form-controls';
+import { setAccessToken } from '../lib/utils';
 // import Button from '@material-ui/core/Button';
 // import IconButton from '@material-ui/core/IconButton';
 // import Link from 'next/link';
 import NavLink from './form-controls/NavLink';
+
+
 // import MenuIcon from '@material-ui/icons/Menu';
 
 interface Props {}
@@ -79,7 +77,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Header: FC<Props> = () => {
+ export const Header: FC<Props> = () => {
   const { data, loading } = useMeQuery(); // @TODO need to memoize this result
   const [logout, { client }] = useLogoutMutation();
 
@@ -152,15 +150,6 @@ export const Header: FC<Props> = () => {
       >
         <AppBar position="static" style={{ width: '100%' }}>
           <Toolbar className="toolbar">
-            {/* <IconButton
-              edge="start"
-              className={classes.menuButton}
-              style={{ margin: '1rem' }}
-              color="inherit"
-              aria-label="menu"
-            >
-              
-            </IconButton> */}
 
             <Typography
               variant="h6"
@@ -173,22 +162,8 @@ export const Header: FC<Props> = () => {
             <Typography variant="h6" className="header-link">
               <NavLink className="menu-item" href="/submit" label="Submit" />
             </Typography>
-            {/* 
-            <Typography variant="button" className="login-logout-button">
-              <Button color="inherit" onClick={handleClickForLogout}>
-                {' '}
-                Logout{' '}
-              </Button>
-            </Typography> */}
+            
 
-            {/* 
-            <Button
-              color="inherit"
-              onClick={handleClickForLogout}
-              className={classes.loginLogoutButton}
-            >
-              Logout
-            </Button> */}
 
             {!loading && data && data.me ? (
               <Typography variant="button" className="logout-button">
@@ -208,14 +183,7 @@ export const Header: FC<Props> = () => {
         </AppBar>
         {body}
       </div>
-
-      {/* 
-      <HeaderContainer>
-        <header id="page-header">
-          <Nav handleClick={handleClick} data={data} loading={loading} />
-          {body}
-        </header>
-      </HeaderContainer> */}
     </>
   );
 };
+
