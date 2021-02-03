@@ -1,10 +1,9 @@
+import { List, ListItem } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useLinkFeedQuery } from '../../generated/graphql';
-import { StyledCell } from './LinkFeed.style';
-
 
 const StyledGrid = styled.button`
   /* ... */
@@ -90,13 +89,13 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
                 return (
                   // <DataRow index={index} item={item} />
-                  <React.Fragment>
-                    <DataRow item={item} index={index} >{id}</DataRow>
-                    <StyledCell>{url}</StyledCell>
-                    <div>{description}</div>
-                    <div>{postedBy}</div>
-                    <div>{votes}</div>
-                  </React.Fragment>
+                  <List>
+                    <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
+                    {/* <ListItem>{url}</ListItem>
+                    <ListItem>{description}</ListItem>
+                    <ListItem>{postedBy}</ListItem>
+                    <ListItem>{votes}</ListItem> */}
+                  </List>
                 )
               })
             ) : <div> bleh </div>
