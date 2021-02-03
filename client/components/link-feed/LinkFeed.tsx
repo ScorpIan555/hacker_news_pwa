@@ -1,6 +1,7 @@
 import { List, ListItem } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import VoteCarrot from 'components/form-controls/VoteCarrot';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useLinkFeedQuery } from '../../generated/graphql';
@@ -40,11 +41,11 @@ const DataRow = ({item, index}) => {
     <React.Fragment>
       <Grid item xs={12}>
         <Paper className="" index={index} >
-          <div>{id}</div>
-          <div>{url}</div>
-          <div>{description}</div>
-          <div>{postedBy}</div>
-          <div>{votes}</div>
+          <div>{index + 1} <VoteCarrot link={item} /> {description} {url}</div>
+          
+          
+          
+          <div>{votes} points by: {postedBy} {'calc time'} ago  {'| hide link |'} {' # commends'}</div>
         </Paper>
       </Grid>
     </React.Fragment>
@@ -79,6 +80,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
     return (
       <Grid container direction="row">
+        <List>
         {
           data ? (
             data.linkFeed?.length ? (
@@ -89,13 +91,15 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
                 return (
                   // <DataRow index={index} item={item} />
-                  <List>
-                    <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
-                    {/* <ListItem>{url}</ListItem>
-                    <ListItem>{description}</ListItem>
-                    <ListItem>{postedBy}</ListItem>
-                    <ListItem>{votes}</ListItem> */}
-                  </List>
+                  
+                    // <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
+                    <ListItem alignItems={'flex-start'}>
+                      
+                      
+                      <DataRow item={item} index={index} />
+                    </ListItem>
+                  
+                  
                 )
               })
             ) : <div> bleh </div>
@@ -104,7 +108,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         
         
         
-      
+        </List>
       </Grid>
     )
 
