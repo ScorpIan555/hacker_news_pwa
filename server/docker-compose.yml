@@ -26,7 +26,8 @@ services:
 
 volumes:
   hacker-news-db:
-    driver: local
+    # driver: local 
+    external: true
     
 #
 #

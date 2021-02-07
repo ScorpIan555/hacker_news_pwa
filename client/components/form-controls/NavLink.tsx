@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
+import React from 'react';
+import styled from 'styled-components';
 // import { FormattedMessage } from 'react-intl';
 
 type NavLinkProps = {
@@ -23,6 +23,10 @@ const Icon = styled.span`
   justify-content: center;
 `;
 
+const TabLink = styled.span`
+  justify-content: flex-end
+` 
+
 const NavLink: React.SFC<NavLinkProps> = ({
   href,
   label,
@@ -35,18 +39,18 @@ const NavLink: React.SFC<NavLinkProps> = ({
 }) => {
   const isCurrentPath = router.pathname === href || router.asPath === href;
   return (
-    <div onClick={onClick} className={className ? className : ''}>
+    <TabLink onClick={onClick} className={className ? className : ''}>
       <Link href={href}>
         <a
           className={isCurrentPath ? ' current-page' : ''}
-          style={{ display: 'flex', alignItems: 'center', color: '' }} // pull in the theme here
+          style={{ display: 'flex', alignItems: 'right', color: '' }} // pull in the theme here
         >
           {icon ? <Icon className={iconClass}>{icon}</Icon> : ''}
 
           <span className="label">{label}</span>
         </a>
       </Link>
-    </div>
+    </TabLink>
   );
 };
 

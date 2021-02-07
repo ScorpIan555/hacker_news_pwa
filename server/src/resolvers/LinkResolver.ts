@@ -1,13 +1,16 @@
+import extractDomain from 'extract-domain';
 import {
-  Resolver,
-  Mutation,
   Arg,
   Ctx,
-  UseMiddleware,
+
   // Query,
   Field,
   InputType,
-  Int,
+  Int, Mutation, Resolver,
+
+
+
+  UseMiddleware
 } from 'type-graphql';
 import { Link } from '../entity';
 import { MyContext } from '../lib/interfaces/MyContext';
@@ -17,6 +20,9 @@ import { isAuth } from '../middleware/isAuthMiddleware';
 class LinkInput {
   @Field()
   url: string;
+
+  // @Field()
+  // domain: string;
 
   @Field()
   description: string;
@@ -28,7 +34,12 @@ class LinkUpdateInput {
   url?: string;
 
   @Field(() => String, { nullable: true })
+  domain?: string;
+
+  @Field(() => String, { nullable: true })
   description?: string;
+
+
 
   // @Field(() => [String], { nullable: true })
   // voters?: string[];
@@ -57,9 +68,12 @@ export class LinkResolver {
     console.log('LinkResolver.payload (User) object:::', payload);
     const postedBy: any = payload?.userEmail;
     const { url, description } = options;
+    // const domain = getDomainFromUrlString(url)
+    const domain = extractDomain(url);
+  console.log('domain:::', domain)
 
     try {
-      const link = await Link.create({ url, description, postedBy }).save();
+      const link = await Link.create({ url, description, domain, postedBy }).save();
       console.log('LinkResolver.postedBy:::', postedBy);
       console.log('link:::', link);
 

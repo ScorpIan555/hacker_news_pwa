@@ -1,6 +1,6 @@
 import {
-  AuthStateContext,
-  AuthDispatchContext,
+  AuthDispatchContext, AuthStateContext,
+
   useAuthDispatch,
   useAuthState
 } from './AuthContext';
@@ -14,3 +14,4 @@ export {
   CustomThemeContext,
   useCustomTheme
 };
+

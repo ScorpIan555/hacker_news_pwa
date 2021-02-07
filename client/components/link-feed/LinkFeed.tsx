@@ -1,15 +1,18 @@
-import { List, ListItem } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import VoteCarrot from 'components/form-controls/VoteCarrot';
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useLinkFeedQuery } from '../../generated/graphql';
+import { Container, Link, List, ListItem } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
+import { themeGet } from '@styled-system/theme-get'
+import VoteCarrot from 'components/form-controls/VoteCarrot'
+import extractDomain from 'extract-domain'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { useLinkFeedQuery } from '../../generated/graphql'
 
 const StyledGrid = styled.button`
   /* ... */
 `
-
 
 // const Col = withStyle(Column, () => ({
 //   '@media only screen and (max-width: 767px)': {
@@ -34,29 +37,171 @@ const StyledGrid = styled.button`
 //   { value: 'makeup', label: 'Makeup' },
 // ];
 
-const DataRow = ({item, index}) => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      // display: 'safe',
+      // backgroundColor: theme.palette.primary.light
+      // display: 'flex',
+      // justifyContent: 'flex-end',
+    },
+    // toolbar: {
+    //   // display: 'flex',
+    //   flexWrap: 'wrap',
+    //   // backgroundColor: theme.palette.background.paper,
+    //   // color: theme.palette.info.contrastText,
+    // },
+    menuButton: {
+      // not in use
+      marginRight: theme.spacing(2),
+      color: 'red',
+    },
+    urlText: {
+      color: 'grey',
+    },
+    // title: {
+    //   marginLeft: '.1rem',
+    // },
+
+    // logoutButton: {
+    //   // color: 'default',
+    //   // flex: 'flex-end',
+    //   // alignSelf: 'flex-end',
+    // },
+    loginLogoutButton: {
+      // justifyContent: 'flex-end',
+      // justifySelf: 'flex-end',
+      position: 'absolute',
+      right: '0',
+      // color: theme.palette.info.main,
+    },
+  })
+)
+
+const LinkDescription = styled.span`
+  font-size: ${themeGet('fontSizes.2', '15')}px;
+  font-weight: ${themeGet('fontWeights.6', '400')};
+  color: ${themeGet('colors.darkBold', '#0D1136')};
+  margin-top: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  text-align: center;
+`
+
+const UrlText = styled.span`
+  margin-left: 10px;
+  font-size: ${themeGet('fontSizes.2', '12')}px;
+`
+
+const StyledLink = styled(Link)`
+  color: orange;
+`
+
+const TitleRow = styled.div`
+  font-family: 'Lato', sans-serif;
+  color: #828282;
+`
+
+const SubRow = styled.div`
+  margin-left: 10px;
+  font-size: ${themeGet('fontSizes.2', '12')}px;
+  color: #828282;
+`
+
+// const dotComCheck = (urlString: String) => {
+//   if(urlString.match('.com') !== null) {
+//     const formattedURLStringDotCom = urlString.split('/');
+//     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom);
+//     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom[0]);
+//     return formattedURLStringDotCom[0]
+//   }
+// }
+
+// const httpsCheck = (urlString: String) => {
+//   if(urlString.match('https://') !== null) {
+//     const formattedURLStringHttps = urlString.split('https://');
+//     console.log('format-conditional worked-https!', formattedURLStringHttps);
+//     console.log('format-conditional worked-https!', formattedURLStringHttps[1]);
+//     const domainNoHttpsDotCom = dotComCheck(formattedURLStringHttps[1])
+//     return domainNoHttpsDotCom;
+//   }
+// }
+
+
+// const getDomainFromUrlString = async (urlString: String) => {
+//   const urlStringCheck = urlString.match('https://')
+//   console.log('urlStringCheck:::', urlStringCheck)
+
+//   dotComCheck(urlString);
+//   httpsCheck(urlString);
+
+// //   if(urlString.match('https://') !== null) {
+// //     const formattedURLString = urlString.split('https://');
+// //     console.log('format-conditional worked-https!', formattedURLString);
+// //     console.log('format-conditional worked-https!', formattedURLString[1]);
+// //     return formattedURLString[1]
+// //   }
+// //   if(urlString.match('.com') !== null) {
+// //     const formattedURLStringDotCom = urlString.split('/');
+// //     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom);
+// //     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom[0]);
+// //     return formattedURLStringDotCom[0]
+// // }
+// }
+
+const DataRow = ({ item, index }) => {
   console.log('DataRow.item:::', item);
-  const { id, url, description, postedBy, votes } = item;
+  
+  const { id, url, description, postedBy, votes, createdAt } = item;
+  const hoursAgo = moment(createdAt).startOf('hour').fromNow(); 
+
+  const formattedURL = url.split('https://')
+  console.log('formattedURL:::', formattedURL);
+  const matchURL = url.match('https://')
+  console.log('matchURL:::', url, matchURL);
+
+  const domain = extractDomain(url);
+  console.log('domain:::', domain)
+ 
+  
   return (
     <React.Fragment>
       <Grid item xs={12}>
-        <Paper className="" index={index} >
-          <div>{index + 1} <VoteCarrot link={item} /> {description} {url}</div>
-          
-          
-          
-          <div>{votes} points by: {postedBy} {'calc time'} ago  {'| hide link |'} {' # commends'}</div>
+        <Paper className="" elevation={0} index={index}>
+          <TitleRow>
+            {index + 1} {'.'} <VoteCarrot link={item} />
+            {/* <Typography> */}
+            <LinkDescription>{description}</LinkDescription>
+            <UrlText>
+              {'('}
+              <StyledLink underline="hover" href={url}>
+                {url}
+              </StyledLink>{' '}
+              {')'}
+            </UrlText>
+            {/* </Typography> */}
+          </TitleRow>
+
+          <SubRow>
+            {votes} points by: {postedBy} {hoursAgo} {'| hide link |'}{' '}
+            {' # commends'}
+          </SubRow>
         </Paper>
       </Grid>
     </React.Fragment>
   )
 }
 
-
 interface Props {}
 
 const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
-  if (children != undefined || null) {
+  const [isFocus, setIsFocus] = useState(false)
+  const theme = useTheme()
+  const styles = useStyles(theme)
+
+  if (children !== undefined || null) {
     // console.log('LinkFeed.props.children:::', children);
   }
 
@@ -65,184 +210,60 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       limit: 20,
       skip: 0,
     },
-  });
-
+  })
 
   useEffect(() => {
-    let links = data?.linkFeed;
+    let links = data?.linkFeed
 
-    console.log('data was rerun:::', data);
-    console.log('links lenght', links?.length);
-    refetch();
+    console.log('data was rerun:::', data)
+    console.log('links lenght', links?.length)
+    console.log('theme::: ', theme.palette)
+    refetch()
   }),
-    [data?.linkFeed];
+    [data?.linkFeed]
 
+  const handleMouseOver = (event: Event) => {
+    event.preventDefault()
+    console.log('handleMouseOver:::', isFocus)
 
-    return (
+    setIsFocus(!isFocus)
+  }
+
+  return (
+    <Container className={styles.root}>
       <Grid container direction="row">
         <List>
-        {
-          data ? (
+          {data ? (
             data.linkFeed?.length ? (
               data.linkFeed.map((item: any, index: any) => {
-                console.log('item:::', item);
-                console.log('index::', index);
-                const { id, url, description, postedBy, votes } = item;
+                console.log('item:::', item)
+                console.log('index::', index)
+                // const { id, url, description, postedBy, votes } = item;
 
                 return (
                   // <DataRow index={index} item={item} />
-                  
-                    // <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
-                    <ListItem alignItems={'flex-start'}>
-                      
-                      
-                      <DataRow item={item} index={index} />
-                    </ListItem>
-                  
-                  
+
+                  // <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
+                  <ListItem
+                    alignItems={'flex-start'}
+                    autoFocus={isFocus}
+                    onMouseOver={handleMouseOver}
+                  >
+                    <DataRow item={item} index={index} />
+                  </ListItem>
                 )
               })
-            ) : <div> bleh </div>
-          ) : <div>Felicidade</div>
-        }
-        
-        
-        
+            ) : (
+              <div> bleh </div>
+            )
+          ) : (
+            <div>Felicidade</div>
+          )}
         </List>
       </Grid>
-    )
-
+    </Container>
+  )
 }
 
 
-
-
-
-
-//
-//  ********************   TWO
-//
-
-// return (
-//   <Grid fluid={true}>
-//   <Row>
-//     <Col md={12}>
-//     <Wrapper style={{ boxShadow: '0 0 5px rgba(0, 0 , 0, 0.05)' }}>
-//         <TableWrapper>
-//           <StyledTable $gridTemplateColumns="minmax(70px, 70px) minmax(70px, 70px) minmax(70px, 70px) minmax(150px, auto) minmax(150px, auto) auto">
-         
-//             {data? (
-//               data.linkFeed?.length ? (
-//                 data.linkFeed
-//                 .map((item: any) => Object.values(item))
-//                 .map((row: any, index: any) => (
-//                   <React.Fragment key={index}>
-//                     <StyledCell>
-                     
-//                     </StyledCell>
-//                     <StyledCell>{row[1]}</StyledCell>
-//                     <StyledCell>{row[3]}</StyledCell>
-//                     <StyledCell>{row[4]}</StyledCell>
-//                     <StyledCell>{row[5]}</StyledCell>
-//                   </React.Fragment>
-//                 ))
-//             ) : (
-//               <NoResult
-//                 hideButton={false}
-//                 style={{
-//                   gridColumnStart: '1',
-//                   gridColumnEnd: 'one',
-//                 }}
-//               />
-//             )
-//           ) : null}
-      
-
-
-//           </StyledTable>
-//         </TableWrapper>
-//       </Wrapper>
-//     </Col>
-//   </Row>
-// </Grid>
-// )
-
-
-
-
-
-
-
-
-
- //
- // ******** ONE (1)
- //
-
-  // const orderTableColumns = [
-  //   {
-  //     title: <FormattedMessage id="cartItems" defaultMessage="Id" />,
-  //     dataIndex: 'id',
-  //     align: 'right',
-  //     display: 'none',
-  //     // width: 10,
-  //     render: (record: any) => {
-  //       //
-  //       // this needs something like this
-  //       //  in order to get the results to point to the data object
-
-  //       return (
-  //         <ItemDetails>
-  //           <ItemName> {record} </ItemName>
-  //         </ItemDetails>
-  //       );
-  //     },
-  //   },
-
-  //   {
-  //     title: <FormattedMessage id="cartItems" defaultMessage="Items" />,
-  //     dataIndex: '',
-  //     key: 'items',
-  //     // width: 250,
-  //     ellipsis: true,
-  //     render: (record: any) => {
-        
-  //       console.log('record::', record);
-
-  //       return (
-  //         <ItemWrapper>
-  //           <ItemDetails>
-  //             <ItemSize>
-  //               {' '}
-  //               <div className="ml1 gray f11">
-  //                 <VoteCarrot link={record} />
-  //                 <span>
-  //                   {record.description} ({record.url}){' '}
-  //                 </span>{' '}
-  //                 <div className="ml1 green f11">
-  //                   <span>{record.votes} votes </span>
-  //                   <span>posted by: {record.postedBy} </span>
-  //                 </div>
-  //               </div>
-  //             </ItemSize>
-  //           </ItemDetails>
-  //         </ItemWrapper>
-  //       );
-  //     },
-  //   },
-  // ];
-
-  
-
-//   return (
-//     <div id="results-body">
-//       <OrderBox>
-//         <OrderDetails columns={orderTableColumns} tableData={data?.linkFeed} />
-//       </OrderBox>
-//     </div>
-//   );
-// };
-
-
-
-export default LinkFeed;
+export default LinkFeed

@@ -1,22 +1,23 @@
 import { ApolloProvider } from '@apollo/react-hooks';
+import Layout from 'components/layout/Layout';
 // state mgt
 import { enableMapSet, enablePatches } from 'immer';
 import App, { AppContext } from 'next/app';
 import React, { Context } from 'react';
-import { defaultTheme } from 'site-settings/site-theme/default';
-import { ThemeProvider } from 'styled-components';
-import 'theme/global.css';
-import Layout from '../components/layout/Layout';
 // import app components
 import { withApollo } from '../lib/apollo';
 import { AuthStateContext } from '../lib/store/contexts';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { IState } from '../lib/typescript/interfaces';
 
+
 // import { NextPageContext } from "next";
    
 // @TODO
 // ref: profiling https://www.bbc.com/mundo/noticias-51921093  
+
+
+
 
 // @TODO
 // refactor into a functional component, if possible
@@ -70,11 +71,13 @@ class MyApp extends App<any> {
     return (
         <AuthProvider>
           <ApolloProvider client={apolloClient}>
-            <ThemeProvider theme={defaultTheme}>       
-                <Layout>
-                  <Component { ...pageProps} />
-                </Layout>
-            </ThemeProvider>
+           
+              <Layout>
+              <Component { ...pageProps} />
+              </Layout>
+                    
+            
+            
           </ApolloProvider> 
         </AuthProvider>
     );

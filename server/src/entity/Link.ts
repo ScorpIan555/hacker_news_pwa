@@ -1,13 +1,14 @@
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
-  Entity,
+  BaseEntity, Column,
+
+  CreateDateColumn, Entity,
   PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  //   Timestamp
+
+
+
+  UpdateDateColumn
 } from 'typeorm';
-import { ObjectType, Field, Int } from 'type-graphql';
 // import { User } from "./User";
 
 // https://blog.logrocket.com/how-build-graphql-api-typegraphql-typeorm/
@@ -22,6 +23,10 @@ export class Link extends BaseEntity {
   @Field()
   @Column('text')
   url: string;
+
+  @Field()
+  @Column('text', {default: 'domain'})
+  domain: string;
 
   @Field()
   @Column('text')

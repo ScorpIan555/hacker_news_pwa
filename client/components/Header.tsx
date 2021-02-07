@@ -1,8 +1,7 @@
 import {
   Button,
-
-  createStyles, makeStyles,
-
+  createStyles,
+  makeStyles,
   Theme
 } from '@material-ui/core';
 // import { ThemeContext } from 'styled-components';
@@ -38,11 +37,14 @@ import NavLink from './form-controls/NavLink';
 interface Props {}
 
 // probably need to get rid of this. it's cllient side only
+
+// this isn't working because it's client-side only. 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       display: 'safe',
+      color: 'green'
       // backgroundColor:
       // display: 'flex',
       // justifyContent: 'flex-end',
@@ -77,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
- export const Header: FC<Props> = () => {
+export const Header: FC<Props> = () => {
   const { data, loading } = useMeQuery(); // @TODO need to memoize this result
   const [logout, { client }] = useLogoutMutation();
 
@@ -150,11 +152,11 @@ const useStyles = makeStyles((theme: Theme) =>
       >
         <AppBar position="static" style={{ width: '100%' }}>
           <Toolbar className="toolbar">
+        
 
             <Typography
-              variant="h6"
-              // className={classes.title}
-              // style={{ flex: 1 }}
+              variant="h4"
+            
             >
               <NavLink className="header-link" href="/" label="Hacker_News" />
             </Typography>
@@ -162,8 +164,7 @@ const useStyles = makeStyles((theme: Theme) =>
             <Typography variant="h6" className="header-link">
               <NavLink className="menu-item" href="/submit" label="Submit" />
             </Typography>
-            
-
+         
 
             {!loading && data && data.me ? (
               <Typography variant="button" className="logout-button">
@@ -183,7 +184,8 @@ const useStyles = makeStyles((theme: Theme) =>
         </AppBar>
         {body}
       </div>
+
+    
     </>
   );
 };
-

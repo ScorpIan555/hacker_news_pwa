@@ -1,5 +1,5 @@
-import styled, { createGlobalStyle } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
+import styled, { createGlobalStyle } from 'styled-components';
 const TIMEOUT = 400;
 
 export const InjectRTL = styled.div`
@@ -47,7 +47,7 @@ export const GlobalStyle = createGlobalStyle`
 
   // user
   .header-link{
-    
+      
 
     a {
       color: rgba(255, 255, 255, 1);
@@ -58,7 +58,7 @@ export const GlobalStyle = createGlobalStyle`
   .toolbar {
     flex-wrap: wrap;
     position: right;
-    background-color: rgba(255,0,50,.5); 
+    background-color: ${themeGet('colors.lightBlue', '#7986cb')}
   }
 
   .logout-button {

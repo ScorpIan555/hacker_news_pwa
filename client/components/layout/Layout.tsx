@@ -1,8 +1,7 @@
+import { useCustomTheme } from 'lib/store/contexts';
+import { GlobalStyle } from 'lib/theme';
 import * as React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { useCustomTheme } from '../../lib/store/contexts';
-// import app libraries
-import { GlobalStyle } from '../../lib/theme';
 // import app components
 import { Header } from '../Header';
 
@@ -21,14 +20,14 @@ const Layout: React.FunctionComponent<ILayoutProps> = ({ children }) => {
 
   // console.log('Layout.Component:::', Component);
   // console.log('Layout.pageProps:::', pageProps);
-  console.log('Layout.theme:::', themeContext);
+  // console.log('Layout.theme:::', themeContext);
   return (
     <>
       <ThemeProvider theme={themeContext}>
-        <GlobalStyle />
+         <GlobalStyle />
         <Header />
         {children}
-      </ThemeProvider>
+       </ThemeProvider> 
 
       {/* <style jsx>{`
         #_next {

@@ -204,6 +204,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/extract-domain@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/extract-domain/-/extract-domain-2.2.0.tgz#e1f447be11771eb79d81466986a7868130f2d13c"
+  integrity sha512-PdsKB8SBHnEPPdLywVCK5+FWkGM80pW4JJCO6YSlSJdD1VRhztVIzGqoO4I7X9iAi2huyAgJSUk06OMRMzjfkg==
+
 "@types/fs-capacitor@*":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/fs-capacitor/-/fs-capacitor-2.0.0.tgz#17113e25817f584f58100fb7a08eed288b81956e"
@@ -1157,6 +1162,11 @@ express@^4.17.1:
     type-is "~1.6.18"
     utils-merge "1.0.1"
     vary "~1.1.2"
+
+extract-domain@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/extract-domain/-/extract-domain-2.2.1.tgz#1deeae633a5cbf05ae2fd7b3ff87cb98cbc4cb5b"
+  integrity sha512-lOq1adCJha0tFFBci4quxC4XLa6+Rs2WgAwTo9qbO9OsElvJmGgCvOzmHo/yg5CiqeP4+sHjkXYGkrCcIEprMg==
 
 fast-json-stable-stringify@^2.0.0:
   version "2.1.0"

@@ -1,7 +1,9 @@
-import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,7 +16,7 @@ export type Scalars = {
 };
 
 export type Query = {
-   __typename?: 'Query';
+  __typename?: 'Query';
   hello: Scalars['String'];
   bye: Scalars['String'];
   users: Array<User>;
@@ -29,16 +31,18 @@ export type QueryLinkFeedArgs = {
 };
 
 export type User = {
-   __typename?: 'User';
+  __typename?: 'User';
   id: Scalars['Int'];
   email: Scalars['String'];
   linksUserHasVotedFor: Scalars['String'];
+  linksArray: Array<Scalars['Int']>;
 };
 
 export type Link = {
-   __typename?: 'Link';
+  __typename?: 'Link';
   id: Scalars['Int'];
   url: Scalars['String'];
+  domain: Scalars['String'];
   description: Scalars['String'];
   postedBy: Scalars['String'];
   votes: Scalars['Int'];
@@ -49,11 +53,12 @@ export type Link = {
 
 
 export type Mutation = {
-   __typename?: 'Mutation';
+  __typename?: 'Mutation';
   logout: Scalars['Boolean'];
   revokeRefreshTokensForUser: Scalars['Boolean'];
   login: LoginResponse;
   register: LoginResponse;
+  updateLinksArray: Scalars['Boolean'];
   updateLinksUserHasVotedForField: User;
   createLink: Link;
   updateLink: Scalars['Boolean'];
@@ -76,6 +81,13 @@ export type MutationLoginArgs = {
 export type MutationRegisterArgs = {
   password: Scalars['String'];
   email: Scalars['String'];
+};
+
+
+export type MutationUpdateLinksArrayArgs = {
+  email: Scalars['String'];
+  userId: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -107,7 +119,7 @@ export type MutationVoteUpArgs = {
 };
 
 export type LoginResponse = {
-   __typename?: 'LoginResponse';
+  __typename?: 'LoginResponse';
   accessToken: Scalars['String'];
   user: User;
 };
@@ -119,11 +131,12 @@ export type LinkInput = {
 
 export type LinkUpdateInput = {
   url?: Maybe<Scalars['String']>;
+  domain?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   votes?: Maybe<Scalars['Int']>;
 };
 
-export type ByeQueryVariables = {};
+export type ByeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ByeQuery = (
@@ -131,10 +144,10 @@ export type ByeQuery = (
   & Pick<Query, 'bye'>
 );
 
-export type CreateLinkMutationVariables = {
+export type CreateLinkMutationVariables = Exact<{
   url: Scalars['String'];
   description: Scalars['String'];
-};
+}>;
 
 
 export type CreateLinkMutation = (
@@ -145,9 +158,9 @@ export type CreateLinkMutation = (
   ) }
 );
 
-export type DeleteLinkMutationVariables = {
+export type DeleteLinkMutationVariables = Exact<{
   id: Scalars['Int'];
-};
+}>;
 
 
 export type DeleteLinkMutation = (
@@ -155,7 +168,7 @@ export type DeleteLinkMutation = (
   & Pick<Mutation, 'deleteLink'>
 );
 
-export type HelloQueryVariables = {};
+export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HelloQuery = (
@@ -163,24 +176,24 @@ export type HelloQuery = (
   & Pick<Query, 'hello'>
 );
 
-export type LinkFeedQueryVariables = {
+export type LinkFeedQueryVariables = Exact<{
   limit: Scalars['Int'];
   skip: Scalars['Int'];
-};
+}>;
 
 
 export type LinkFeedQuery = (
   { __typename?: 'Query' }
   & { linkFeed: Array<(
     { __typename?: 'Link' }
-    & Pick<Link, 'id' | 'url' | 'description' | 'postedBy' | 'votes' | 'createdAt'>
+    & Pick<Link, 'id' | 'url' | 'description' | 'postedBy' | 'votes' | 'createdAt' | 'domain'>
   )> }
 );
 
-export type LoginMutationVariables = {
+export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
-};
+}>;
 
 
 export type LoginMutation = (
@@ -195,7 +208,7 @@ export type LoginMutation = (
   ) }
 );
 
-export type LogoutMutationVariables = {};
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = (
@@ -203,7 +216,7 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
-export type MeQueryVariables = {};
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = (
@@ -214,10 +227,10 @@ export type MeQuery = (
   )> }
 );
 
-export type RegisterMutationVariables = {
+export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
-};
+}>;
 
 
 export type RegisterMutation = (
@@ -232,11 +245,12 @@ export type RegisterMutation = (
   ) }
 );
 
-export type UpdateLinkMutationVariables = {
+export type UpdateLinkMutationVariables = Exact<{
   id: Scalars['Int'];
   url?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-};
+  domain?: Maybe<Scalars['String']>;
+}>;
 
 
 export type UpdateLinkMutation = (
@@ -244,11 +258,11 @@ export type UpdateLinkMutation = (
   & Pick<Mutation, 'updateLink'>
 );
 
-export type UpdateLinksUserHasVotedForFieldMutationVariables = {
+export type UpdateLinksUserHasVotedForFieldMutationVariables = Exact<{
   id: Scalars['Int'];
   userId: Scalars['Int'];
   email: Scalars['String'];
-};
+}>;
 
 
 export type UpdateLinksUserHasVotedForFieldMutation = (
@@ -259,7 +273,7 @@ export type UpdateLinksUserHasVotedForFieldMutation = (
   ) }
 );
 
-export type UsersQueryVariables = {};
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UsersQuery = (
@@ -270,9 +284,9 @@ export type UsersQuery = (
   )> }
 );
 
-export type VoteUpMutationVariables = {
+export type VoteUpMutationVariables = Exact<{
   id: Scalars['Int'];
-};
+}>;
 
 
 export type VoteUpMutation = (
@@ -305,15 +319,15 @@ export const ByeDocument = gql`
  *   },
  * });
  */
-export function useByeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ByeQuery, ByeQueryVariables>) {
-        return ApolloReactHooks.useQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
+export function useByeQuery(baseOptions?: Apollo.QueryHookOptions<ByeQuery, ByeQueryVariables>) {
+        return Apollo.useQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
       }
-export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ByeQuery, ByeQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
+export function useByeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByeQuery, ByeQueryVariables>) {
+          return Apollo.useLazyQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
         }
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
-export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
+export type ByeQueryResult = Apollo.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CreateLinkDocument = gql`
     mutation CreateLink($url: String!, $description: String!) {
   createLink(options: {url: $url, description: $description}) {
@@ -323,7 +337,7 @@ export const CreateLinkDocument = gql`
   }
 }
     `;
-export type CreateLinkMutationFn = ApolloReactCommon.MutationFunction<CreateLinkMutation, CreateLinkMutationVariables>;
+export type CreateLinkMutationFn = Apollo.MutationFunction<CreateLinkMutation, CreateLinkMutationVariables>;
 
 /**
  * __useCreateLinkMutation__
@@ -343,18 +357,18 @@ export type CreateLinkMutationFn = ApolloReactCommon.MutationFunction<CreateLink
  *   },
  * });
  */
-export function useCreateLinkMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateLinkMutation, CreateLinkMutationVariables>) {
-        return ApolloReactHooks.useMutation<CreateLinkMutation, CreateLinkMutationVariables>(CreateLinkDocument, baseOptions);
+export function useCreateLinkMutation(baseOptions?: Apollo.MutationHookOptions<CreateLinkMutation, CreateLinkMutationVariables>) {
+        return Apollo.useMutation<CreateLinkMutation, CreateLinkMutationVariables>(CreateLinkDocument, baseOptions);
       }
 export type CreateLinkMutationHookResult = ReturnType<typeof useCreateLinkMutation>;
-export type CreateLinkMutationResult = ApolloReactCommon.MutationResult<CreateLinkMutation>;
-export type CreateLinkMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateLinkMutation, CreateLinkMutationVariables>;
+export type CreateLinkMutationResult = Apollo.MutationResult<CreateLinkMutation>;
+export type CreateLinkMutationOptions = Apollo.BaseMutationOptions<CreateLinkMutation, CreateLinkMutationVariables>;
 export const DeleteLinkDocument = gql`
     mutation DeleteLink($id: Int!) {
   deleteLink(id: $id)
 }
     `;
-export type DeleteLinkMutationFn = ApolloReactCommon.MutationFunction<DeleteLinkMutation, DeleteLinkMutationVariables>;
+export type DeleteLinkMutationFn = Apollo.MutationFunction<DeleteLinkMutation, DeleteLinkMutationVariables>;
 
 /**
  * __useDeleteLinkMutation__
@@ -373,12 +387,12 @@ export type DeleteLinkMutationFn = ApolloReactCommon.MutationFunction<DeleteLink
  *   },
  * });
  */
-export function useDeleteLinkMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteLinkMutation, DeleteLinkMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteLinkMutation, DeleteLinkMutationVariables>(DeleteLinkDocument, baseOptions);
+export function useDeleteLinkMutation(baseOptions?: Apollo.MutationHookOptions<DeleteLinkMutation, DeleteLinkMutationVariables>) {
+        return Apollo.useMutation<DeleteLinkMutation, DeleteLinkMutationVariables>(DeleteLinkDocument, baseOptions);
       }
 export type DeleteLinkMutationHookResult = ReturnType<typeof useDeleteLinkMutation>;
-export type DeleteLinkMutationResult = ApolloReactCommon.MutationResult<DeleteLinkMutation>;
-export type DeleteLinkMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteLinkMutation, DeleteLinkMutationVariables>;
+export type DeleteLinkMutationResult = Apollo.MutationResult<DeleteLinkMutation>;
+export type DeleteLinkMutationOptions = Apollo.BaseMutationOptions<DeleteLinkMutation, DeleteLinkMutationVariables>;
 export const HelloDocument = gql`
     query Hello {
   hello
@@ -400,15 +414,15 @@ export const HelloDocument = gql`
  *   },
  * });
  */
-export function useHelloQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HelloQuery, HelloQueryVariables>) {
-        return ApolloReactHooks.useQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
+export function useHelloQuery(baseOptions?: Apollo.QueryHookOptions<HelloQuery, HelloQueryVariables>) {
+        return Apollo.useQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
       }
-export function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<HelloQuery, HelloQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
+export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HelloQuery, HelloQueryVariables>) {
+          return Apollo.useLazyQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
         }
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
-export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
+export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
 export const LinkFeedDocument = gql`
     query LinkFeed($limit: Int!, $skip: Int!) {
   linkFeed(limit: $limit, skip: $skip) {
@@ -418,6 +432,7 @@ export const LinkFeedDocument = gql`
     postedBy
     votes
     createdAt
+    domain
   }
 }
     `;
@@ -439,15 +454,15 @@ export const LinkFeedDocument = gql`
  *   },
  * });
  */
-export function useLinkFeedQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LinkFeedQuery, LinkFeedQueryVariables>) {
-        return ApolloReactHooks.useQuery<LinkFeedQuery, LinkFeedQueryVariables>(LinkFeedDocument, baseOptions);
+export function useLinkFeedQuery(baseOptions: Apollo.QueryHookOptions<LinkFeedQuery, LinkFeedQueryVariables>) {
+        return Apollo.useQuery<LinkFeedQuery, LinkFeedQueryVariables>(LinkFeedDocument, baseOptions);
       }
-export function useLinkFeedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LinkFeedQuery, LinkFeedQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<LinkFeedQuery, LinkFeedQueryVariables>(LinkFeedDocument, baseOptions);
+export function useLinkFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LinkFeedQuery, LinkFeedQueryVariables>) {
+          return Apollo.useLazyQuery<LinkFeedQuery, LinkFeedQueryVariables>(LinkFeedDocument, baseOptions);
         }
 export type LinkFeedQueryHookResult = ReturnType<typeof useLinkFeedQuery>;
 export type LinkFeedLazyQueryHookResult = ReturnType<typeof useLinkFeedLazyQuery>;
-export type LinkFeedQueryResult = ApolloReactCommon.QueryResult<LinkFeedQuery, LinkFeedQueryVariables>;
+export type LinkFeedQueryResult = Apollo.QueryResult<LinkFeedQuery, LinkFeedQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -460,7 +475,7 @@ export const LoginDocument = gql`
   }
 }
     `;
-export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
@@ -480,18 +495,18 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, 
  *   },
  * });
  */
-export function useLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
       }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
-export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation>;
-export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
 }
     `;
-export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
  * __useLogoutMutation__
@@ -509,12 +524,12 @@ export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation
  *   },
  * });
  */
-export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-        return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
       }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
-export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
-export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -540,15 +555,15 @@ export const MeDocument = gql`
  *   },
  * });
  */
-export function useMeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
       }
-export function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
         }
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($email: String!, $password: String!) {
   register(email: $email, password: $password) {
@@ -561,7 +576,7 @@ export const RegisterDocument = gql`
   }
 }
     `;
-export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
  * __useRegisterMutation__
@@ -581,18 +596,21 @@ export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMuta
  *   },
  * });
  */
-export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-        return ApolloReactHooks.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
       }
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
-export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
-export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateLinkDocument = gql`
-    mutation UpdateLink($id: Int!, $url: String, $description: String) {
-  updateLink(id: $id, input: {url: $url, description: $description})
+    mutation UpdateLink($id: Int!, $url: String, $description: String, $domain: String) {
+  updateLink(
+    id: $id
+    input: {url: $url, description: $description, domain: $domain}
+  )
 }
     `;
-export type UpdateLinkMutationFn = ApolloReactCommon.MutationFunction<UpdateLinkMutation, UpdateLinkMutationVariables>;
+export type UpdateLinkMutationFn = Apollo.MutationFunction<UpdateLinkMutation, UpdateLinkMutationVariables>;
 
 /**
  * __useUpdateLinkMutation__
@@ -610,15 +628,16 @@ export type UpdateLinkMutationFn = ApolloReactCommon.MutationFunction<UpdateLink
  *      id: // value for 'id'
  *      url: // value for 'url'
  *      description: // value for 'description'
+ *      domain: // value for 'domain'
  *   },
  * });
  */
-export function useUpdateLinkMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateLinkMutation, UpdateLinkMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateLinkMutation, UpdateLinkMutationVariables>(UpdateLinkDocument, baseOptions);
+export function useUpdateLinkMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLinkMutation, UpdateLinkMutationVariables>) {
+        return Apollo.useMutation<UpdateLinkMutation, UpdateLinkMutationVariables>(UpdateLinkDocument, baseOptions);
       }
 export type UpdateLinkMutationHookResult = ReturnType<typeof useUpdateLinkMutation>;
-export type UpdateLinkMutationResult = ApolloReactCommon.MutationResult<UpdateLinkMutation>;
-export type UpdateLinkMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateLinkMutation, UpdateLinkMutationVariables>;
+export type UpdateLinkMutationResult = Apollo.MutationResult<UpdateLinkMutation>;
+export type UpdateLinkMutationOptions = Apollo.BaseMutationOptions<UpdateLinkMutation, UpdateLinkMutationVariables>;
 export const UpdateLinksUserHasVotedForFieldDocument = gql`
     mutation UpdateLinksUserHasVotedForField($id: Int!, $userId: Int!, $email: String!) {
   updateLinksUserHasVotedForField(id: $id, userId: $userId, email: $email) {
@@ -628,7 +647,7 @@ export const UpdateLinksUserHasVotedForFieldDocument = gql`
   }
 }
     `;
-export type UpdateLinksUserHasVotedForFieldMutationFn = ApolloReactCommon.MutationFunction<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>;
+export type UpdateLinksUserHasVotedForFieldMutationFn = Apollo.MutationFunction<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>;
 
 /**
  * __useUpdateLinksUserHasVotedForFieldMutation__
@@ -649,12 +668,12 @@ export type UpdateLinksUserHasVotedForFieldMutationFn = ApolloReactCommon.Mutati
  *   },
  * });
  */
-export function useUpdateLinksUserHasVotedForFieldMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>(UpdateLinksUserHasVotedForFieldDocument, baseOptions);
+export function useUpdateLinksUserHasVotedForFieldMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>) {
+        return Apollo.useMutation<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>(UpdateLinksUserHasVotedForFieldDocument, baseOptions);
       }
 export type UpdateLinksUserHasVotedForFieldMutationHookResult = ReturnType<typeof useUpdateLinksUserHasVotedForFieldMutation>;
-export type UpdateLinksUserHasVotedForFieldMutationResult = ApolloReactCommon.MutationResult<UpdateLinksUserHasVotedForFieldMutation>;
-export type UpdateLinksUserHasVotedForFieldMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>;
+export type UpdateLinksUserHasVotedForFieldMutationResult = Apollo.MutationResult<UpdateLinksUserHasVotedForFieldMutation>;
+export type UpdateLinksUserHasVotedForFieldMutationOptions = Apollo.BaseMutationOptions<UpdateLinksUserHasVotedForFieldMutation, UpdateLinksUserHasVotedForFieldMutationVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
@@ -680,15 +699,15 @@ export const UsersDocument = gql`
  *   },
  * });
  */
-export function useUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
-        return ApolloReactHooks.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
       }
-export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
         }
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
-export type UsersQueryResult = ApolloReactCommon.QueryResult<UsersQuery, UsersQueryVariables>;
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
 export const VoteUpDocument = gql`
     mutation VoteUp($id: Int!) {
   voteUp(id: $id) {
@@ -697,7 +716,7 @@ export const VoteUpDocument = gql`
   }
 }
     `;
-export type VoteUpMutationFn = ApolloReactCommon.MutationFunction<VoteUpMutation, VoteUpMutationVariables>;
+export type VoteUpMutationFn = Apollo.MutationFunction<VoteUpMutation, VoteUpMutationVariables>;
 
 /**
  * __useVoteUpMutation__
@@ -716,9 +735,9 @@ export type VoteUpMutationFn = ApolloReactCommon.MutationFunction<VoteUpMutation
  *   },
  * });
  */
-export function useVoteUpMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<VoteUpMutation, VoteUpMutationVariables>) {
-        return ApolloReactHooks.useMutation<VoteUpMutation, VoteUpMutationVariables>(VoteUpDocument, baseOptions);
+export function useVoteUpMutation(baseOptions?: Apollo.MutationHookOptions<VoteUpMutation, VoteUpMutationVariables>) {
+        return Apollo.useMutation<VoteUpMutation, VoteUpMutationVariables>(VoteUpDocument, baseOptions);
       }
 export type VoteUpMutationHookResult = ReturnType<typeof useVoteUpMutation>;
-export type VoteUpMutationResult = ApolloReactCommon.MutationResult<VoteUpMutation>;
-export type VoteUpMutationOptions = ApolloReactCommon.BaseMutationOptions<VoteUpMutation, VoteUpMutationVariables>;
+export type VoteUpMutationResult = Apollo.MutationResult<VoteUpMutation>;
+export type VoteUpMutationOptions = Apollo.BaseMutationOptions<VoteUpMutation, VoteUpMutationVariables>;

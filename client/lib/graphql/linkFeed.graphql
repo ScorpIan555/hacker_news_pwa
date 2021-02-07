@@ -6,5 +6,6 @@ query LinkFeed($limit: Int!, $skip: Int!) {
     postedBy
     votes
     createdAt
+    domain
   }
 }
