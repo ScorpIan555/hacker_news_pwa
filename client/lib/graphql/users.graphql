@@ -3,5 +3,6 @@ query Users {
     id
     email
     linksUserHasVotedFor
+    linksArray
   }
 }

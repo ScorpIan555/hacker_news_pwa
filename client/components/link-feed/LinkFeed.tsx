@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
 import { themeGet } from '@styled-system/theme-get'
 import VoteCarrot from 'components/form-controls/VoteCarrot'
-import { AuthStateContext } from 'lib/store/contexts'
+import { useAuthState } from 'lib/store/contexts'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -113,10 +113,12 @@ const SubRow = styled.div`
 
 
 const DataRow = ({ item, index }) => {
-  console.log('DataRow.item:::', item);
+  // console.log('DataRow.item:::', item);
   
   const { id, url, description, postedBy, votes, createdAt, domain } = item;
-  const { user }:any = AuthStateContext;
+  const { authStateContext } = useAuthState();
+  const {user} = authStateContext;
+  
   const hoursAgo = moment(createdAt).startOf('hour').fromNow(); 
  
 
@@ -179,16 +181,16 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   useEffect(() => {
     let links = data?.linkFeed
 
-    console.log('data was rerun:::', data)
-    console.log('links lenght', links?.length)
-    console.log('theme::: ', theme.palette)
+    // console.log('data was rerun:::', data)
+    // console.log('links lenght', links?.length)
+    // console.log('theme::: ', theme.palette)
     refetch()
   }),
     [data?.linkFeed]
 
   const handleMouseOver = (event: Event) => {
     event.preventDefault()
-    console.log('handleMouseOver:::', isFocus)
+    // console.log('handleMouseOver:::', isFocus)
 
     setIsFocus(!isFocus)
   }
@@ -200,8 +202,8 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
           {data ? (
             data.linkFeed?.length ? (
               data.linkFeed.map((item: any, index: any) => {
-                console.log('item:::', item)
-                console.log('index::', index)
+                // console.log('item:::', item)
+                // console.log('index::', index)
                 // const { id, url, description, postedBy, votes } = item;
 
                 return (
@@ -209,6 +211,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
                   // <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
                   <ListItem
+                    key={index + index*index}
                     alignItems={'flex-start'}
                     autoFocus={isFocus}
                     onMouseOver={handleMouseOver}

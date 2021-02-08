@@ -1,77 +1,11 @@
 // import React from 'react';
-import Router from 'next/router';
+import { useAuthState } from 'lib/store/contexts';
+import { useEffect, useState } from 'react';
 import {
   useUpdateLinksArrayMutation,
-  useUpdateLinksUserHasVotedForFieldMutation, useVoteUpMutation
+  useVoteUpMutation
 } from '../../generated/graphql';
-import { useAuthState } from '../../lib/store/contexts';
-import { IUser } from '../../lib/typescript/interfaces';
 import { VoteCarrotWrapper } from './VoteCarrot.style';
-
-
-
-// import { Router } from 'next/router';
-// import { Redirect } from '../../lib/utils/redirect';
-// import { IItem } from '../../lib/typescript/interfaces';
-
-// import { IItem } from '../../lib/typescript/interfaces';
-
-const voteForLink = async (voteForLinkProps: {
-  id: any;
-  voteUp: any;
-  user: any;
-  updateLinksUserHasVotedForField: any;
-}) => {
-  const {
-    id,
-    user,
-    voteUp,
-    updateLinksUserHasVotedForField,
-  } = voteForLinkProps;
-  let numVotes = 0;
-  let votes = numVotes + 1;
-
-  if (user === null) {
-    //  https://stackoverflow.com/questions/58173809/next-js-redirect-from-to-another-page
-    Router.push('/login');
-    return;
-  }
-
-  console.log('VoteCarrot.voteForLink.votes:::', votes);
-  console.log('VoteCarrot.id & user:::', id, user);
-  console.log('typeof VoteCarrot.id:::', typeof id);
-  // console.log('linksUserHasVotedFor:::', linksUserHasVotedFor);
-  try {
-    let res: any = await voteUp({
-      variables: { id },
-    });
-    console.log('res:::', res);
-    // addLink(user, updateLinksUserHasVotedForField);
-
-    return;
-  } catch (error) {
-    console.log('error:::', error);
-    console.error(error);
-  }
-};
-
-const addLink = async (
-  user: IUser | undefined,
-  updateLinksUserHasVotedForField: any
-) => {
-  try {
-    console.log('updateLinksUserHasVotedForField.user', user);
-
-    // need to insert mutation
-    await updateLinksUserHasVotedForField(user);
-
-    return true;
-  } catch (error) {
-    console.log('error updateing UserHasVotedForField', error);
-    console.error(error);
-    return false;
-  }
-};
 
 interface VoteCarrotInput {
   link: object;
@@ -81,61 +15,80 @@ interface VoteCarrotInput {
   email: string;
 }
 
-const VoteCarrot = ({ link, user, userId, linkId, email }: VoteCarrotInput) => {
-  // instantiate gql queries
+const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
   const [voteUp] = useVoteUpMutation();
-  const [
-    updateLinksUserHasVotedForField,
-  ] = useUpdateLinksUserHasVotedForFieldMutation();
-  
-
   const [updateLinksArray] = useUpdateLinksArrayMutation();
-  // const { link } = link;
-  // let id: number = link?.id;
-  // console.log('VoteCarrot.record', record);
-  console.log('VoteCarrot.link:::', link);
-  // let id: any = link?.id;
-  console.log('VoteCarrot.link.id:::', link?.id);
-  // console.log('VoteCarrot.link.url:::', link.?url);
-  const { authStateContext } = useAuthState();
-  console.log('authStateContext', authStateContext);
-  console.log('authStateContext.user', authStateContext.user);
-  // let userId: any = authStateContext?.user?.id;
+  const {authStateContext} = useAuthState();
+  const [linkObj, setLinkObj] = useState(link);
+  
+  // const 
+  // console.log('VoteCarrot....link, user, userId, linkId, email:::', link, user, userId, linkId, email)
+  // const [linkOb, setLinkObj] = useState();
+  // const [userId, setUserId] = useState();
+  // const [linkId, setLinkId] = useState();
 
-  // let user: IUser | undefined = authStateContext?.user;
-  // const {email} = authStateContext.user
+  useEffect(() => {
+    // console.log('useEffect.linkObj', linkObj)
+    // console.log('useEffect.link:::', link );
 
-  const handleClick = (event:any) => {
+  })
+    
+
+  const handleClick = async (event) => {
+    
     event.preventDefault();
+    const {user} = authStateContext;
+    // console.log('link, user, userId, linkId, email:::', link, user, userId, linkId, email)
+    // console.log(' user, userId, linkId, email:::', user, userId, linkId, email)
+    // console.log('userId, linkId, email:::', userId, linkId, email)
+    // console.log(' linkId, email:::', linkId, email)
+    // console.log(' email:::', email)
+    // // const id: number = userId;
+    // console.log('link2:::', link);
+    // console.log('user2:::', user);
+    // console.log('userId2:::', userId);
+    // console.log('linkId2:::', linkId);
+    // console.log('email2:::', email)
 
-    updateLinksArray({variables: {userId, linkId, email}});
+    const { id, email} = user;
+    const linkId: number = linkObj?.id;
+    // console.log('id:::', id)
+    // console.log('email:::', email);
+    // console.log('linkId2:::', linkId);
+    
 
+    // Now, I have to set this up as a type guard.
+     
+try {
+  const res = await updateLinksArray({variables: {id, linkId, email}});
+  voteUpCall({variables: {id: linkId}});
+  return res;
+} catch (error) {
+  console.log('error:::', error);
+  // throw new Error()
+} 
   }
 
-  let linksUserHasVotedFor: any = authStateContext?.user?.linksUserHasVotedFor;
-  console.log('linksUserHasVotedFor:::', linksUserHasVotedFor, user);
+  const voteUpCall = async ({variables: {id: linkId}}) => {
+    
+    try {
+      const res = await voteUp({
+        variables: { id: linkId }
+      });
+      return res;
+    } catch (error) {
+        console.log('error:::', error)
+    }
+  
+  }
 
-  const voteForLinkProps = {
-    id: linkId,
-    voteUp,
-    user: user,
-    updateLinksUserHasVotedForField,
-  };
-
-  // const updateLinksArrayProps = {
-  //   userId, linkId, email
-  // }: VoteCarrotInput
 
   return (
-    <VoteCarrotWrapper>
-      {/* <button onClick={() => {
-        // voteForLink(voteForLinkProps)
-        updateLinksArray(updateLinksArrayProps)
-        }
-      }>▲</button> */}
-      <button onClick={handleClick}> ▲ </button>
-    </VoteCarrotWrapper>
-  );
-};
+    <VoteCarrotWrapper linkId={linkId}>
+    
+    <button onClick={handleClick}> ▲ </button>
+  </VoteCarrotWrapper>
+  )
+}
 
 export default VoteCarrot;

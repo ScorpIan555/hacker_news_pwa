@@ -1,8 +1,8 @@
 // import React from 'react';
 import Router from 'next/router';
 import {
-    useUpdateLinksArrayMutation,
-    useUpdateLinksUserHasVotedForFieldMutation, useVoteUpMutation
+  useUpdateLinksArrayMutation,
+  useUpdateLinksUserHasVotedForFieldMutation, useVoteUpMutation
 } from '../../generated/graphql';
 import { useAuthState } from '../../lib/store/contexts';
 import { IUser } from '../../lib/typescript/interfaces';
