@@ -6,7 +6,6 @@ import {
   isLogoutAction,
   isMeQueryUserUpdateAction
 } from './reducerTypeGuards';
-import { timeDifferenceForDate } from './timeDifferenceUtil';
 
 export {
   isLoginStartAction,
@@ -16,5 +15,5 @@ export {
   isMeQueryUserUpdateAction,
   getAccessToken,
   setAccessToken,
-  timeDifferenceForDate
 };
+

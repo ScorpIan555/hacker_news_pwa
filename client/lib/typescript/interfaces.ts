@@ -10,7 +10,7 @@ export interface IDispatch {} // check, possibly replaced w/ type Dispatch
 export interface IState {
   // need to look at all consumers of this interface and refactor this outs
   isAuth?: boolean;
-  user?: IUser;
+  user?: any;
   error?: string;
   isLoggedIn?: boolean;
   isLoading?: boolean;

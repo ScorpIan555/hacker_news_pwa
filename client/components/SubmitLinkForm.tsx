@@ -1,12 +1,12 @@
-import React, { useRef, FC } from 'react';
-
+import { FormHandles, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
-import { SubmitHandler, FormHandles } from '@unform/core';
+import { useRouter } from 'next/router';
+import React, { FC, useRef } from 'react';
+import { useCreateLinkMutation, useMeQuery } from '../generated/graphql';
 import { useAuthState } from '../lib/store/contexts';
 import { theme } from '../lib/theme';
-import { InputC, Button } from './form-controls';
-import { useMeQuery, useCreateLinkMutation } from '../generated/graphql';
-import { useRouter } from 'next/router';
+import { Button, InputC } from './form-controls';
+
 // import Router from 'next/router';
 
 interface ILinkSubmission {
@@ -29,7 +29,7 @@ const SubmitLinkForm: FC = () => {
   const { data } = useMeQuery();
   const [createLink] = useCreateLinkMutation();
 
-  const router = useRouter();
+  const router = useRouter(); 
 
   const handleSubmit: SubmitHandler<ILinkSubmission> = async (link) => {
     console.log('authState:::', authStateContext);

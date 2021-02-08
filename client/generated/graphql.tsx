@@ -86,8 +86,8 @@ export type MutationRegisterArgs = {
 
 export type MutationUpdateLinksArrayArgs = {
   email: Scalars['String'];
+  linkId: Scalars['Int'];
   userId: Scalars['Int'];
-  id: Scalars['Int'];
 };
 
 
@@ -256,6 +256,18 @@ export type UpdateLinkMutationVariables = Exact<{
 export type UpdateLinkMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateLink'>
+);
+
+export type UpdateLinksArrayMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  linkId: Scalars['Int'];
+  email: Scalars['String'];
+}>;
+
+
+export type UpdateLinksArrayMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateLinksArray'>
 );
 
 export type UpdateLinksUserHasVotedForFieldMutationVariables = Exact<{
@@ -638,6 +650,38 @@ export function useUpdateLinkMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateLinkMutationHookResult = ReturnType<typeof useUpdateLinkMutation>;
 export type UpdateLinkMutationResult = Apollo.MutationResult<UpdateLinkMutation>;
 export type UpdateLinkMutationOptions = Apollo.BaseMutationOptions<UpdateLinkMutation, UpdateLinkMutationVariables>;
+export const UpdateLinksArrayDocument = gql`
+    mutation updateLinksArray($userId: Int!, $linkId: Int!, $email: String!) {
+  updateLinksArray(userId: $userId, linkId: $linkId, email: $email)
+}
+    `;
+export type UpdateLinksArrayMutationFn = Apollo.MutationFunction<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>;
+
+/**
+ * __useUpdateLinksArrayMutation__
+ *
+ * To run a mutation, you first call `useUpdateLinksArrayMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLinksArrayMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLinksArrayMutation, { data, loading, error }] = useUpdateLinksArrayMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      linkId: // value for 'linkId'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useUpdateLinksArrayMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>) {
+        return Apollo.useMutation<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>(UpdateLinksArrayDocument, baseOptions);
+      }
+export type UpdateLinksArrayMutationHookResult = ReturnType<typeof useUpdateLinksArrayMutation>;
+export type UpdateLinksArrayMutationResult = Apollo.MutationResult<UpdateLinksArrayMutation>;
+export type UpdateLinksArrayMutationOptions = Apollo.BaseMutationOptions<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>;
 export const UpdateLinksUserHasVotedForFieldDocument = gql`
     mutation UpdateLinksUserHasVotedForField($id: Int!, $userId: Int!, $email: String!) {
   updateLinksUserHasVotedForField(id: $id, userId: $userId, email: $email) {

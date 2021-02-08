@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
 import { themeGet } from '@styled-system/theme-get'
 import VoteCarrot from 'components/form-controls/VoteCarrot'
-import extractDomain from 'extract-domain'
+import { AuthStateContext } from 'lib/store/contexts'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -110,75 +110,37 @@ const SubRow = styled.div`
   color: #828282;
 `
 
-// const dotComCheck = (urlString: String) => {
-//   if(urlString.match('.com') !== null) {
-//     const formattedURLStringDotCom = urlString.split('/');
-//     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom);
-//     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom[0]);
-//     return formattedURLStringDotCom[0]
-//   }
-// }
 
-// const httpsCheck = (urlString: String) => {
-//   if(urlString.match('https://') !== null) {
-//     const formattedURLStringHttps = urlString.split('https://');
-//     console.log('format-conditional worked-https!', formattedURLStringHttps);
-//     console.log('format-conditional worked-https!', formattedURLStringHttps[1]);
-//     const domainNoHttpsDotCom = dotComCheck(formattedURLStringHttps[1])
-//     return domainNoHttpsDotCom;
-//   }
-// }
-
-
-// const getDomainFromUrlString = async (urlString: String) => {
-//   const urlStringCheck = urlString.match('https://')
-//   console.log('urlStringCheck:::', urlStringCheck)
-
-//   dotComCheck(urlString);
-//   httpsCheck(urlString);
-
-// //   if(urlString.match('https://') !== null) {
-// //     const formattedURLString = urlString.split('https://');
-// //     console.log('format-conditional worked-https!', formattedURLString);
-// //     console.log('format-conditional worked-https!', formattedURLString[1]);
-// //     return formattedURLString[1]
-// //   }
-// //   if(urlString.match('.com') !== null) {
-// //     const formattedURLStringDotCom = urlString.split('/');
-// //     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom);
-// //     console.log('format-conditional worked-dotcom!', formattedURLStringDotCom[0]);
-// //     return formattedURLStringDotCom[0]
-// // }
-// }
 
 const DataRow = ({ item, index }) => {
   console.log('DataRow.item:::', item);
   
-  const { id, url, description, postedBy, votes, createdAt } = item;
+  const { id, url, description, postedBy, votes, createdAt, domain } = item;
+  const { user }:any = AuthStateContext;
   const hoursAgo = moment(createdAt).startOf('hour').fromNow(); 
+ 
 
-  const formattedURL = url.split('https://')
-  console.log('formattedURL:::', formattedURL);
-  const matchURL = url.match('https://')
-  console.log('matchURL:::', url, matchURL);
-
-  const domain = extractDomain(url);
-  console.log('domain:::', domain)
  
   
   return (
-    <React.Fragment>
+    <React.Fragment>    
       <Grid item xs={12}>
         <Paper className="" elevation={0} index={index}>
           <TitleRow>
-            {index + 1} {'.'} <VoteCarrot link={item} />
+            {index + 1} {'.'} 
+            <VoteCarrot link={item} 
+                        user={user} 
+                        userId={user?.id} 
+                        linkId={id} 
+                        email={user?.email} 
+            />
             {/* <Typography> */}
             <LinkDescription>{description}</LinkDescription>
             <UrlText>
               {'('}
               <StyledLink underline="hover" href={url}>
-                {url}
-              </StyledLink>{' '}
+                {domain}
+              </StyledLink>
               {')'}
             </UrlText>
             {/* </Typography> */}
@@ -186,7 +148,7 @@ const DataRow = ({ item, index }) => {
 
           <SubRow>
             {votes} points by: {postedBy} {hoursAgo} {'| hide link |'}{' '}
-            {' # commends'}
+            {' # comments'}
           </SubRow>
         </Paper>
       </Grid>
@@ -211,6 +173,8 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       skip: 0,
     },
   })
+
+  
 
   useEffect(() => {
     let links = data?.linkFeed
