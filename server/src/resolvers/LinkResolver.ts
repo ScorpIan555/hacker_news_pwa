@@ -16,6 +16,7 @@ import { Link } from '../entity';
 import { MyContext } from '../lib/interfaces/MyContext';
 import { isAuth } from '../middleware/isAuthMiddleware';
 
+
 @InputType()
 class LinkInput {
   @Field()
@@ -123,6 +124,7 @@ export class LinkResolver {
     console.log('payload:::', payload);
     // type LinkResult
     let link: Link | undefined = await Link.findOne({ id });
+
     let user = payload;
     console.log('payload.user:::', user);
     /*
@@ -131,33 +133,34 @@ export class LinkResolver {
 
     */
 
-    // let userId: number = parseInt(user.userId);
-    let linksUserAlreadyVotedFor = user.linksArray;
-    console.log('linksUserAlreadyVotedFor1', linksUserAlreadyVotedFor);
-    console.log('linksUserAlreadyVotedFor1', typeof linksUserAlreadyVotedFor);
-    let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor
-      .slice(1, linksUserAlreadyVotedFor.length - 1)
-      .split(',');
-    console.log('linksUserAlreadyVotedFor2', linksUserAlreadyVotedForArray);
-    console.log(
-      'linksUserAlreadyVotedFor2',
-      typeof linksUserAlreadyVotedForArray
-    );
+    // // let userId: number = parseInt(user.userId);
+    // let linksUserAlreadyVotedFor = user.linksArray;
+    // console.log('linksUserAlreadyVotedFor1', linksUserAlreadyVotedFor);
+    // console.log('linksUserAlreadyVotedFor1', typeof linksUserAlreadyVotedFor);
+    // let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor
+    //   .slice(1, linksUserAlreadyVotedFor.length - 1)
+    //   .split(',');
+    // console.log('linksUserAlreadyVotedFor2', linksUserAlreadyVotedForArray);
+    // console.log(
+    //   'linksUserAlreadyVotedFor2',
+    //   typeof linksUserAlreadyVotedForArray
+    // );
 
-    console.log(
-      'linksUserAlreadyVotedForArray::: is array?  ',
-      linksUserAlreadyVotedForArray instanceof Array
-    );
+    // console.log(
+    //   'linksUserAlreadyVotedForArray::: is array?  ',
+    //   linksUserAlreadyVotedForArray instanceof Array
+    // );
 
-    let hasUserAlreadyVotedForThisLink: boolean = linksUserAlreadyVotedForArray.includes(
-      id.toString()
-    );
-    console.log(
-      'hasUserAlreadyVotedForThisLink :::',
-      hasUserAlreadyVotedForThisLink
-    );
+    // let hasUserAlreadyVotedForThisLink: boolean = linksUserAlreadyVotedForArray.includes(
+    //   id.toString()
+    // );
+    // console.log(
+    //   'hasUserAlreadyVotedForThisLink :::',
+    //   hasUserAlreadyVotedForThisLink
+    // );
 
-    if (link !== undefined && hasUserAlreadyVotedForThisLink === false) {
+    // if (link !== undefined && hasUserAlreadyVotedForThisLink === false) {
+      if (link !== undefined) {
       let votes: number = link.votes;
       console.log('votes1:::', votes);
       votes++;
@@ -180,7 +183,7 @@ export class LinkResolver {
       }
     } else {
       console.log('vote not successful'!);
-      let votes = link?.votes;
+      let votes = 0
       return { id, votes };
     }
   }
@@ -191,4 +194,84 @@ export class LinkResolver {
   //   console.log('linkFromLinks:::', linkFromLinks);
   //   return linkFromLinks;
   // }
+
+
+
+
+
+
+
+
+  @Mutation(() => Link)
+  @UseMiddleware(isAuth)
+  async voteDown(
+    @Ctx() { payload }: MyContext,
+    @Arg('id', () => Int) id: number
+  ) {
+    console.log('payload:::', payload);
+    // type LinkResult
+    let link: Link | undefined = await Link.findOne({ id });
+    let user = payload;
+    console.log('payload.user:::', user);
+    /*
+      The user object will include an array of links the user's already voted for
+      Could check that #id vs the #id here.
+
+    */
+
+    // let userId: number = parseInt(user.userId);
+    // let linksUserAlreadyVotedFor = user.linksArray;
+    // console.log('linksUserAlreadyVotedFor1', linksUserAlreadyVotedFor);
+    // console.log('linksUserAlreadyVotedFor1', typeof linksUserAlreadyVotedFor);
+    // let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor
+    //   .slice(1, linksUserAlreadyVotedFor.length - 1)
+    //   .split(',');
+    // console.log('linksUserAlreadyVotedFor2', linksUserAlreadyVotedForArray);
+    // console.log(
+    //   'linksUserAlreadyVotedFor2',
+    //   typeof linksUserAlreadyVotedForArray
+    // );
+
+    // console.log(
+    //   'linksUserAlreadyVotedForArray::: is array?  ',
+    //   linksUserAlreadyVotedForArray instanceof Array
+    // );
+
+    // let hasUserAlreadyVotedForThisLink: boolean = linksUserAlreadyVotedForArray.includes(
+    //   id.toString()
+    // );
+    // console.log(
+    //   'hasUserAlreadyVotedForThisLink :::',
+    //   hasUserAlreadyVotedForThisLink
+    // );
+
+    if (link !== undefined ) {
+      let votes: number = link.votes;
+      console.log('votes1:::', votes);
+      votes--;
+      console.log('votes2:::', votes);
+
+      let input: VoteInput = {
+        votes: votes,
+      };
+
+      try { 
+        let resLink = await Link.update({ id }, input);
+        console.log('voteUp.res:::', resLink);
+        // console.log('newLink:::', newLink);
+        // return newLink;
+        return { id, votes };
+      } catch (error) {
+        console.log('error writing to db');
+        console.log('error::: ', error);
+        return false;
+      }
+    } else {
+      console.log('vote not successful'!);
+      // let votes = link?.votes;
+      let votes = 0;
+      return { id, votes };
+    }
+  }
+
 }
