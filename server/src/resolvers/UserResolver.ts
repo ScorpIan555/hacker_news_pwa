@@ -1,25 +1,31 @@
+import { compare, hash } from 'bcryptjs';
+import { verify } from 'jsonwebtoken';
 import {
-  Resolver,
-  Query,
-  Mutation,
   Arg,
-  ObjectType,
-  Field,
-  Ctx,
-  UseMiddleware,
-  Int,
+
+
+  Ctx, Field,
+
+
+  Int, Mutation,
+
+  ObjectType, Query, Resolver,
+
+
+
+
+
+
+  UseMiddleware
 } from 'type-graphql';
-import { hash, compare } from 'bcryptjs';
+import { getConnection } from 'typeorm';
 import { User } from '../entity/User';
 import { MyContext } from '../lib/interfaces/MyContext';
-import {
-  createRefreshToken,
-  createAccessToken,
-} from '../middleware/jwTokenMiddleware';
 import { isAuth } from '../middleware/isAuthMiddleware';
+import {
+  createAccessToken, createRefreshToken
+} from '../middleware/jwTokenMiddleware';
 import { sendRefreshToken } from '../sendRefreshToken';
-import { getConnection } from 'typeorm';
-import { verify } from 'jsonwebtoken';
 
 // import {AuthenticationError } from 'apollo-server-express'
 
@@ -162,20 +168,25 @@ export class UserResolver {
     }
   }
 
+
+
+  
   @Mutation(() => Boolean)
   // @UseMiddleware(isAuth)
   async updateLinksArray(
     @Arg('id', () => Int) id: number,
-    @Arg('userId', () => Int) userId: number,
-    @Arg('email') email: string
-
+    @Arg('linkId', () => Int) linkId: number, // this was userId originally, double-check
+    @Arg('email') email: string,
+    @Ctx() { payload }: MyContext
     // @Ctx() { payload }: MyContext
   ) {
-    console.log('id, userId, email:::', id, userId, email);
+    console.log('id, userId, email:::', linkId, id, email);
+    console.log('payload:::', payload);
 
     //  return user
     try {
       const user = await User.findOne({ where: { email } });
+      console.log('UserResolver.user:::', user);
 
       // typecheck user object, eliminate undefined/null objects
       if (!user) {
@@ -189,24 +200,29 @@ export class UserResolver {
       if (linksArray.length === 0) {
         linksArray.push(id);
         console.log('linksArray::: ', linksArray);
-        await User.update({ id: userId }, { linksArray: linksArray });
+        await User.update({ id }, { linksArray: linksArray });
         return true;
       }
 
       if (linksArray.length > 0) {
         let idCheck = linksArray.includes(id);
+        console.log('linksArray:::', linksArray);
+        console.log('linksArray:::', typeof linksArray);
+        console.log('linksrray isArray?::', Array.isArray(linksArray))
+        console.log('idCheck:::', idCheck);
+        console.log('idCheck-typeof:::', typeof idCheck)
         //
         //
         if (idCheck === false) {
           linksArray.push(id);
-          console.log('linksArray::: ', linksArray);
-          await User.update({ id: userId }, { linksArray: linksArray });
+          console.log('linksArray.idCheck was false::: ', linksArray);
+          await User.update({ id }, { linksArray: linksArray });
           return true;
         }
         //
         //
         if (idCheck === true) {
-          alert('this item exists already in this array ');
+          // alert('this item exists already in this array ');
           console.log('linksArray::: ', linksArray);
           return false;
         }
@@ -221,253 +237,4 @@ export class UserResolver {
       return false;
     }
   }
-
-  //
-  //
-  //
-  //  T/B deleted
-  //
-
-  @Mutation(() => User)
-  async updateLinksUserHasVotedForField(
-    @Arg('id', () => Int) id: number,
-    @Arg('userId', () => Int) userId: number,
-    @Arg('email') email: string,
-    @Ctx() { payload }: MyContext
-  ) {
-    try {
-      // console.log('updateLinksUserHasVotedForField.id:::', id);
-      console.log('updateLinksUserHasVotedForField.payload:::', payload);
-      console.log('id & email & userId', id, email, userId);
-      // console.log(
-      //   'updateLinksUserHasVotedForField.payload:::',
-      //   payload.userEmail
-      // );
-      // if (payload != undefined) {
-      //   let { userEmail } = payload;
-
-      const user: User | undefined = await User.findOne({ where: { email } });
-
-      // https://stackoverflow.com/questions/47792808/typeorm-update-item-and-return-it
-
-      if (user != undefined) {
-        console.log('UserResolver.login.user:::', user);
-        let { linksUserHasVotedFor } = user;
-        console.log(
-          'UserResolver.user.linksUserHasVotedFor:::',
-          linksUserHasVotedFor
-        );
-
-        let input: any = {
-          linksUserHasVotedFor: linksUserHasVotedFor,
-        };
-        /*
-
-          Right here, 
-          1) need to actually add the bit that'll insert the link id into the field
-          2) double check that it's inserted correctly
-          3) return newly-updated user object
-          4) double-check that this is going back out to the client if/as needed.
-
-
-        */
-
-        if (linksUserHasVotedFor === '[]') {
-          let userIdString: string = userId.toString();
-          console.log('userIdString', userIdString);
-          try {
-            // let res = await User.update({ id: userIdString }, input);
-            console.log(' id ????::', id, userId);
-            input = {
-              linksUserHasVotedFor: '[' + id + ']',
-            };
-            let res = await User.update({ id: userId }, input);
-            let find = await User.findOne(userId);
-            // console.log('linkUserhasVotedFor.res::', res);
-            console.log('linkUserhasVotedFor.res::', res);
-            console.log('find:::', find);
-            return find;
-          } catch (error) {
-            console.log('linksUserHasVotedFor.error', error);
-            console.error(error);
-          }
-        }
-
-        console.log(
-          'linksUserHAsVotedFor.length::',
-          linksUserHasVotedFor.length
-        );
-
-        if (
-          typeof linksUserHasVotedFor === 'string' &&
-          linksUserHasVotedFor.length > 3
-        ) {
-          console.log(
-            'length of linksUserHAsVotedFor',
-            linksUserHasVotedFor.length
-          );
-          console.log('linksUserHAsVotedFor', linksUserHasVotedFor);
-
-          // input = {
-          //   linksUserHasVotedFor: '[' + id + ']',
-          // };
-
-          //
-          //
-          //
-          //
-          // paste the code form LinkREsolver here
-
-          //
-          //
-
-          let linksUserAlreadyVotedFor = user.linksUserHasVotedFor;
-          console.log('linksUserAlreadyVotedFor1', linksUserAlreadyVotedFor);
-          console.log(
-            'linksUserAlreadyVotedFor1',
-            typeof linksUserAlreadyVotedFor
-          );
-          let splitFirstBracket: any = linksUserAlreadyVotedFor.split('[');
-          console.log('splitFirstBracket:::', splitFirstBracket);
-          console.log('splitFirstBracket:::', typeof splitFirstBracket);
-          // let captureString1: any = {  ? splitFirstBracket[1] : splitFirstBracket};
-
-          let captureString1: any;
-          if (splitFirstBracket.length > 0) {
-            console.log('splitFirstBracket[1]');
-            captureString1 = splitFirstBracket[1];
-          } else {
-            console.log('splitFirstBracket');
-            captureString1 = splitFirstBracket;
-          }
-
-          console.log('captureSTring1:: ', captureString1);
-          console.log('captureSTring1:: ', typeof captureString1);
-          let splitSecondBracket: any = captureString1.split(']');
-          console.log('splitSecondBracket::: ', splitSecondBracket);
-          let captureString2: any = splitSecondBracket[0];
-          console.log('captureString2', captureString2);
-
-          let linksUserAlreadyVotedForArray: Array<string> = captureString2
-            // .slice(0, linksUserAlreadyVotedFor.length)
-            // .split('[')
-            // .split(']');
-            .split(',');
-
-          console.log(
-            'linksUserAlreadyVotedFor2',
-            linksUserAlreadyVotedForArray
-          );
-          console.log(
-            'linksUserAlreadyVotedFor2',
-            typeof linksUserAlreadyVotedForArray
-          );
-
-          console.log(
-            'linksUserAlreadyVotedForArray::: is array?  ',
-            linksUserAlreadyVotedForArray instanceof Array
-          );
-
-          let hasUserAlreadyVotedForThisLink: boolean = linksUserAlreadyVotedForArray.includes(
-            id.toString()
-          );
-
-          if (hasUserAlreadyVotedForThisLink === false) {
-            console.log(
-              'ok, we are getting close',
-              linksUserAlreadyVotedForArray
-            );
-
-            console.log(
-              'add new id! :::',
-              linksUserAlreadyVotedForArray.push(id.toString())
-            );
-
-            //
-            /*
-              1)  need to check to make sure user hasn't voted for this link yet
-              2) need to add the new member to the array
-              3) need to convert the array into a string, then return it 
-
-              probably the best way to do this is to treat it like an array, 
-              just add the new member, then directly convert to a string.
-               mannually adding the string is creating a bunch of extra bullshit
-
-               8/1/29 update
-
-               right now the code is just putting the new string with that last vote in
-               it's not adding a member to an array and then converting bck to a string.
-               
-
-               also, check the "find" value being returned.  that's a problem 
-
-               8/7/20 update
-
-               I need to just hack out all the crap related to the return of a string in this function
-
-               This should have been about returning an array.  I need to figure out how that works with POSTGres, too.
-            */
-
-            //
-            try {
-              input = {
-                linksUserHasVotedFor: linksUserAlreadyVotedForArray,
-              };
-              let res = await User.update({ id: userId }, input);
-              let find = await User.findOne(userId);
-              // console.log('linkUserhasVotedFor.res::', res);
-              console.log('linkUserhasVotedFor.res::', res);
-              console.log('find:::', find);
-
-              // this needs to be looked at, linksUserHAsVotedFor is just coping over the old array, not adding a member
-
-              // go back and look at the first one and basically try to extrapolate that out to this one...
-              return { id: userId, email, linksUserHasVotedFor };
-            } catch (error) {
-              console.log('linksUserHasVotedFor.error', error);
-              console.error(error);
-            }
-          } // if(hasUser... === false)
-        }
-        console.log(
-          'line 253 error in User Resolver!!  field didnt meet either criteria'
-        );
-        return user;
-      } else {
-        console.log('Error: User not found:::   , ', user);
-        throw Error('could not retreive user');
-      }
-    } catch (err) {
-      // let { userEmail, userId, linksUserHasVotedFor } = payload;
-      // let user: any = {
-      //   id: userId,
-      //   email: userEmail,
-      //   linksUserHasVotedFor: linksUserHasVotedFor,
-      // };
-      console.log('error trying to update linksUserHasVotedForField');
-      console.error(err);
-      return err;
-    }
-  }
-
-  // // build this out from the clientside first...
-  // @Mutation(() => Boolean)
-  // async voteUp(
-  //   @Arg('id', () => Int) id: number,
-  //   // @Arg('userId', () => Int) userId: number)
-  //   @Ctx() { payload }: MyContext
-  // ) {
-  //   // const linksUserHasVotedFor = User.find({id:})
-  //   console.log('voteUp.payload:::', payload);
-  //   try {
-  //     // const { linksUserHasVotedFor } = payload;
-  //     console.log('link id:::', id);
-  //     // console.log('linksUserHasVotedFor:::  ', linksUserHasVotedFor);
-  //     return true;
-  //   } catch (error) {
-  //     console.log(error);
-  //     console.error(error);
-  //     return false;
-  //   }
-  // }
 }

@@ -157,7 +157,7 @@ export class LinkResolver {
       hasUserAlreadyVotedForThisLink
     );
 
-    if (link != undefined && hasUserAlreadyVotedForThisLink === false) {
+    if (link !== undefined && hasUserAlreadyVotedForThisLink === false) {
       let votes: number = link.votes;
       console.log('votes1:::', votes);
       votes++;
@@ -167,7 +167,7 @@ export class LinkResolver {
         votes: votes,
       };
 
-      try {
+      try { 
         let resLink = await Link.update({ id }, input);
         console.log('voteUp.res:::', resLink);
         // console.log('newLink:::', newLink);
