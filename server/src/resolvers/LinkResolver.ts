@@ -132,7 +132,7 @@ export class LinkResolver {
     */
 
     // let userId: number = parseInt(user.userId);
-    let linksUserAlreadyVotedFor = user.linksUserHasVotedFor;
+    let linksUserAlreadyVotedFor = user.linksArray;
     console.log('linksUserAlreadyVotedFor1', linksUserAlreadyVotedFor);
     console.log('linksUserAlreadyVotedFor1', typeof linksUserAlreadyVotedFor);
     let linksUserAlreadyVotedForArray: Array<string> = linksUserAlreadyVotedFor

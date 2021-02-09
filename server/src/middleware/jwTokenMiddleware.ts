@@ -1,5 +1,5 @@
-import { User } from '../entity/User';
 import { sign } from 'jsonwebtoken';
+import { User } from '../entity/User';
 
 export const createAccessToken = (user: User) => {
   console.log('createAccesstoken:::', user);
@@ -7,7 +7,7 @@ export const createAccessToken = (user: User) => {
     {
       userId: user.id,
       userEmail: user.email,
-      linksUserHasVotedFor: user.linksUserHasVotedFor,
+      linksArray: user.linksArray,
     },
     process.env.ACCESS_TOKEN_SECRET!,
     {
@@ -24,7 +24,7 @@ export const createRefreshToken = (user: User) => {
       userId: user.id,
       userEmail: user.email,
       tokenVersion: user.tokenVersion,
-      linksUserHasVotedFor: user.linksUserHasVotedFor,
+      linksArray: user.linksArray,
     },
     process.env.REFRESH_TOKEN_SECRET!,
     {

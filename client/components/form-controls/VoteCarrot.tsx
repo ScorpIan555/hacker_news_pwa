@@ -38,17 +38,6 @@ const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
     
     event.preventDefault();
     const {user} = authStateContext;
-    // console.log('link, user, userId, linkId, email:::', link, user, userId, linkId, email)
-    // console.log(' user, userId, linkId, email:::', user, userId, linkId, email)
-    // console.log('userId, linkId, email:::', userId, linkId, email)
-    // console.log(' linkId, email:::', linkId, email)
-    // console.log(' email:::', email)
-    // // const id: number = userId;
-    // console.log('link2:::', link);
-    // console.log('user2:::', user);
-    // console.log('userId2:::', userId);
-    // console.log('linkId2:::', linkId);
-    // console.log('email2:::', email)
 
     const { id, email} = user;
     const linkId: number = link?.id;
@@ -82,14 +71,10 @@ try {
     }
   }
 
-  const {user} = authStateContext;
-  let linksArray = []
-  if( user !== null || undefined) {
-    linksArray = user.linksArray
-  }
+ 
 
   return (
-    <VoteCarrotWrapper linkId={linkId}>
+    <VoteCarrotWrapper>
       {/* {linksArray.includes(linkId) ? <a style={{visibility: "hidden"}}> ▲ </a> : <a onClick={handleClick}> ▲ </a> } */}
        <a onClick={handleClick}> ▲ </a>
   </VoteCarrotWrapper>

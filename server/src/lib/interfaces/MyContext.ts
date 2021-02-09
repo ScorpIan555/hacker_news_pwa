@@ -6,6 +6,6 @@ export interface MyContext {
   payload: {
     userEmail: string;
     userId: string;
-    linksUserHasVotedFor: string;
+    linksArray: string;
   }; // might need to expand this for full-blown auth
 }

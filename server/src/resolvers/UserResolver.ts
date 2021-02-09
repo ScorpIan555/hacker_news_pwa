@@ -206,11 +206,11 @@ export class UserResolver {
 
       if (linksArray.length > 0) {
         let idCheck = linksArray.includes(linkId);
-        console.log('linksArray:::', linksArray);
-        console.log('linksArray:::', typeof linksArray);
-        console.log('linksrray isArray?::', Array.isArray(linksArray))
-        console.log('idCheck:::', idCheck);
-        console.log('idCheck-typeof:::', typeof idCheck)
+        // console.log('linksArray:::', linksArray);
+        // console.log('linksArray:::', typeof linksArray);
+        // console.log('linksrray isArray?::', Array.isArray(linksArray))
+        // console.log('idCheck:::', idCheck);
+        // console.log('idCheck-typeof:::', typeof idCheck)
         //
         //
         if (idCheck === false) {
@@ -224,7 +224,7 @@ export class UserResolver {
         if (idCheck === true) {
           // alert('this item exists already in this array ');
           console.log('linksArray::: ', linksArray);
-          return false;
+          return false; // @TODO look into sending back a message to pass to client
         }
       } else {
         console.log('ELSE!!! WTF????');
@@ -237,4 +237,8 @@ export class UserResolver {
       return false;
     }
   }
+
+
+
+
 }

@@ -34,7 +34,6 @@ export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
   email: Scalars['String'];
-  linksUserHasVotedFor: Scalars['String'];
   linksArray: Array<Scalars['Int']>;
 };
 
@@ -195,7 +194,7 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor' | 'linksArray'>
+      & Pick<User, 'id' | 'email' | 'linksArray'>
     ) }
   ) }
 );
@@ -215,7 +214,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor' | 'linksArray'>
+    & Pick<User, 'id' | 'email' | 'linksArray'>
   )> }
 );
 
@@ -459,7 +458,6 @@ export const LoginDocument = gql`
     user {
       id
       email
-      linksUserHasVotedFor
       linksArray
     }
   }
@@ -525,7 +523,6 @@ export const MeDocument = gql`
   me {
     id
     email
-    linksUserHasVotedFor
     linksArray
   }
 }

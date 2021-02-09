@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
-import { ObjectType, Field, Int } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 // import { Link } from '.';
 
 // interface ArrayOfUsers {
@@ -20,9 +20,9 @@ export class User extends BaseEntity {
   @Column('text')
   password: string;
 
-  @Field(() => String)
-  @Column('text', { default: [] })
-  linksUserHasVotedFor: string;
+  // @Field(() => String)
+  // @Column('text', { default: [] })
+  // linksUserHasVotedFor: string;
 
   @Field(() => [Int])
   // https://stackoverflow.com/questions/57611633/typeorm-array-is-not-supported-in-postgres

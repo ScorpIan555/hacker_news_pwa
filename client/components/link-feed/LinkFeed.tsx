@@ -120,7 +120,7 @@ const DataRow = ({ item, index }) => {
   const {user} = authStateContext;
   let linksArray = [];
   if( user !== null || undefined) {
-    linksArray = user.linksArray
+    linksArray = user?.linksArray
   }
 
   
@@ -135,7 +135,7 @@ const DataRow = ({ item, index }) => {
         <Paper className="" elevation={0} index={index}>
           <TitleRow>
             {index + 1}{'.'} 
-            {linksArray.includes(id) ? 
+            {linksArray?.includes(id) ? 
             <a style={{visibility: "hidden"}}> ▲ </a>
              :  
                         <VoteCarrot link={item} 
@@ -159,7 +159,15 @@ const DataRow = ({ item, index }) => {
           </TitleRow>
 
           <SubRow>
-            {votes} points by: {postedBy} {hoursAgo} {linksArray.includes(id) ? '| unvote' : null} {'| hide link |'}{' '}
+            {votes} points by: {postedBy} 
+            {hoursAgo} 
+            {linksArray?.includes(id) ? '| unvote' : null} 
+            {/* {'| hide link |'} */}
+            <a >
+
+              '| Hide |'
+            </a>
+            {' '}
 
             {' # comments'}
           </SubRow>
