@@ -58,10 +58,12 @@ export type Mutation = {
   login: LoginResponse;
   register: LoginResponse;
   updateLinksArray: Scalars['Boolean'];
+  removeLinkFromLinksArray: Scalars['Boolean'];
   createLink: Link;
   updateLink: Scalars['Boolean'];
   deleteLink: Scalars['Boolean'];
   voteUp: Link;
+  voteDown: Link;
 };
 
 
@@ -89,6 +91,13 @@ export type MutationUpdateLinksArrayArgs = {
 };
 
 
+export type MutationRemoveLinkFromLinksArrayArgs = {
+  email: Scalars['String'];
+  linkId: Scalars['Int'];
+  id: Scalars['Int'];
+};
+
+
 export type MutationCreateLinkArgs = {
   options: LinkInput;
 };
@@ -106,6 +115,11 @@ export type MutationDeleteLinkArgs = {
 
 
 export type MutationVoteUpArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationVoteDownArgs = {
   id: Scalars['Int'];
 };
 
@@ -234,6 +248,18 @@ export type RegisterMutation = (
       & Pick<User, 'id' | 'email' | 'linksArray'>
     ) }
   ) }
+);
+
+export type RemoveLinkFromLinksArrayMutationVariables = Exact<{
+  id: Scalars['Int'];
+  linkId: Scalars['Int'];
+  email: Scalars['String'];
+}>;
+
+
+export type RemoveLinkFromLinksArrayMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeLinkFromLinksArray'>
 );
 
 export type UpdateLinkMutationVariables = Exact<{
@@ -590,6 +616,38 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const RemoveLinkFromLinksArrayDocument = gql`
+    mutation removeLinkFromLinksArray($id: Int!, $linkId: Int!, $email: String!) {
+  removeLinkFromLinksArray(id: $id, linkId: $linkId, email: $email)
+}
+    `;
+export type RemoveLinkFromLinksArrayMutationFn = Apollo.MutationFunction<RemoveLinkFromLinksArrayMutation, RemoveLinkFromLinksArrayMutationVariables>;
+
+/**
+ * __useRemoveLinkFromLinksArrayMutation__
+ *
+ * To run a mutation, you first call `useRemoveLinkFromLinksArrayMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveLinkFromLinksArrayMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeLinkFromLinksArrayMutation, { data, loading, error }] = useRemoveLinkFromLinksArrayMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      linkId: // value for 'linkId'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useRemoveLinkFromLinksArrayMutation(baseOptions?: Apollo.MutationHookOptions<RemoveLinkFromLinksArrayMutation, RemoveLinkFromLinksArrayMutationVariables>) {
+        return Apollo.useMutation<RemoveLinkFromLinksArrayMutation, RemoveLinkFromLinksArrayMutationVariables>(RemoveLinkFromLinksArrayDocument, baseOptions);
+      }
+export type RemoveLinkFromLinksArrayMutationHookResult = ReturnType<typeof useRemoveLinkFromLinksArrayMutation>;
+export type RemoveLinkFromLinksArrayMutationResult = Apollo.MutationResult<RemoveLinkFromLinksArrayMutation>;
+export type RemoveLinkFromLinksArrayMutationOptions = Apollo.BaseMutationOptions<RemoveLinkFromLinksArrayMutation, RemoveLinkFromLinksArrayMutationVariables>;
 export const UpdateLinkDocument = gql`
     mutation UpdateLink($id: Int!, $url: String, $description: String, $domain: String) {
   updateLink(
