@@ -195,7 +195,7 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor'>
+      & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor' | 'linksArray'>
     ) }
   ) }
 );
@@ -215,7 +215,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor'>
+    & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor' | 'linksArray'>
   )> }
 );
 
@@ -232,7 +232,7 @@ export type RegisterMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor'>
+      & Pick<User, 'id' | 'email' | 'linksArray'>
     ) }
   ) }
 );
@@ -269,7 +269,7 @@ export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'linksUserHasVotedFor' | 'linksArray'>
+    & Pick<User, 'id' | 'email' | 'linksArray'>
   )> }
 );
 
@@ -460,6 +460,7 @@ export const LoginDocument = gql`
       id
       email
       linksUserHasVotedFor
+      linksArray
     }
   }
 }
@@ -525,6 +526,7 @@ export const MeDocument = gql`
     id
     email
     linksUserHasVotedFor
+    linksArray
   }
 }
     `;
@@ -560,7 +562,7 @@ export const RegisterDocument = gql`
     user {
       id
       email
-      linksUserHasVotedFor
+      linksArray
     }
   }
 }
@@ -664,7 +666,6 @@ export const UsersDocument = gql`
   users {
     id
     email
-    linksUserHasVotedFor
     linksArray
   }
 }

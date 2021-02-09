@@ -1,22 +1,21 @@
-import React, { useRef, FC } from 'react';
-import Router from 'next/router';
+import { FormHandles, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
-import { SubmitHandler, FormHandles } from '@unform/core';
-
-// @TODO pull in and set up yup
-// import * as Yup from 'yup';
-
-// get form controls used in component
-import { InputC, Button } from './form-controls';
-
+import Router from 'next/router';
+import React, { FC, useRef } from 'react';
 // get generated custom GraphQL hook for login page
-import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
-
-// get app libraries
-import { setAccessToken } from '../lib/utils';
+import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
 import { useAuthDispatch, useAuthState } from '../lib/store/contexts';
 import { theme } from '../lib/theme';
 import { ILoginUser } from '../lib/typescript/interfaces';
+// get app libraries
+import { setAccessToken } from '../lib/utils';
+// @TODO pull in and set up yup
+// import * as Yup from 'yup';
+// get form controls used in component
+import { Button, InputC } from './form-controls';
+
+
+
 
 // @Todo need to add in Yum validations
 // probably set this up in a util

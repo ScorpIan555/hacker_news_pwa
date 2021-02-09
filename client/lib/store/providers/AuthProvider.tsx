@@ -1,14 +1,15 @@
-import { AuthStateContext, AuthDispatchContext } from '../contexts/AuthContext';
+import { useImmerReducer } from 'use-immer';
+import { AuthDispatchContext, AuthStateContext } from '../contexts/AuthContext';
 import { curriedLoginReducer } from '../reducers/loginReducer';
 
-import { useImmerReducer } from 'use-immer';
 // import { IState } from '../../typescript';
 
 let initialState = {
   // fix this typing
   user: {
     email: '',
-    password: ''
+    password: '',
+    linksArray: []
   }
 };
 

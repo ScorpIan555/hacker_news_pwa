@@ -79,14 +79,18 @@ try {
     } catch (error) {
         console.log('error:::', error)
     }
-  
   }
+
+  const {user} = authStateContext;
+  const {linksArray} = user;
+  
+  console.log('user:::', user);
 
 
   return (
     <VoteCarrotWrapper linkId={linkId}>
+  {linksArray.includes(linkId) ? <a style={{visibility: "hidden"}}> ▲ </a> : <a onClick={handleClick}> ▲ </a> }
     
-    <button onClick={handleClick}> ▲ </button>
   </VoteCarrotWrapper>
   )
 }
