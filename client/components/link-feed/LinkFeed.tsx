@@ -113,11 +113,16 @@ const SubRow = styled.div`
 
 
 const DataRow = ({ item, index }) => {
-  // console.log('DataRow.item:::', item);
+  console.log('DataRow.item:::', item);
   
   const { id, url, description, postedBy, votes, createdAt, domain } = item;
   const { authStateContext } = useAuthState();
   const {user} = authStateContext;
+  let linksArray = [];
+  if( user !== null || undefined) {
+    linksArray = user.linksArray
+  }
+
   
   const hoursAgo = moment(createdAt).startOf('hour').fromNow(); 
  
@@ -129,13 +134,18 @@ const DataRow = ({ item, index }) => {
       <Grid item xs={12}>
         <Paper className="" elevation={0} index={index}>
           <TitleRow>
-            {index + 1} {'.'} 
-            <VoteCarrot link={item} 
+            {index + 1}{'.'} 
+            {linksArray.includes(id) ? 
+            <a style={{visibility: "hidden"}}> ▲ </a>
+             :  
+                        <VoteCarrot link={item} 
                         user={user} 
                         userId={user?.id} 
                         linkId={id} 
-                        email={user?.email} 
-            />
+                        email={user?.email}
+                        
+            />}
+           
             {/* <Typography> */}
             <LinkDescription>{description}</LinkDescription>
             <UrlText>
@@ -149,7 +159,8 @@ const DataRow = ({ item, index }) => {
           </TitleRow>
 
           <SubRow>
-            {votes} points by: {postedBy} {hoursAgo} {'| hide link |'}{' '}
+            {votes} points by: {postedBy} {hoursAgo} {linksArray.includes(id) ? '| unvote' : null} {'| hide link |'}{' '}
+
             {' # comments'}
           </SubRow>
         </Paper>
@@ -176,8 +187,6 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     },
   })
 
-  
-
   useEffect(() => {
     let links = data?.linkFeed
 
@@ -188,12 +197,12 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   }),
     [data?.linkFeed]
 
-  const handleMouseOver = (event: Event) => {
-    event.preventDefault()
-    // console.log('handleMouseOver:::', isFocus)
+  // const handleMouseOver = (event: Event) => {
+  //   event.preventDefault()
+  //   // console.log('handleMouseOver:::', isFocus)
 
-    setIsFocus(!isFocus)
-  }
+  //   setIsFocus(!isFocus)
+  // }
 
   return (
     <Container className={styles.root}>
@@ -214,7 +223,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
                     key={index + index*index}
                     alignItems={'flex-start'}
                     autoFocus={isFocus}
-                    onMouseOver={handleMouseOver}
+                    // onMouseOver={handleMouseOver}
                   >
                     <DataRow item={item} index={index} />
                   </ListItem>

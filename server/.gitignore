@@ -6,3 +6,4 @@ tmp/
 temp/
 ../TODO-LIST
 .env
+SQL_QUERIES

@@ -198,14 +198,14 @@ export class UserResolver {
       console.log('user object::: ', user, linksArray);
 
       if (linksArray.length === 0) {
-        linksArray.push(id);
+        linksArray.push(linkId);
         console.log('linksArray::: ', linksArray);
         await User.update({ id }, { linksArray: linksArray });
         return true;
       }
 
       if (linksArray.length > 0) {
-        let idCheck = linksArray.includes(id);
+        let idCheck = linksArray.includes(linkId);
         console.log('linksArray:::', linksArray);
         console.log('linksArray:::', typeof linksArray);
         console.log('linksrray isArray?::', Array.isArray(linksArray))
@@ -214,7 +214,7 @@ export class UserResolver {
         //
         //
         if (idCheck === false) {
-          linksArray.push(id);
+          linksArray.push(linkId);
           console.log('linksArray.idCheck was false::: ', linksArray);
           await User.update({ id }, { linksArray: linksArray });
           return true;

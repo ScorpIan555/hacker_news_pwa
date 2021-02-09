@@ -4,7 +4,6 @@ mutation Login($email: String!, $password: String!) {
     user {
       id
       email
-      linksUserHasVotedFor
       linksArray
     }
   }

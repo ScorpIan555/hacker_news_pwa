@@ -1,6 +1,6 @@
 // import React from 'react';
 import { useAuthState } from 'lib/store/contexts';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   useUpdateLinksArrayMutation,
   useVoteUpMutation
@@ -19,7 +19,7 @@ const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
   const [voteUp] = useVoteUpMutation();
   const [updateLinksArray] = useUpdateLinksArrayMutation();
   const {authStateContext} = useAuthState();
-  const [linkObj, setLinkObj] = useState(link);
+  // const [linkObj, setLinkObj] = useState(link);
   
   // const 
   // console.log('VoteCarrot....link, user, userId, linkId, email:::', link, user, userId, linkId, email)
@@ -29,7 +29,7 @@ const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
 
   useEffect(() => {
     // console.log('useEffect.linkObj', linkObj)
-    // console.log('useEffect.link:::', link );
+    console.log('useEffect.link:::', link );
 
   })
     
@@ -51,15 +51,16 @@ const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
     // console.log('email2:::', email)
 
     const { id, email} = user;
-    const linkId: number = linkObj?.id;
+    const linkId: number = link?.id;
     // console.log('id:::', id)
     // console.log('email:::', email);
-    // console.log('linkId2:::', linkId);
+    console.log('linkId2:::', linkId);
     
 
     // Now, I have to set this up as a type guard.
      
 try {
+  console.log('variables:::', id, linkId, email)
   const res = await updateLinksArray({variables: {id, linkId, email}});
   voteUpCall({variables: {id: linkId}});
   return res;
@@ -82,15 +83,15 @@ try {
   }
 
   const {user} = authStateContext;
-  const {linksArray} = user;
-  
-  console.log('user:::', user);
-
+  let linksArray = []
+  if( user !== null || undefined) {
+    linksArray = user.linksArray
+  }
 
   return (
     <VoteCarrotWrapper linkId={linkId}>
-  {linksArray.includes(linkId) ? <a style={{visibility: "hidden"}}> ▲ </a> : <a onClick={handleClick}> ▲ </a> }
-    
+      {/* {linksArray.includes(linkId) ? <a style={{visibility: "hidden"}}> ▲ </a> : <a onClick={handleClick}> ▲ </a> } */}
+       <a onClick={handleClick}> ▲ </a>
   </VoteCarrotWrapper>
   )
 }
