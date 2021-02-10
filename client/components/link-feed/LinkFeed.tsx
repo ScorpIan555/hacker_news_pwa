@@ -1,19 +1,19 @@
-import { Container, Link, List, ListItem } from '@material-ui/core'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
-import { themeGet } from '@styled-system/theme-get'
-import VoteCarrot from 'components/form-controls/VoteCarrot'
-import LinkSubRow from 'components/LinkSubRow'
-import { useAuthState } from 'lib/store/contexts'
-import moment from 'moment'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { useLinkFeedQuery } from '../../generated/graphql'
+import { Container, Link, List, ListItem } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
+import { themeGet } from '@styled-system/theme-get';
+import VoteCarrot from 'components/form-controls/VoteCarrot';
+import LinkSubRow from 'components/LinkSubRow';
+import { useAuthState } from 'lib/store/contexts';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useLinkFeedQuery } from '../../generated/graphql';
 
 const StyledGrid = styled.button`
   /* ... */
-`
+`;
 
 // const Col = withStyle(Column, () => ({
 //   '@media only screen and (max-width: 767px)': {
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) =>
       // color: theme.palette.info.main,
     },
   })
-)
+);
 
 const LinkDescription = styled.span`
   font-size: ${themeGet('fontSizes.2', '15')}px;
@@ -89,40 +89,35 @@ const LinkDescription = styled.span`
   overflow: hidden;
 
   text-align: center;
-`
+`;
 
 const UrlText = styled.span`
   margin-left: 10px;
   font-size: ${themeGet('fontSizes.2', '12')}px;
-`
+`;
 
 const StyledLink = styled(Link)`
   color: orange;
-`
+`;
 
 const TitleRow = styled.div`
   font-family: 'Lato', sans-serif;
   color: #828282;
-`
+`;
 
-const SubRow = styled.div`
-  margin-left: 10px;
-  font-size: ${themeGet('fontSizes.2', '12')}px;
-  color: #828282;
-`
 
 const DataRow = ({ item, index }) => {
-  console.log('DataRow.item:::', item)
+  console.log('DataRow.item:::', item);
 
-  const { id, url, description, postedBy, votes, createdAt, domain } = item
-  const { authStateContext } = useAuthState()
-  const { user } = authStateContext
-  let linksArray = []
+  const { id, url, description, postedBy, votes, createdAt, domain } = item;
+  const { authStateContext } = useAuthState();
+  const { user } = authStateContext;
+  let linksArray = [];
   if (user !== null || undefined) {
-    linksArray = user?.linksArray
+    linksArray = user?.linksArray;
   }
 
-  const hoursAgo = moment(createdAt).startOf('hour').fromNow()
+  const hoursAgo = moment(createdAt).startOf('hour').fromNow();
 
   return (
     <React.Fragment>
@@ -160,19 +155,20 @@ const DataRow = ({ item, index }) => {
             hoursAgo={hoursAgo}
             linksArray={linksArray}
             linkId={id}
+            handleHideClick={handleHideClick}
           />
         </Paper>
       </Grid>
     </React.Fragment>
-  )
-}
+  );
+};
 
 interface Props {}
 
 const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
-  const [isFocus, setIsFocus] = useState(false)
-  const theme = useTheme()
-  const styles = useStyles(theme)
+  const [isFocus, setIsFocus] = useState(false);
+  const theme = useTheme();
+  const styles = useStyles(theme);
 
   if (children !== undefined || null) {
     // console.log('LinkFeed.props.children:::', children);
@@ -183,7 +179,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       limit: 20,
       skip: 0,
     },
-  })
+  });
 
   useEffect(() => {
     // let links = data?.linkFeed
@@ -191,9 +187,9 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     // console.log('data was rerun:::', data)
     // console.log('links lenght', links?.length)
     // console.log('theme::: ', theme.palette)
-    refetch()
+    refetch();
   }),
-    [data?.linkFeed]
+    [data?.linkFeed];
 
   // const handleMouseOver = (event: Event) => {
   //   event.preventDefault()
@@ -201,6 +197,13 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
   //   setIsFocus(!isFocus)
   // }
+
+  const handleHideClick = (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+    console.log('event.Hide:::', event);
+
+    
+  };
 
   return (
     <Container className={styles.root}>
@@ -223,9 +226,9 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
                     autoFocus={isFocus}
                     // onMouseOver={handleMouseOver}
                   >
-                    <DataRow item={item} index={index} />
+                    <DataRow item={item} index={index} handleHideClick={handleHideClick} />
                   </ListItem>
-                )
+                );
               })
             ) : (
               <div> bleh </div>
@@ -236,7 +239,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         </List>
       </Grid>
     </Container>
-  )
-}
+  );
+};
 
-export default LinkFeed
+export default LinkFeed;
