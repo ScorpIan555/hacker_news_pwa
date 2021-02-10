@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
 import { themeGet } from '@styled-system/theme-get'
 import VoteCarrot from 'components/form-controls/VoteCarrot'
+import LinkSubRow from 'components/LinkSubRow'
 import { useAuthState } from 'lib/store/contexts'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
@@ -157,20 +158,14 @@ const DataRow = ({ item, index }) => {
             </UrlText>
             {/* </Typography> */}
           </TitleRow>
-
-          <SubRow>
-            {votes} points by: {postedBy} 
-            {hoursAgo} 
-            {linksArray?.includes(id) ? '| unvote' : null} 
-            {/* {'| hide link |'} */}
-            <a >
-
-              '| Hide |'
-            </a>
-            {' '}
-
-            {' # comments'}
-          </SubRow>
+              <LinkSubRow 
+                votes={votes}
+                postedBy={postedBy}
+                hoursAgo={hoursAgo}
+                linksArray={linksArray}
+                linkId={id}
+              />
+          
         </Paper>
       </Grid>
     </React.Fragment>
