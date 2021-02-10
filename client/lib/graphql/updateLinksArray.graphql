@@ -1,3 +1,3 @@
 mutation updateLinksArray($id: Int!, $linkId: Int!, $email: String!) {
-  updateLinksArray(id:$id, linkId: $linkId, email: $email) 
+  updateLinksArray(id: $id, linkId: $linkId, email: $email)
 }

@@ -111,42 +111,38 @@ const SubRow = styled.div`
   color: #828282;
 `
 
-
-
 const DataRow = ({ item, index }) => {
-  console.log('DataRow.item:::', item);
-  
-  const { id, url, description, postedBy, votes, createdAt, domain } = item;
-  const { authStateContext } = useAuthState();
-  const {user} = authStateContext;
-  let linksArray = [];
-  if( user !== null || undefined) {
+  console.log('DataRow.item:::', item)
+
+  const { id, url, description, postedBy, votes, createdAt, domain } = item
+  const { authStateContext } = useAuthState()
+  const { user } = authStateContext
+  let linksArray = []
+  if (user !== null || undefined) {
     linksArray = user?.linksArray
   }
 
-  
-  const hoursAgo = moment(createdAt).startOf('hour').fromNow(); 
- 
+  const hoursAgo = moment(createdAt).startOf('hour').fromNow()
 
- 
-  
   return (
-    <React.Fragment>    
+    <React.Fragment>
       <Grid item xs={12}>
         <Paper className="" elevation={0} index={index}>
           <TitleRow>
-            {index + 1}{'.'} 
-            {linksArray?.includes(id) ? 
-            <a style={{visibility: "hidden"}}> ▲ </a>
-             :  
-                        <VoteCarrot link={item} 
-                        user={user} 
-                        userId={user?.id} 
-                        linkId={id} 
-                        email={user?.email}
-                        
-            />}
-           
+            {index + 1}
+            {'.'}
+            {linksArray?.includes(id) ? (
+              <a style={{ visibility: 'hidden' }}> ▲ </a>
+            ) : (
+              <VoteCarrot
+                link={item}
+                user={user}
+                userId={user?.id}
+                linkId={id}
+                email={user?.email}
+              />
+            )}
+
             {/* <Typography> */}
             <LinkDescription>{description}</LinkDescription>
             <UrlText>
@@ -158,14 +154,13 @@ const DataRow = ({ item, index }) => {
             </UrlText>
             {/* </Typography> */}
           </TitleRow>
-              <LinkSubRow 
-                votes={votes}
-                postedBy={postedBy}
-                hoursAgo={hoursAgo}
-                linksArray={linksArray}
-                linkId={id}
-              />
-          
+          <LinkSubRow
+            votes={votes}
+            postedBy={postedBy}
+            hoursAgo={hoursAgo}
+            linksArray={linksArray}
+            linkId={id}
+          />
         </Paper>
       </Grid>
     </React.Fragment>
@@ -191,7 +186,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   })
 
   useEffect(() => {
-    let links = data?.linkFeed
+    // let links = data?.linkFeed
 
     // console.log('data was rerun:::', data)
     // console.log('links lenght', links?.length)
@@ -223,7 +218,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
                   // <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
                   <ListItem
-                    key={index + index*index}
+                    key={index + index * index}
                     alignItems={'flex-start'}
                     autoFocus={isFocus}
                     // onMouseOver={handleMouseOver}
@@ -243,6 +238,5 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     </Container>
   )
 }
-
 
 export default LinkFeed
