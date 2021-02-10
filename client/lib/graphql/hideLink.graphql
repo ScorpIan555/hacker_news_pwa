@@ -1,0 +1,5 @@
+mutation hideLink($id: Int!, $linkId: Int!, $email: String!) {
+  hideLink(id: $id, linkId: $linkId, email: $email) {
+    hiddenLinksArray
+  }
+}

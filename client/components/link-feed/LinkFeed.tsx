@@ -106,7 +106,7 @@ const TitleRow = styled.div`
 `;
 
 
-const DataRow = ({ item, index }) => {
+const DataRow = ({ item, index, handleHideClick }) => {
   console.log('DataRow.item:::', item);
 
   const { id, url, description, postedBy, votes, createdAt, domain } = item;
