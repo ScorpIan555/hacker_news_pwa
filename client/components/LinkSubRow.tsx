@@ -1,11 +1,12 @@
 // import React from 'react';
 import { themeGet } from '@styled-system/theme-get';
 import {
+  useHideLinkMutation,
   useRemoveLinkFromLinksArrayMutation,
-  useVoteUpMutation
+  useVoteDownMutation
 } from 'generated/graphql';
 import { useAuthState } from 'lib/store/contexts';
-import { SyntheticEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const SubRow = styled.div`
@@ -19,59 +20,51 @@ const LinkSubRow = ({
   postedBy,
   hoursAgo,
   linksArray,
+  hiddenLinksArray,
   linkId,
-  isLinkHidden,
-  handleHideClick
 }: {
   votes: number;
   postedBy: string;
   hoursAgo: string;
   linksArray: number[];
+  hiddenLinksArray: number[];
   linkId: number;
-  isLinkHidden: boolean;
-  handleHideClick: SyntheticEvent
 }) => {
-  const [voteDown] = useVoteUpMutation();
+  const [voteDown] = useVoteDownMutation();
   const [removeLinkFromLinksArray] = useRemoveLinkFromLinksArrayMutation();
+  const [hideLink] = useHideLinkMutation();
+
   const { authStateContext } = useAuthState();
 
   useEffect(() => {
-    console.log(
-      'LinkSubRow',
-      votes,
-      postedBy,
-      hoursAgo,
-      linksArray,
-      linkId,
-      isLinkHidden
-    );
+    console.log('LinkSubRow', votes, postedBy, hoursAgo, linksArray, linkId);
   });
 
   const handleUnvoteClick = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const { user } = authStateContext;
 
-    const { id, email }: {id: number, email: string} = user;
+    const { id, email }: { id: number; email: string } = user;
     // const linkId: number = link?.id;
     // console.log('id:::', id)
     // console.log('email:::', email);
     console.log('linkId2:::', linkId);
 
     try {
-      console.log('variables:::', id, linkId, email);
-      const res = await removeLinkFromLinksArray({
+      console.log('removeLinkFromLinksArray.variables:::', id, linkId, email);
+      await removeLinkFromLinksArray({
         variables: { id, linkId, email },
       });
-      voteDownCall({ variables: { id: linkId } });
-      return res;
+
+      return voteDownCall({ linkId });
     } catch (error) {
       console.log('error:::', error);
       // throw new Error()
     }
   };
 
-  const voteDownCall = async ({ linkId }) => {
-    console.log('linkId:::', linkId);
+  const voteDownCall = async ({ linkId }: { linkId: number }) => {
+    console.log('voteDownCall.linkId:::', linkId);
     try {
       const res = await voteDown({
         variables: { id: linkId },
@@ -82,7 +75,19 @@ const LinkSubRow = ({
     }
   };
 
+  const handleHideClick = async () => {
+    event.preventDefault();
+    console.log('handleHideClick.Hide:::', linkId);
+    const { user } = authStateContext;
+    const {
+      id,
+      email,
+    }: { id: number; email: string; hiddleLinksArray: number[] } = user;
 
+    await hideLink({
+      variables: { id: id, linkId: linkId, email },
+    });
+  };
 
   return (
     <SubRow>
@@ -91,9 +96,9 @@ const LinkSubRow = ({
       {linksArray?.includes(linkId) ? (
         <a onClick={handleUnvoteClick}>'| unvote |'</a>
       ) : null}
-      {linksArray?.includes(linkId) ? (
+      {hiddenLinksArray?.includes(linkId) ? null : (
         <a onClick={handleHideClick}>'| hide |'</a>
-      ) : null}
+      )}
       {/* {'| hide link |'} */}
       {' # comments'}
     </SubRow>

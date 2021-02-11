@@ -241,12 +241,13 @@ export class LinkResolver {
 
     if (link !== undefined) {
       let votes: number = link.votes
+      let newVotes: number = votes - 1
       console.log('votes1:::', votes)
-      votes--
+      
       console.log('votes2:::', votes)
 
       let input: VoteInput = {
-        votes: votes,
+        votes: newVotes,
       }
 
       try {

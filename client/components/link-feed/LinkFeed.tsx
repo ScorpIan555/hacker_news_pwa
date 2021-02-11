@@ -105,16 +105,17 @@ const TitleRow = styled.div`
   color: #828282;
 `;
 
-
-const DataRow = ({ item, index, handleHideClick }) => {
+const DataRow = ({ item, index }) => {
   console.log('DataRow.item:::', item);
 
   const { id, url, description, postedBy, votes, createdAt, domain } = item;
   const { authStateContext } = useAuthState();
   const { user } = authStateContext;
   let linksArray = [];
+  let hiddenLinksArray = [];
   if (user !== null || undefined) {
     linksArray = user?.linksArray;
+    hiddenLinksArray = user?.hiddenLinksArray;
   }
 
   const hoursAgo = moment(createdAt).startOf('hour').fromNow();
@@ -154,8 +155,8 @@ const DataRow = ({ item, index, handleHideClick }) => {
             postedBy={postedBy}
             hoursAgo={hoursAgo}
             linksArray={linksArray}
+            hiddenLinksArray={hiddenLinksArray}
             linkId={id}
-            handleHideClick={handleHideClick}
           />
         </Paper>
       </Grid>
@@ -169,6 +170,11 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   const [isFocus, setIsFocus] = useState(false);
   const theme = useTheme();
   const styles = useStyles(theme);
+  const { authStateContext } = useAuthState();
+
+  const [hiddenLinksArray, setHiddenLinksArray] = useState();
+  const [linkList, setLinkList] = useState([]);
+  // let linksArray = [];
 
   if (children !== undefined || null) {
     // console.log('LinkFeed.props.children:::', children);
@@ -182,6 +188,34 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   });
 
   useEffect(() => {
+    const { user } = authStateContext;
+    let filteredLinkList = [];
+    if (user !== null || undefined) {
+      // linksArray = user?.linksArray;
+      console.log('setHiddenLinksArray::', user.hiddenLinksArray)
+      setHiddenLinksArray(user.hiddenLinksArray);
+    }
+
+    if (data?.linkFeed !== undefined) {
+      setLinkList(data?.linkFeed);
+    }
+
+    // if (hiddenLinksArray !== undefined && data?.linkFeed?.length !== undefined && data?.LinkFeed?.length> 0) {
+      filteredLinkList = data.linkFeed.filter(
+        (link) => {
+          console.log('filter.hiddenLinksArray::', hiddenLinksArray);
+          console.log('filter.link.id ::', hiddenLinksArray);
+          const filteredLinks = hiddenLinksArray?.includes(link.id) === false;
+          console.log('filteredLinks::', filteredLinks);
+          return filteredLinks;
+        }
+      );
+      console.log('ifstatement.filteredLinkList:::', filteredLinkList);
+    // }
+
+    console.log('filteredLinkList:::', filteredLinkList);
+    console.log('linkList:::', linkList);
+
     // let links = data?.linkFeed
 
     // console.log('data was rerun:::', data)
@@ -194,16 +228,14 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   // const handleMouseOver = (event: Event) => {
   //   event.preventDefault()
   //   // console.log('handleMouseOver:::', isFocus)
-
+  console.log('LinkFeed.hiddenLinksArray:::', hiddenLinksArray);
   //   setIsFocus(!isFocus)
   // }
 
-  const handleHideClick = (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-    console.log('event.Hide:::', event);
-
-    
-  };
+  // if (hiddenLinksArray?.includes(item.id)) {
+  //   console.log('item.id::', item.id);
+  //   return null;
+  // } else {}
 
   return (
     <Container className={styles.root}>
@@ -211,30 +243,34 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
         <List>
           {data ? (
             data.linkFeed?.length ? (
-              data.linkFeed.map((item: any, index: any) => {
-                // console.log('item:::', item)
-                // console.log('index::', index)
-                // const { id, url, description, postedBy, votes } = item;
+              // let filteredLinkFeed = data.linkFeed
 
-                return (
-                  // <DataRow index={index} item={item} />
+              
+                linkList.filter((link) => !hiddenLinksArray?.includes(link.id))
+                .map((item: any, index: any) => {
+                  // console.log('item:::', item)
+                  // console.log('index::', index)
+                  // const { id, url, description, postedBy, votes } = item;
 
-                  // <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
-                  <ListItem
-                    key={index + index * index}
-                    alignItems={'flex-start'}
-                    autoFocus={isFocus}
-                    // onMouseOver={handleMouseOver}
-                  >
-                    <DataRow item={item} index={index} handleHideClick={handleHideClick} />
-                  </ListItem>
-                );
-              })
+                  return (
+                    // <DataRow index={index} item={item} />
+
+                    // <ListItem item={item} index={index} >{id} {' '}  {description} {' '} {postedBy} {' '} {votes}</ListItem>
+                    <ListItem
+                      key={index + index * index}
+                      alignItems={'flex-start'}
+                      autoFocus={isFocus}
+                      // onMouseOver={handleMouseOver}
+                    >
+                      <DataRow item={item} index={index} />
+                    </ListItem>
+                  );
+                })
             ) : (
-              <div> bleh </div>
+              <div> </div>
             )
           ) : (
-            <div>Felicidade</div>
+            <div></div>
           )}
         </List>
       </Grid>

@@ -171,7 +171,7 @@ export class UserResolver {
 
   @Mutation(() => Boolean)
   // @UseMiddleware(isAuth)
-  async updateLinksArray(
+  async addLinktoLinksArray(
     @Arg('id', () => Int) id: number,
     @Arg('linkId', () => Int) linkId: number, // this was userId originally, double-check
     @Arg('email') email: string,
@@ -239,7 +239,7 @@ export class UserResolver {
   async hideLink(
     @Arg('id', () => Int) id: number,
     @Arg('linkId', () => Int) linkId: number, // this was userId originally, double-check
-    @Arg('email') email: string,
+    @Arg('email') email: string
     // @Ctx() { payload }: MyContext
   ) {
     try {
@@ -265,20 +265,86 @@ export class UserResolver {
         hiddenLinksArray.push(linkId);
         console.log('hiddenLinksArray:::', hiddenLinksArray);
         const newHiddenLinksArray: number[] = hiddenLinksArray;
-        
-        try{
+
+        try {
           await User.update({ id }, { hiddenLinksArray: newHiddenLinksArray });
           console.log('newHiddenLinksArray:::', newHiddenLinksArray);
           return newHiddenLinksArray;
-        } catch(err) {
+        } catch (err) {
           console.log('Userresolver.hidelink.error in DB update:::;', err);
           return hiddenLinksArray;
-        }                
+        }
       } else {
-        console.log('UserResolver.hasUserAlreadyHiddenThis is true, this should not be')
-        return hiddenLinksArray
+        console.log(
+          'UserResolver.hasUserAlreadyHiddenThis is true, this should not be'
+        );
+        return hiddenLinksArray;
       }
-    
+    } catch (err) {
+      console.log('UserResolver.hideLink.error', err);
+      return [0, 2, 3];
+    }
+  }
+
+  @Mutation(() => [Int])
+  async unhideLink(
+    @Arg('id', () => Int) id: number,
+    @Arg('linkId', () => Int) linkId: number, // this was userId originally, double-check
+    @Arg('email') email: string
+    // @Ctx() { payload }: MyContext
+  ) {
+    try {
+      const user: User | undefined = await User.findOne({ where: { email } });
+
+      if (user === undefined) {
+        throw new Error('cannot find user');
+      }
+
+      const { hiddenLinksArray } = user;
+
+      const hasUserAlreadyHiddenThis: boolean = hiddenLinksArray.includes(
+        linkId
+      );
+
+      if (hasUserAlreadyHiddenThis === true) {
+        console.log('hiddenLinksArray:::', hiddenLinksArray);
+
+        // const checkArray = (linkId: any) => {
+        //   console.log('checkArray.hiddenLinksArray::', linkId, email, id);
+        //   console.log('checkArray.hiddenLinksArray::', hiddenLinksArray);
+        //   console.log('checkArray.hiddenLinksArray::');
+        //   return hiddenLinksArray === linkId;
+        // };
+
+        // const filteredArray = hiddenLinksArray.filter(checkArray);
+        // console.log('hiddenLinksArray.idCheck was true::: ', hiddenLinksArray);
+        // console.log('filteredArray.idCheck was true::: ', filteredArray);
+
+        // const checkArray = (linkId: any) => {
+        //   console.log('checkAdult::', linkId, hiddenLinksArray);
+        //   return hiddenLinksArray === linkId;
+        // };
+
+        const filteredArray = hiddenLinksArray.filter(link => link !== linkId)
+        console.log('linksArray.idCheck was false::: ', hiddenLinksArray);
+        console.log('filteredArray.idCheck was false::: ', filteredArray);
+
+        // const newHiddenLinksArray: number[] = hiddenLinksArray;
+
+        try {
+          await User.update({ id }, { linksArray: filteredArray });
+          console.log('hiddenLinksArray.filteredArray:::', filteredArray);
+          return filteredArray;
+        } catch (err) {
+          console.log('Userresolver.hidelink.error in DB update:::;', err);
+          return hiddenLinksArray;
+        }
+      } else {
+        console.log(
+          'UserResolver.hasUserAlreadyHiddenThis is false, this should not be'
+        );
+        return hiddenLinksArray;
+      }
     } catch (err) {
       console.log('UserResolver.hideLink.error', err);
       return [0, 2, 3];
@@ -357,12 +423,19 @@ export class UserResolver {
             //   const filt =  linksArray !== linkId
             // }
 
-            const checkArray = (linkId: any) => {
-              console.log('checkAdult::', linkId, linksArray);
-              return linksArray === linkId;
-            };
+            // const checkArray = (linkId: number) => {
+            //   console.log('checkArray.this:::', this);
 
-            const filteredArray = linksArray.filter(checkArray);
+            //   console.log(
+            //     'removeLinkFromLinksArray.checkArray::',
+            //     linkId,
+            //     linksArray
+            //   );
+            //   return linksArray[] === linkId;
+            // };
+
+            // const filteredArray = linksArray.filter(checkArray);
+            const filteredArray = linksArray.filter(link => link !== linkId)
             console.log('linksArray.idCheck was false::: ', linksArray);
             console.log('filteredArray.idCheck was false::: ', filteredArray);
             await User.update({ id }, { linksArray: filteredArray });

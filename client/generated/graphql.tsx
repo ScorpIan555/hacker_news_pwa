@@ -58,8 +58,9 @@ export type Mutation = {
   revokeRefreshTokensForUser: Scalars['Boolean'];
   login: LoginResponse;
   register: LoginResponse;
-  updateLinksArray: Scalars['Boolean'];
-  hideLink: HiddenLinksArray;
+  addLinktoLinksArray: Scalars['Boolean'];
+  hideLink: Array<Scalars['Int']>;
+  unhideLink: Array<Scalars['Int']>;
   removeLinkFromLinksArray: Scalars['Boolean'];
   createLink: Link;
   updateLink: Scalars['Boolean'];
@@ -86,7 +87,7 @@ export type MutationRegisterArgs = {
 };
 
 
-export type MutationUpdateLinksArrayArgs = {
+export type MutationAddLinktoLinksArrayArgs = {
   email: Scalars['String'];
   linkId: Scalars['Int'];
   id: Scalars['Int'];
@@ -94,6 +95,13 @@ export type MutationUpdateLinksArrayArgs = {
 
 
 export type MutationHideLinkArgs = {
+  email: Scalars['String'];
+  linkId: Scalars['Int'];
+  id: Scalars['Int'];
+};
+
+
+export type MutationUnhideLinkArgs = {
   email: Scalars['String'];
   linkId: Scalars['Int'];
   id: Scalars['Int'];
@@ -138,11 +146,6 @@ export type LoginResponse = {
   user: User;
 };
 
-export type HiddenLinksArray = {
-  __typename?: 'HiddenLinksArray';
-  hiddenLinksArray: Array<Scalars['Int']>;
-};
-
 export type LinkInput = {
   url: Scalars['String'];
   description: Scalars['String'];
@@ -154,6 +157,18 @@ export type LinkUpdateInput = {
   description?: Maybe<Scalars['String']>;
   votes?: Maybe<Scalars['Int']>;
 };
+
+export type AddLinktoLinksArrayMutationVariables = Exact<{
+  id: Scalars['Int'];
+  linkId: Scalars['Int'];
+  email: Scalars['String'];
+}>;
+
+
+export type AddLinktoLinksArrayMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addLinktoLinksArray'>
+);
 
 export type ByeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -204,10 +219,7 @@ export type HideLinkMutationVariables = Exact<{
 
 export type HideLinkMutation = (
   { __typename?: 'Mutation' }
-  & { hideLink: (
-    { __typename?: 'HiddenLinksArray' }
-    & Pick<HiddenLinksArray, 'hiddenLinksArray'>
-  ) }
+  & Pick<Mutation, 'hideLink'>
 );
 
 export type LinkFeedQueryVariables = Exact<{
@@ -257,7 +269,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'linksArray'>
+    & Pick<User, 'id' | 'email' | 'linksArray' | 'hiddenLinksArray'>
   )> }
 );
 
@@ -304,18 +316,6 @@ export type UpdateLinkMutation = (
   & Pick<Mutation, 'updateLink'>
 );
 
-export type UpdateLinksArrayMutationVariables = Exact<{
-  id: Scalars['Int'];
-  linkId: Scalars['Int'];
-  email: Scalars['String'];
-}>;
-
-
-export type UpdateLinksArrayMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'updateLinksArray'>
-);
-
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -323,8 +323,21 @@ export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'linksArray'>
+    & Pick<User, 'id' | 'email' | 'linksArray' | 'hiddenLinksArray'>
   )> }
+);
+
+export type VoteDownMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type VoteDownMutation = (
+  { __typename?: 'Mutation' }
+  & { voteDown: (
+    { __typename?: 'Link' }
+    & Pick<Link, 'id' | 'votes'>
+  ) }
 );
 
 export type VoteUpMutationVariables = Exact<{
@@ -341,6 +354,38 @@ export type VoteUpMutation = (
 );
 
 
+export const AddLinktoLinksArrayDocument = gql`
+    mutation addLinktoLinksArray($id: Int!, $linkId: Int!, $email: String!) {
+  addLinktoLinksArray(id: $id, linkId: $linkId, email: $email)
+}
+    `;
+export type AddLinktoLinksArrayMutationFn = Apollo.MutationFunction<AddLinktoLinksArrayMutation, AddLinktoLinksArrayMutationVariables>;
+
+/**
+ * __useAddLinktoLinksArrayMutation__
+ *
+ * To run a mutation, you first call `useAddLinktoLinksArrayMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddLinktoLinksArrayMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addLinktoLinksArrayMutation, { data, loading, error }] = useAddLinktoLinksArrayMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      linkId: // value for 'linkId'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useAddLinktoLinksArrayMutation(baseOptions?: Apollo.MutationHookOptions<AddLinktoLinksArrayMutation, AddLinktoLinksArrayMutationVariables>) {
+        return Apollo.useMutation<AddLinktoLinksArrayMutation, AddLinktoLinksArrayMutationVariables>(AddLinktoLinksArrayDocument, baseOptions);
+      }
+export type AddLinktoLinksArrayMutationHookResult = ReturnType<typeof useAddLinktoLinksArrayMutation>;
+export type AddLinktoLinksArrayMutationResult = Apollo.MutationResult<AddLinktoLinksArrayMutation>;
+export type AddLinktoLinksArrayMutationOptions = Apollo.BaseMutationOptions<AddLinktoLinksArrayMutation, AddLinktoLinksArrayMutationVariables>;
 export const ByeDocument = gql`
     query Bye {
   bye
@@ -468,9 +513,7 @@ export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
 export const HideLinkDocument = gql`
     mutation hideLink($id: Int!, $linkId: Int!, $email: String!) {
-  hideLink(id: $id, linkId: $linkId, email: $email) {
-    hiddenLinksArray
-  }
+  hideLink(id: $id, linkId: $linkId, email: $email)
 }
     `;
 export type HideLinkMutationFn = Apollo.MutationFunction<HideLinkMutation, HideLinkMutationVariables>;
@@ -613,6 +656,7 @@ export const MeDocument = gql`
     id
     email
     linksArray
+    hiddenLinksArray
   }
 }
     `;
@@ -747,44 +791,13 @@ export function useUpdateLinkMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateLinkMutationHookResult = ReturnType<typeof useUpdateLinkMutation>;
 export type UpdateLinkMutationResult = Apollo.MutationResult<UpdateLinkMutation>;
 export type UpdateLinkMutationOptions = Apollo.BaseMutationOptions<UpdateLinkMutation, UpdateLinkMutationVariables>;
-export const UpdateLinksArrayDocument = gql`
-    mutation updateLinksArray($id: Int!, $linkId: Int!, $email: String!) {
-  updateLinksArray(id: $id, linkId: $linkId, email: $email)
-}
-    `;
-export type UpdateLinksArrayMutationFn = Apollo.MutationFunction<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>;
-
-/**
- * __useUpdateLinksArrayMutation__
- *
- * To run a mutation, you first call `useUpdateLinksArrayMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateLinksArrayMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateLinksArrayMutation, { data, loading, error }] = useUpdateLinksArrayMutation({
- *   variables: {
- *      id: // value for 'id'
- *      linkId: // value for 'linkId'
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useUpdateLinksArrayMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>) {
-        return Apollo.useMutation<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>(UpdateLinksArrayDocument, baseOptions);
-      }
-export type UpdateLinksArrayMutationHookResult = ReturnType<typeof useUpdateLinksArrayMutation>;
-export type UpdateLinksArrayMutationResult = Apollo.MutationResult<UpdateLinksArrayMutation>;
-export type UpdateLinksArrayMutationOptions = Apollo.BaseMutationOptions<UpdateLinksArrayMutation, UpdateLinksArrayMutationVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
     id
     email
     linksArray
+    hiddenLinksArray
   }
 }
     `;
@@ -813,6 +826,39 @@ export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<User
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
+export const VoteDownDocument = gql`
+    mutation VoteDown($id: Int!) {
+  voteDown(id: $id) {
+    id
+    votes
+  }
+}
+    `;
+export type VoteDownMutationFn = Apollo.MutationFunction<VoteDownMutation, VoteDownMutationVariables>;
+
+/**
+ * __useVoteDownMutation__
+ *
+ * To run a mutation, you first call `useVoteDownMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVoteDownMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [voteDownMutation, { data, loading, error }] = useVoteDownMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useVoteDownMutation(baseOptions?: Apollo.MutationHookOptions<VoteDownMutation, VoteDownMutationVariables>) {
+        return Apollo.useMutation<VoteDownMutation, VoteDownMutationVariables>(VoteDownDocument, baseOptions);
+      }
+export type VoteDownMutationHookResult = ReturnType<typeof useVoteDownMutation>;
+export type VoteDownMutationResult = Apollo.MutationResult<VoteDownMutation>;
+export type VoteDownMutationOptions = Apollo.BaseMutationOptions<VoteDownMutation, VoteDownMutationVariables>;
 export const VoteUpDocument = gql`
     mutation VoteUp($id: Int!) {
   voteUp(id: $id) {

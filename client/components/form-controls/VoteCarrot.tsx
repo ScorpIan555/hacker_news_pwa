@@ -2,8 +2,7 @@
 import { useAuthState } from 'lib/store/contexts'
 import { useEffect } from 'react'
 import {
-  useUpdateLinksArrayMutation,
-  useVoteUpMutation
+  useAddLinktoLinksArrayMutation, useVoteUpMutation
 } from '../../generated/graphql'
 import { VoteCarrotWrapper } from './VoteCarrot.style'
 
@@ -17,7 +16,7 @@ interface VoteCarrotInput {
 
 const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
   const [voteUp] = useVoteUpMutation()
-  const [updateLinksArray] = useUpdateLinksArrayMutation()
+  const [addLinktoLinksArray] = useAddLinktoLinksArrayMutation()
   const { authStateContext } = useAuthState()
   // const [linkObj, setLinkObj] = useState(link);
 
@@ -46,7 +45,7 @@ const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
 
     try {
       console.log('variables:::', id, linkId, email)
-      const res = await updateLinksArray({ variables: { id, linkId, email } })
+      const res = await addLinktoLinksArray({ variables: { id, linkId, email } })
       voteUpCall({ variables: { id: linkId } })
       return res
     } catch (error) {

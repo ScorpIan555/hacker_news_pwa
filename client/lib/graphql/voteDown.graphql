@@ -1,5 +1,5 @@
-mutation VoteUp($id: Int!) {
-  voteUp(id: $id) {
+mutation VoteDown($id: Int!) {
+  voteDown(id: $id) {
     id
     votes
   }
