@@ -5,3 +5,6 @@ node_modules
 #  App ref
 _theme-material-app
 package-copy.txt
+
+# env variables
+.env*.local

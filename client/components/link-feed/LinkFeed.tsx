@@ -192,7 +192,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     let filteredLinkList = [];
     if (user !== null || undefined) {
       // linksArray = user?.linksArray;
-      console.log('setHiddenLinksArray::', user.hiddenLinksArray)
+      console.log('setHiddenLinksArray::', user.hiddenLinksArray);
       setHiddenLinksArray(user.hiddenLinksArray);
     }
 
@@ -201,16 +201,14 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     }
 
     // if (hiddenLinksArray !== undefined && data?.linkFeed?.length !== undefined && data?.LinkFeed?.length> 0) {
-      filteredLinkList = data.linkFeed.filter(
-        (link) => {
-          console.log('filter.hiddenLinksArray::', hiddenLinksArray);
-          console.log('filter.link.id ::', hiddenLinksArray);
-          const filteredLinks = hiddenLinksArray?.includes(link.id) === false;
-          console.log('filteredLinks::', filteredLinks);
-          return filteredLinks;
-        }
-      );
-      console.log('ifstatement.filteredLinkList:::', filteredLinkList);
+    filteredLinkList = data?.linkFeed.filter((link) => {
+      console.log('filter.hiddenLinksArray::', hiddenLinksArray);
+      console.log('filter.link.id ::', hiddenLinksArray);
+      const filteredLinks = hiddenLinksArray?.includes(link.id) === false;
+      console.log('filteredLinks::', filteredLinks);
+      return filteredLinks;
+    });
+    console.log('ifstatement.filteredLinkList:::', filteredLinkList);
     // }
 
     console.log('filteredLinkList:::', filteredLinkList);
@@ -245,8 +243,8 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
             data.linkFeed?.length ? (
               // let filteredLinkFeed = data.linkFeed
 
-              
-                linkList.filter((link) => !hiddenLinksArray?.includes(link.id))
+              linkList
+                .filter((link) => !hiddenLinksArray?.includes(link.id))
                 .map((item: any, index: any) => {
                   // console.log('item:::', item)
                   // console.log('index::', index)

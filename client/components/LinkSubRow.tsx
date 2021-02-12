@@ -1,7 +1,10 @@
 // import React from 'react';
 import { themeGet } from '@styled-system/theme-get';
 import {
+  LinkFeedDocument,
+  LinkFeedQuery,
   useHideLinkMutation,
+
   useRemoveLinkFromLinksArrayMutation,
   useVoteDownMutation
 } from 'generated/graphql';
@@ -32,7 +35,45 @@ const LinkSubRow = ({
 }) => {
   const [voteDown] = useVoteDownMutation();
   const [removeLinkFromLinksArray] = useRemoveLinkFromLinksArrayMutation();
-  const [hideLink] = useHideLinkMutation();
+  const [hideLink, {data, error}] = useHideLinkMutation({
+    update (cache, { data }) {
+      // We use an update function here to write the 
+      // new value of the GET_ALL_TODOS query.
+      const newLinkFromResponse = data // 
+      console.log('newLinkFromResponse:::', newLinkFromResponse);
+      const existingLinkList = cache.readQuery<LinkFeedQuery>({
+        query: LinkFeedDocument,
+      });
+
+      /*
+      User
+      1) I need to overwrite the cache for the User result, 
+      because the hiddenLinkList is a property on the User,
+      
+      # also, user object is stored in the app state, 
+      I need to look into what cahnges to state these mutations
+      will require.
+      
+      LinkFeed
+      2) Re-run the LinkFeed Query with the new user object
+
+
+      */
+
+      if (existingLinkList && newLinkFromResponse) {
+        cache.writeQuery({
+          query: LinkFeedDocument,
+          data: {
+            linkFeed: [
+              ...existingLinkList?.linkFeed ,
+              newLinkFromResponse,
+            ],
+          },
+        });
+      }
+    }
+  });
+  // const {data} = useLinkFeedQuery(); won't need this b/c I'm reading from the cache.
 
   const { authStateContext } = useAuthState();
 
@@ -86,7 +127,30 @@ const LinkSubRow = ({
 
     await hideLink({
       variables: { id: id, linkId: linkId, email },
-    });
+    })
+
+    /*
+
+      Might wanna look into bringing the MeQuery in here.
+
+      
+    */
+   
+    // }),
+
+    // update: (store, { linkId }) => {
+    //   if (!data) {
+    //     return null;
+    //   }
+
+    //   store.writeQuery<LinkFeedQuery>({
+    //     query: LinkFeedDocument,
+    //     data: {
+    //       // me: data.login.user,
+    //       linkFeed 
+    //     },
+    //   });
+    // },
   };
 
   return (

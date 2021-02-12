@@ -282,7 +282,7 @@ export class UserResolver {
       }
     } catch (err) {
       console.log('UserResolver.hideLink.error', err);
-      return [0, 2, 3];
+      return err;
     }
   }
 

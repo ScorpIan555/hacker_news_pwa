@@ -1,16 +1,16 @@
-import React from 'react';
-import Head from 'next/head';
-import { ApolloClient } from 'apollo-client';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
-import fetch from 'isomorphic-unfetch';
-import { TokenRefreshLink } from 'apollo-link-token-refresh';
-import jwtDecode from 'jwt-decode';
-import { getAccessToken, setAccessToken } from './utils/accessToken';
-import { onError } from 'apollo-link-error';
+import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
+import { setContext } from 'apollo-link-context';
+import { onError } from 'apollo-link-error';
+import { HttpLink } from 'apollo-link-http';
+import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import cookie from 'cookie';
+import fetch from 'isomorphic-unfetch';
+import jwtDecode from 'jwt-decode';
+import Head from 'next/head';
+import React from 'react';
+import { getAccessToken, setAccessToken } from './utils/accessToken';
 
 const isServer = () => typeof window === 'undefined';
 
@@ -197,7 +197,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
     },
     fetchAccessToken: () => {
-      return fetch('http://localhost:4000/refresh_token', {
+      return fetch(process.env.NEXT_PUBLIC_REFRESH_TOKEN_ENDPOINT, {
         method: 'POST',
         credentials: 'include'
       });
@@ -222,8 +222,8 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
   });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    console.log(graphQLErrors);
-    console.log(networkError);
+    console.log('graphQLErrors', graphQLErrors);
+    console.log('networkError', networkError);
   });
 
   return new ApolloClient({
