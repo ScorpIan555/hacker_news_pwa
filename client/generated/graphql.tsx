@@ -58,7 +58,7 @@ export type Mutation = {
   revokeRefreshTokensForUser: Scalars['Boolean'];
   login: LoginResponse;
   register: LoginResponse;
-  addLinktoLinksArray: Scalars['Boolean'];
+  addLinktoLinksArray: HiddenLinksArrayResponse;
   hideLink: HiddenLinksArrayResponse;
   unhideLink: Array<Scalars['Int']>;
   removeLinkFromLinksArray: Scalars['Boolean'];
@@ -172,7 +172,13 @@ export type AddLinktoLinksArrayMutationVariables = Exact<{
 
 export type AddLinktoLinksArrayMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'addLinktoLinksArray'>
+  & { addLinktoLinksArray: (
+    { __typename?: 'HiddenLinksArrayResponse' }
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email' | 'hiddenLinksArray' | 'linksArray'>
+    ) }
+  ) }
 );
 
 export type ByeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -367,7 +373,14 @@ export type VoteUpMutation = (
 
 export const AddLinktoLinksArrayDocument = gql`
     mutation addLinktoLinksArray($id: Int!, $linkId: Int!, $email: String!) {
-  addLinktoLinksArray(id: $id, linkId: $linkId, email: $email)
+  addLinktoLinksArray(id: $id, linkId: $linkId, email: $email) {
+    user {
+      id
+      email
+      hiddenLinksArray
+      linksArray
+    }
+  }
 }
     `;
 export type AddLinktoLinksArrayMutationFn = Apollo.MutationFunction<AddLinktoLinksArrayMutation, AddLinktoLinksArrayMutationVariables>;

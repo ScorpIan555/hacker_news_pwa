@@ -175,16 +175,16 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => HiddenLinksArrayResponse)
   // @UseMiddleware(isAuth)
   async addLinktoLinksArray(
     @Arg('id', () => Int) id: number,
     @Arg('linkId', () => Int) linkId: number, // this was userId originally, double-check
-    @Arg('email') email: string,
-    @Ctx() { payload }: MyContext // @Ctx() { payload }: MyContext
+    @Arg('email') email: string
+    // @Ctx() { payload }: MyContext // @Ctx() { payload }: MyContext
   ) {
     console.log('id, userId, email:::', linkId, id, email);
-    console.log('payload:::', payload);
+    // console.log('payload:::', payload)
 
     //  return user
     try {
@@ -203,24 +203,35 @@ export class UserResolver {
       if (linksArray.length === 0) {
         linksArray.push(linkId);
         console.log('linksArray::: ', linksArray);
-        await User.update({ id }, { linksArray: linksArray });
-        return true;
+
+        try {
+          await User.update({ id }, { linksArray: linksArray });
+          return { user };
+        } catch (err) {
+          console.log('err updating DB::', err);
+          return err;
+        }
       }
 
       if (linksArray.length > 0) {
         let idCheck = linksArray.includes(linkId);
-        // console.log('linksArray:::', linksArray);
-        // console.log('linksArray:::', typeof linksArray);
-        // console.log('linksrray isArray?::', Array.isArray(linksArray))
-        // console.log('idCheck:::', idCheck);
-        // console.log('idCheck-typeof:::', typeof idCheck)
+        console.log('linksArray:::', linksArray);
+        console.log('linksArray:::', typeof linksArray);
+        console.log('linksrray isArray?::', Array.isArray(linksArray));
+        console.log('idCheck:::', idCheck);
+        console.log('idCheck-typeof:::', typeof idCheck);
         //
         //
         if (idCheck === false) {
           linksArray.push(linkId);
           console.log('linksArray.idCheck was false::: ', linksArray);
-          await User.update({ id }, { linksArray: linksArray });
-          return true;
+          try {
+            await User.update({ id }, { linksArray: linksArray });
+            return { user };
+          } catch (err) {
+            console.log('err updating DB:::', err);
+            throw new Error(err);
+          }
         }
         //
         //
@@ -257,11 +268,6 @@ export class UserResolver {
 
       const { hiddenLinksArray } = user;
 
-      // const checkArray = (linkId: any) => {
-      //   console.log('checkAdult::', linkId, email, id, payload);links
-      //   return linksArray === linkId;
-      // };
-
       const hasUserAlreadyHiddenThis: boolean = hiddenLinksArray.includes(
         linkId
       );
@@ -280,7 +286,7 @@ export class UserResolver {
           console.log('res::', res);
           console.log('try.user:::', user);
           console.log('newHiddenLinksArray:::', newHiddenLinksArray);
-          return {user};
+          return { user };
         } catch (err) {
           console.log('error.user:::', user);
           console.log('Userresolver.hidelink.error in DB update:::;', err);

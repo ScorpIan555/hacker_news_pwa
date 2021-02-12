@@ -1,3 +1,10 @@
 mutation addLinktoLinksArray($id: Int!, $linkId: Int!, $email: String!) {
-  addLinktoLinksArray(id: $id, linkId: $linkId, email: $email)
+  addLinktoLinksArray(id: $id, linkId: $linkId, email: $email) {
+    user{
+      id
+      email
+      hiddenLinksArray
+      linksArray
+    }
+  }
 }
