@@ -125,9 +125,26 @@ const LinkSubRow = ({
       email,
     }: { id: number; email: string; hiddleLinksArray: number[] } = user;
 
+    let data = {
+      email,
+    }
+
     await hideLink({
       variables: { id: id, linkId: linkId, email },
-    })
+    
+    update: (store, { data }) => {
+      if (!data) {
+        return null;
+      }
+
+      store.writeQuery<MeQuery>({
+        query: MeDocument,
+        data: {
+          me: data.login.user,
+        },
+      });
+    },
+    }),
 
     /*
 
