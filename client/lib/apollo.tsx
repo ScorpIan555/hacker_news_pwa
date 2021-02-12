@@ -1,9 +1,10 @@
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
-import { setContext } from 'apollo-link-context';
-import { onError } from 'apollo-link-error';
-import { HttpLink } from 'apollo-link-http';
+import { ApolloClient, ApolloLink, HttpLink } from '@apollo/client';
+// import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import { InMemoryCache, NormalizedCacheObject } from '@apollo/client/cache';
+// import {  } from 'apollo-link';
+import { setContext } from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
+// import {  } from 'apollo-link-http';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import cookie from 'cookie';
 import fetch from 'isomorphic-unfetch';
@@ -11,6 +12,7 @@ import jwtDecode from 'jwt-decode';
 import Head from 'next/head';
 import React from 'react';
 import { getAccessToken, setAccessToken } from './utils/accessToken';
+
 
 const isServer = () => typeof window === 'undefined';
 
@@ -105,7 +107,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
         if (ssr) {
           try {
             // Run all GraphQL queries
-            const { getDataFromTree } = await import('@apollo/react-ssr');
+            const { getDataFromTree } = await import('@apollo/client/react/ssr');
             await getDataFromTree(
               <AppTree
                 pageProps={{
@@ -176,6 +178,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
     fetch
   });
 
+  // https://www.npmjs.com/package/apollo-link-token-refresh
   const refreshLink = new TokenRefreshLink({
     accessTokenField: 'accessToken',
     isTokenValidOrUndefined: () => {

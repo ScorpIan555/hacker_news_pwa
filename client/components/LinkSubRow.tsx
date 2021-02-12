@@ -4,7 +4,6 @@ import {
   LinkFeedDocument,
   LinkFeedQuery,
   useHideLinkMutation,
-
   useRemoveLinkFromLinksArrayMutation,
   useVoteDownMutation
 } from 'generated/graphql';
@@ -132,19 +131,19 @@ const LinkSubRow = ({
     await hideLink({
       variables: { id: id, linkId: linkId, email },
     
-    update: (store, { data }) => {
-      if (!data) {
-        return null;
-      }
+    // update: (store, { data }) => {
+    //   if (!data) {
+    //     return null;
+    //   }
 
-      store.writeQuery<MeQuery>({
-        query: MeDocument,
-        data: {
-          me: data.login.user,
-        },
-      });
-    },
-    }),
+    //   store.writeQuery<MeQuery>({
+    //     query: MeDocument,
+    //     data: {
+    //       me: data.hideLink  // what goes here???
+    //     },
+    //   });
+    // },
+    })
 
     /*
 

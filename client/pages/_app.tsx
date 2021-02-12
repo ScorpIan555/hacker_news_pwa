@@ -1,4 +1,4 @@
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client';
 import Layout from 'components/layout/Layout';
 // state mgt
 import { enableMapSet, enablePatches } from 'immer';
