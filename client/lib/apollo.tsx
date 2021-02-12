@@ -14,6 +14,20 @@ import React from 'react';
 import { getAccessToken, setAccessToken } from './utils/accessToken';
 
 
+/*
+DOCS:
+1) ApolloClient changelog
+  https://github.com/apollographql/apollo-client/blob/main/CHANGELOG.md
+2) Migration guide v2.6 to 3.x
+  https://www.apollographql.com/docs/react/migrating/apollo-client-3-migration/
+3) ApolloClient cache configuration
+  https://www.apollographql.com/docs/react/caching/cache-configuration/
+4) Reading and writing data to the cache
+  https://www.apollographql.com/docs/react/caching/cache-interaction/
+
+*/
+
+
 const isServer = () => typeof window === 'undefined';
 
 const PORT = 4040;

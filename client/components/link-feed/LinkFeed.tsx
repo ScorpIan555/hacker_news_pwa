@@ -203,7 +203,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
     // if (hiddenLinksArray !== undefined && data?.linkFeed?.length !== undefined && data?.LinkFeed?.length> 0) {
     filteredLinkList = data?.linkFeed.filter((link) => {
       console.log('filter.hiddenLinksArray::', hiddenLinksArray);
-      console.log('filter.link.id ::', hiddenLinksArray);
+      console.log('filter.link.id ::', link.id);
       const filteredLinks = hiddenLinksArray?.includes(link.id) === false;
       console.log('filteredLinks::', filteredLinks);
       return filteredLinks;

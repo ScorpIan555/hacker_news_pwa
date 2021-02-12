@@ -1,3 +1,10 @@
 mutation hideLink($id: Int!, $linkId: Int!, $email: String!) {
-  hideLink(id: $id, linkId: $linkId, email: $email) 
+  hideLink(id: $id, linkId: $linkId, email: $email) {
+    user{
+      id
+      email
+      hiddenLinksArray
+      linksArray
+    }
+  }
 }

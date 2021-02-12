@@ -59,7 +59,7 @@ export type Mutation = {
   login: LoginResponse;
   register: LoginResponse;
   addLinktoLinksArray: Scalars['Boolean'];
-  hideLink: Array<Scalars['Int']>;
+  hideLink: HiddenLinksArrayResponse;
   unhideLink: Array<Scalars['Int']>;
   removeLinkFromLinksArray: Scalars['Boolean'];
   createLink: Link;
@@ -146,6 +146,11 @@ export type LoginResponse = {
   user: User;
 };
 
+export type HiddenLinksArrayResponse = {
+  __typename?: 'HiddenLinksArrayResponse';
+  user: User;
+};
+
 export type LinkInput = {
   url: Scalars['String'];
   description: Scalars['String'];
@@ -219,7 +224,13 @@ export type HideLinkMutationVariables = Exact<{
 
 export type HideLinkMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'hideLink'>
+  & { hideLink: (
+    { __typename?: 'HiddenLinksArrayResponse' }
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email' | 'hiddenLinksArray' | 'linksArray'>
+    ) }
+  ) }
 );
 
 export type LinkFeedQueryVariables = Exact<{
@@ -513,7 +524,14 @@ export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
 export const HideLinkDocument = gql`
     mutation hideLink($id: Int!, $linkId: Int!, $email: String!) {
-  hideLink(id: $id, linkId: $linkId, email: $email)
+  hideLink(id: $id, linkId: $linkId, email: $email) {
+    user {
+      id
+      email
+      hiddenLinksArray
+      linksArray
+    }
+  }
 }
     `;
 export type HideLinkMutationFn = Apollo.MutationFunction<HideLinkMutation, HideLinkMutationVariables>;

@@ -31,6 +31,12 @@ class LoginResponse {
   user: User;
 }
 
+@ObjectType()
+class HiddenLinksArrayResponse {
+  @Field(() => User)
+  user: User;
+}
+
 // @ObjectType()
 // class HiddenLinksArray {
 
@@ -235,7 +241,7 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => [Int])
+  @Mutation(() => HiddenLinksArrayResponse)
   async hideLink(
     @Arg('id', () => Int) id: number,
     @Arg('linkId', () => Int) linkId: number, // this was userId originally, double-check
@@ -261,24 +267,30 @@ export class UserResolver {
       );
 
       if (hasUserAlreadyHiddenThis === false) {
-        console.log('hiddenLinksArray:::', hiddenLinksArray);
+        console.log('user :::', user);
         hiddenLinksArray.push(linkId);
         console.log('hiddenLinksArray:::', hiddenLinksArray);
         const newHiddenLinksArray: number[] = hiddenLinksArray;
 
         try {
-          await User.update({ id }, { hiddenLinksArray: newHiddenLinksArray });
+          const res = await User.update(
+            { id },
+            { hiddenLinksArray: newHiddenLinksArray }
+          );
+          console.log('res::', res);
+          console.log('try.user:::', user);
           console.log('newHiddenLinksArray:::', newHiddenLinksArray);
-          return newHiddenLinksArray;
+          return {user};
         } catch (err) {
+          console.log('error.user:::', user);
           console.log('Userresolver.hidelink.error in DB update:::;', err);
-          return hiddenLinksArray;
+          return err;
         }
       } else {
         console.log(
           'UserResolver.hasUserAlreadyHiddenThis is true, this should not be'
         );
-        return hiddenLinksArray;
+        return { user };
       }
     } catch (err) {
       console.log('UserResolver.hideLink.error', err);
@@ -325,7 +337,9 @@ export class UserResolver {
         //   return hiddenLinksArray === linkId;
         // };
 
-        const filteredArray = hiddenLinksArray.filter(link => link !== linkId)
+        const filteredArray = hiddenLinksArray.filter(
+          (link) => link !== linkId
+        );
         console.log('linksArray.idCheck was false::: ', hiddenLinksArray);
         console.log('filteredArray.idCheck was false::: ', filteredArray);
 
@@ -435,7 +449,7 @@ export class UserResolver {
             // };
 
             // const filteredArray = linksArray.filter(checkArray);
-            const filteredArray = linksArray.filter(link => link !== linkId)
+            const filteredArray = linksArray.filter((link) => link !== linkId);
             console.log('linksArray.idCheck was false::: ', linksArray);
             console.log('filteredArray.idCheck was false::: ', filteredArray);
             await User.update({ id }, { linksArray: filteredArray });

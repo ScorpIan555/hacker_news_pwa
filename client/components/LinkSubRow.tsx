@@ -1,8 +1,8 @@
 // import React from 'react';
 import { themeGet } from '@styled-system/theme-get';
 import {
-  LinkFeedDocument,
-  LinkFeedQuery,
+  MeDocument,
+  MeQuery,
   useHideLinkMutation,
   useRemoveLinkFromLinksArrayMutation,
   useVoteDownMutation
@@ -34,44 +34,45 @@ const LinkSubRow = ({
 }) => {
   const [voteDown] = useVoteDownMutation();
   const [removeLinkFromLinksArray] = useRemoveLinkFromLinksArrayMutation();
-  const [hideLink, {data, error}] = useHideLinkMutation({
-    update (cache, { data }) {
-      // We use an update function here to write the 
-      // new value of the GET_ALL_TODOS query.
-      const newLinkFromResponse = data // 
-      console.log('newLinkFromResponse:::', newLinkFromResponse);
-      const existingLinkList = cache.readQuery<LinkFeedQuery>({
-        query: LinkFeedDocument,
-      });
+  const [hideLink] = useHideLinkMutation();
+  // const [hideLink, {data, error}] = useHideLinkMutation({
+  //   update (cache, { data }) {
+  //     // We use an update function here to write the 
+  //     // new value of the GET_ALL_TODOS query.
+  //     const newLinkFromResponse = data // 
+  //     console.log('newLinkFromResponse:::', newLinkFromResponse);
+  //     const existingLinkList = cache.readQuery<LinkFeedQuery>({
+  //       query: LinkFeedDocument,
+  //     });
 
-      /*
-      User
-      1) I need to overwrite the cache for the User result, 
-      because the hiddenLinkList is a property on the User,
+  //     /*
+  //     User
+  //     1) I need to overwrite the cache for the User result, 
+  //     because the hiddenLinkList is a property on the User,
       
-      # also, user object is stored in the app state, 
-      I need to look into what cahnges to state these mutations
-      will require.
+  //     # also, user object is stored in the app state, 
+  //     I need to look into what cahnges to state these mutations
+  //     will require.
       
-      LinkFeed
-      2) Re-run the LinkFeed Query with the new user object
+  //     LinkFeed
+  //     2) Re-run the LinkFeed Query with the new user object
 
 
-      */
+  //     */
 
-      if (existingLinkList && newLinkFromResponse) {
-        cache.writeQuery({
-          query: LinkFeedDocument,
-          data: {
-            linkFeed: [
-              ...existingLinkList?.linkFeed ,
-              newLinkFromResponse,
-            ],
-          },
-        });
-      }
-    }
-  });
+  //     if (existingLinkList && newLinkFromResponse) {
+  //       cache.writeQuery({
+  //         query: LinkFeedDocument,
+  //         data: {
+  //           linkFeed: [
+  //             ...existingLinkList?.linkFeed ,
+  //             newLinkFromResponse,
+  //           ],
+  //         },
+  //       });
+  //     }
+  //   }
+  // });
   // const {data} = useLinkFeedQuery(); won't need this b/c I'm reading from the cache.
 
   const { authStateContext } = useAuthState();
@@ -131,19 +132,24 @@ const LinkSubRow = ({
     await hideLink({
       variables: { id: id, linkId: linkId, email },
     
-    // update: (store, { data }) => {
-    //   if (!data) {
-    //     return null;
-    //   }
+    update: (store, { data }) => {
+      if (!data) {
+        return null;
+      }
 
-    //   store.writeQuery<MeQuery>({
-    //     query: MeDocument,
-    //     data: {
-    //       me: data.hideLink  // what goes here???
-    //     },
-    //   });
-    // },
+      store.writeQuery<MeQuery>({
+        query: MeDocument,
+        // data: {
+        //   me: data.login.user  // what goes here???
+        // },
+        data: {
+          me: data.hideLink.user
+        }
+      });
+    },
     })
+
+
 
     /*
 
