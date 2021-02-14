@@ -14,9 +14,6 @@ import { setAccessToken } from '../lib/utils';
 // get form controls used in component
 import { Button, InputC } from './form-controls';
 
-
-
-
 // @Todo need to add in Yum validations
 // probably set this up in a util
 
@@ -91,7 +88,7 @@ const LoginForm: FC = () => {
       },
 
       update: (store, { data }) => {
-        if (!data) {
+        if (data == undefined) {
           return null;
         }
 

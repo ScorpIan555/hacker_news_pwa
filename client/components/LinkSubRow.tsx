@@ -5,7 +5,7 @@ import {
   MeQuery,
   useHideLinkMutation,
   useRemoveLinkFromLinksArrayMutation,
-  useVoteDownMutation
+  useVoteDownMutation,
 } from 'generated/graphql';
 import { useAuthState } from 'lib/store/contexts';
 import { useEffect } from 'react';
@@ -37,9 +37,9 @@ const LinkSubRow = ({
   const [hideLink] = useHideLinkMutation();
   // const [hideLink, {data, error}] = useHideLinkMutation({
   //   update (cache, { data }) {
-  //     // We use an update function here to write the 
+  //     // We use an update function here to write the
   //     // new value of the GET_ALL_TODOS query.
-  //     const newLinkFromResponse = data // 
+  //     const newLinkFromResponse = data //
   //     console.log('newLinkFromResponse:::', newLinkFromResponse);
   //     const existingLinkList = cache.readQuery<LinkFeedQuery>({
   //       query: LinkFeedDocument,
@@ -47,16 +47,15 @@ const LinkSubRow = ({
 
   //     /*
   //     User
-  //     1) I need to overwrite the cache for the User result, 
+  //     1) I need to overwrite the cache for the User result,
   //     because the hiddenLinkList is a property on the User,
-      
-  //     # also, user object is stored in the app state, 
+
+  //     # also, user object is stored in the app state,
   //     I need to look into what cahnges to state these mutations
   //     will require.
-      
+
   //     LinkFeed
   //     2) Re-run the LinkFeed Query with the new user object
-
 
   //     */
 
@@ -116,8 +115,8 @@ const LinkSubRow = ({
     }
   };
 
-  const handleHideClick = async () => {
-    event.preventDefault();
+  const handleHideClick = async (event: any) => {
+    event?.preventDefault();
     console.log('handleHideClick.Hide:::', linkId);
     const { user } = authStateContext;
     const {
@@ -125,31 +124,29 @@ const LinkSubRow = ({
       email,
     }: { id: number; email: string; hiddleLinksArray: number[] } = user;
 
-    let data = {
-      email,
-    }
+    // let data = {
+    //   email,
+    // };
 
     await hideLink({
       variables: { id: id, linkId: linkId, email },
-    
-    update: (store, { data }) => {
-      if (!data) {
-        return null;
-      }
 
-      store.writeQuery<MeQuery>({
-        query: MeDocument,
-        // data: {
-        //   me: data.login.user  // what goes here???
-        // },
-        data: {
-          me: data.hideLink.user
+      update: (store, { data }) => {
+        if (!data) {
+          return null;
         }
-      });
-    },
-    })
 
-
+        store.writeQuery<MeQuery>({
+          query: MeDocument,
+          // data: {
+          //   me: data.login.user  // what goes here???
+          // },
+          data: {
+            me: data.hideLink.user,
+          },
+        });
+      },
+    });
 
     /*
 
@@ -157,7 +154,7 @@ const LinkSubRow = ({
 
       
     */
-   
+
     // }),
 
     // update: (store, { linkId }) => {
@@ -169,7 +166,7 @@ const LinkSubRow = ({
     //     query: LinkFeedDocument,
     //     data: {
     //       // me: data.login.user,
-    //       linkFeed 
+    //       linkFeed
     //     },
     //   });
     // },

@@ -1,0 +1,60 @@
+version: "3.9"
+
+# Use postgres/example user/password credentials
+services:
+  hacker-news-db:
+    image: postgres
+    container_name: hacker-news_container
+    restart: always
+    volumes:
+      # - jwt-auth-db-data:/var/lib/postgresql/data:rw
+      - hacker-news-db:/var/lib/docker/volumes/hacker-news-db/_data:rw
+    environment:
+      POSTGRES_DB: hacker-news-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+      # DB_NAME:
+
+    ports:
+      - 5432:5432
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+
+volumes:
+  hacker-news-db:
+    # driver: local 
+    external: true
+    
+#
+#
+#
+# docker ps  # lists running containers
+# docker volume ls  # lists volumes
+# docker container inspect sql-for-beginners-db-container  # inspect this container
+# docker volume prune
+# docker volume rm [volume_name]
+
+#
+# Refs:
+# good general walkthru:
+# https://towardsdatascience.com/tricks-for-postgres-and-docker-that-will-make-your-life-easier-fc7bfcba5082
+
+# handy demo of some docker cli commands:
+# https://linuxhint.com/run_postgresql_docker_compose/
+
+# general docker tutorial, some good explanations:
+# https://medium.com/@wkrzywiec/database-in-a-docker-container-how-to-start-and-whats-it-about-5e3ceea77e50
+
+# in-depth series on containers from the perspective of the kernel 
+# https://medium.com/@saschagrunert/demystifying-containers-part-i-kernel-space-2c53d6979504
+
+# remember if there's a running port on Postgres default, use sudo: https://stackoverflow.com/questions/38249434/docker-postgres-failed-to-bind-tcp-0-0-0-05432-address-already-in-use
+# sudo lsof -i:5432
+
+# deploy Postges DB in EC2
+# https://stackoverflow.com/questions/62279718/how-to-connect-to-postgresql-database-inside-aws-ec2-instance-using-node-js-and
+# 

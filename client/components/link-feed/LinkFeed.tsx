@@ -1,4 +1,4 @@
-import { Container, Link, List, ListItem } from '@material-ui/core';
+import { Container, Link, List, ListItem, Theme } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
@@ -6,14 +6,15 @@ import { themeGet } from '@styled-system/theme-get';
 import VoteCarrot from 'components/form-controls/VoteCarrot';
 import LinkSubRow from 'components/LinkSubRow';
 import { useAuthState } from 'lib/store/contexts';
+import { ILink } from 'lib/typescript/interfaces';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLinkFeedQuery } from '../../generated/graphql';
 
-const StyledGrid = styled.button`
-  /* ... */
-`;
+// const StyledGrid = styled.button`
+//   /* ... */
+// `;
 
 // const Col = withStyle(Column, () => ({
 //   '@media only screen and (max-width: 767px)': {
@@ -105,13 +106,13 @@ const TitleRow = styled.div`
   color: #828282;
 `;
 
-const DataRow = ({ item, index }) => {
+const DataRow = ({ item, index }: { item: ILink; index: number }) => {
   console.log('DataRow.item:::', item);
 
   const { id, url, description, postedBy, votes, createdAt, domain } = item;
   const { authStateContext } = useAuthState();
   const { user } = authStateContext;
-  let linksArray = [];
+  let linksArray: number[] = [];
   let hiddenLinksArray = [];
   if (user !== null || undefined) {
     linksArray = user?.linksArray;
@@ -123,20 +124,14 @@ const DataRow = ({ item, index }) => {
   return (
     <React.Fragment>
       <Grid item xs={12}>
-        <Paper className="" elevation={0} index={index}>
+        <Paper className="" elevation={0}>
           <TitleRow>
             {index + 1}
             {'.'}
             {linksArray?.includes(id) ? (
               <a style={{ visibility: 'hidden' }}> ▲ </a>
             ) : (
-              <VoteCarrot
-                link={item}
-                user={user}
-                userId={user?.id}
-                linkId={id}
-                email={user?.email}
-              />
+              <VoteCarrot link={item} />
             )}
 
             {/* <Typography> */}
@@ -167,19 +162,23 @@ const DataRow = ({ item, index }) => {
 interface Props {}
 
 const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
-  const [isFocus, setIsFocus] = useState(false);
+  // const [isFocus, setIsFocus] = useState(false); // might not be needed
   const theme = useTheme();
   const styles = useStyles(theme);
   const { authStateContext } = useAuthState();
 
-  const [hiddenLinksArray, setHiddenLinksArray] = useState();
-  const [linkList, setLinkList] = useState([]);
+  // export interface IHiddenLinksArray {}
+
+  // const [hiddenLinksArray, setHiddenLinksArray] = useState<IHiddenLinksArray>([]);
+  const [hiddenLinksArray, setHiddenLinksArray] = useState<Array<number>>([]);
+  // const [linkList, setLinkList] = useState<Array<number>>([]);
   // let linksArray = [];
 
   if (children !== undefined || null) {
     // console.log('LinkFeed.props.children:::', children);
   }
 
+  // const { data, refetch }: { data: any; refetch: any } = useLinkFeedQuery({
   const { data, refetch } = useLinkFeedQuery({
     variables: {
       limit: 20,
@@ -189,30 +188,32 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
 
   useEffect(() => {
     const { user } = authStateContext;
-    let filteredLinkList = [];
+    // let filteredLinkList: number[] = [];
     if (user !== null || undefined) {
       // linksArray = user?.linksArray;
       console.log('setHiddenLinksArray::', user.hiddenLinksArray);
       setHiddenLinksArray(user.hiddenLinksArray);
     }
 
-    if (data?.linkFeed !== undefined) {
-      setLinkList(data?.linkFeed);
-    }
-
-    // if (hiddenLinksArray !== undefined && data?.linkFeed?.length !== undefined && data?.LinkFeed?.length> 0) {
-    filteredLinkList = data?.linkFeed.filter((link) => {
-      console.log('filter.hiddenLinksArray::', hiddenLinksArray);
-      console.log('filter.link.id ::', link.id);
-      const filteredLinks = hiddenLinksArray?.includes(link.id) === false;
-      console.log('filteredLinks::', filteredLinks);
-      return filteredLinks;
-    });
-    console.log('ifstatement.filteredLinkList:::', filteredLinkList);
+    // if (data !== undefined) {
+    //   if (data.linkFeed !== undefined) {
+    //     setLinkList(data.linkFeed);
+    //   }
     // }
 
-    console.log('filteredLinkList:::', filteredLinkList);
-    console.log('linkList:::', linkList);
+    // if (hiddenLinksArray !== undefined && data?.linkFeed?.length !== undefined && data?.LinkFeed?.length> 0) {
+    // filteredLinkList = data?.linkFeed.filter((link) => {
+    //   console.log('filter.hiddenLinksArray::', hiddenLinksArray);
+    //   console.log('filter.link.id ::', link.id);
+    //   const filteredLinks = hiddenLinksArray?.includes(link.id) === false;
+    //   console.log('filteredLinks::', filteredLinks);
+    //   return filteredLinks;
+    // });
+    // console.log('ifstatement.filteredLinkList:::', filteredLinkList);
+    // // }
+
+    // console.log('filteredLinkList:::', filteredLinkList);
+    // console.log('linkList:::', linkList);
 
     // let links = data?.linkFeed
 
@@ -243,9 +244,9 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
             data.linkFeed?.length ? (
               // let filteredLinkFeed = data.linkFeed
 
-              linkList
-                .filter((link) => !hiddenLinksArray?.includes(link.id))
-                .map((item: any, index: any) => {
+              data.linkFeed
+                .filter((link) => !hiddenLinksArray?.includes(link?.id))
+                .map((item: ILink, index: number) => {
                   // console.log('item:::', item)
                   // console.log('index::', index)
                   // const { id, url, description, postedBy, votes } = item;
@@ -257,7 +258,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
                     <ListItem
                       key={index + index * index}
                       alignItems={'flex-start'}
-                      autoFocus={isFocus}
+                      // autoFocus={isFocus}   // look into deleting if I'mnot going to use this
                       // onMouseOver={handleMouseOver}
                     >
                       <DataRow item={item} index={index} />

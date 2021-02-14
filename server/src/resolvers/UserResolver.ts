@@ -9,7 +9,7 @@ import {
   ObjectType,
   Query,
   Resolver,
-  UseMiddleware
+  UseMiddleware,
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { User } from '../entity';
@@ -17,7 +17,7 @@ import { MyContext } from '../lib/interfaces/MyContext';
 import { isAuth } from '../middleware/isAuthMiddleware';
 import {
   createAccessToken,
-  createRefreshToken
+  createRefreshToken,
 } from '../middleware/jwTokenMiddleware';
 import { sendRefreshToken } from '../sendRefreshToken';
 
@@ -69,8 +69,20 @@ export class UserResolver {
     const authorization = context.req.headers['authorization'];
     console.log('authorization:::', authorization);
 
+    const emptyUserObject = {
+      id: null,
+      email: null,
+      linksArray: [],
+      hiddenLinksArray: [],
+    };
+
     if (!authorization) {
-      return null;
+      return {
+        email: '',
+        linksArray: [],
+        hiddenLinksArray: [],
+        id: '',
+      };
     }
 
     try {
@@ -83,7 +95,7 @@ export class UserResolver {
       return user;
     } catch (err) {
       console.log(err);
-      return null;
+      return { user: emptyUserObject };
     }
   }
 
@@ -128,13 +140,15 @@ export class UserResolver {
     }
 
     // login successful
-
-    sendRefreshToken(res, createRefreshToken(user));
-
-    return {
-      accessToken: createAccessToken(user),
-      user,
-    };
+    try {
+      sendRefreshToken(res, createRefreshToken(user));
+      return {
+        accessToken: createAccessToken(user),
+        user,
+      };
+    } catch (err) {
+      throw new Error('error creating tokens');
+    }
   }
 
   @Mutation(() => LoginResponse)

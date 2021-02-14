@@ -10,14 +10,10 @@ import { AuthStateContext } from '../lib/store/contexts';
 import { AuthProvider } from '../lib/store/providers/AuthProvider';
 import { IState } from '../lib/typescript/interfaces';
 
-
 // import { NextPageContext } from "next";
-   
+
 // @TODO
-// ref: profiling https://www.bbc.com/mundo/noticias-51921093  
-
-
-
+// ref: profiling https://www.bbc.com/mundo/noticias-51921093
 
 // @TODO
 // refactor into a functional component, if possible
@@ -49,7 +45,6 @@ class MyApp extends App<any> {
     // opt-in to immer plugins
     enableMapSet();
     enablePatches();
-    
 
     // console.log('_app.js: contextType::', this.props.contextType);
   }
@@ -61,27 +56,21 @@ class MyApp extends App<any> {
     // console.log('render.pageProps:::', pageProps);
     // console.log('this.props:::', this.props);
 
-
-
     // NEXT STEPS
     /* 
     I am going to just add in the MUI components here
     later, I can break them all out into other parts, etc.
     */
     return (
-        <AuthProvider>
-          <ApolloProvider client={apolloClient}>
-           
-              <Layout>
-              <Component { ...pageProps} />
-              </Layout>
-                    
-            
-            
-          </ApolloProvider> 
-        </AuthProvider>
+      <AuthProvider>
+        <ApolloProvider client={apolloClient}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ApolloProvider>
+      </AuthProvider>
     );
   }
-}    
+}
 
 export default withApollo(MyApp);

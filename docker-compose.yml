@@ -1,0 +1,15 @@
+version: "3.3"
+
+services:
+  nextjs:
+    ports:
+      - 8111:8111
+    build:
+      context: client/
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    env_file:
+      - ./client/.env

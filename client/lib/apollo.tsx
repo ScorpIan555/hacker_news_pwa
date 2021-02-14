@@ -13,7 +13,6 @@ import Head from 'next/head';
 import React from 'react';
 import { getAccessToken, setAccessToken } from './utils/accessToken';
 
-
 /*
 DOCS:
 1) ApolloClient changelog
@@ -27,10 +26,26 @@ DOCS:
 
 */
 
-
 const isServer = () => typeof window === 'undefined';
 
 const PORT = 4040;
+
+// const refreshTokenEndpointVarLoader: any =
+//   process.env.NEXT_PUBLIC_REFRESH_TOKEN_ENDPOINT;
+// // let refreshTokenEndpoint: any = { (refreshTokenEndpointVarLoader !== undefined) ? refreshTokenEndpointVarLoader : 'string'}
+// let refreshTokenEndpoint: string = 'string';
+// const isVarUndefined = () => typeof refreshTokenEndpointVarLoader === undefined;
+
+// if (isVarUndefined) {
+//   refreshTokenEndpoint = '';
+// } else {
+//   refreshTokenEndpoint = process.env.NEXT_PUBLIC_REFRESH_TOKEN_ENDPOINT;
+// }
+
+console.log(
+  'process.env.NEXT_PUBLIC_REFRESH_TOKEN_ENDPOINT:::',
+  process.env.NEXT_PUBLIC_REFRESH_TOKEN_ENDPOINT
+);
 
 /**
  * Creates and provides the apolloContext
@@ -73,7 +88,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
     WithApollo.getInitialProps = async (ctx: any) => {
       const {
         AppTree,
-        ctx: { req, res }
+        ctx: { req, res },
       } = ctx;
 
       let serverAccessToken = '';
@@ -90,8 +105,8 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
               method: 'POST',
               credentials: 'include',
               headers: {
-                cookie: 'jid=' + cookies.jid
-              }
+                cookie: 'jid=' + cookies.jid,
+              },
             }
           );
           const data = await response.json();
@@ -121,12 +136,14 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
         if (ssr) {
           try {
             // Run all GraphQL queries
-            const { getDataFromTree } = await import('@apollo/client/react/ssr');
+            const { getDataFromTree } = await import(
+              '@apollo/client/react/ssr'
+            );
             await getDataFromTree(
               <AppTree
                 pageProps={{
                   ...pageProps,
-                  apolloClient
+                  apolloClient,
                 }}
                 apolloClient={apolloClient}
               />
@@ -150,7 +167,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       return {
         ...pageProps,
         apolloState,
-        serverAccessToken
+        serverAccessToken,
       };
     };
   }
@@ -189,7 +206,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
   const httpLink = new HttpLink({
     uri: `http://localhost:${PORT}/graphql`,
     credentials: 'include',
-    fetch
+    fetch,
   });
 
   // https://www.npmjs.com/package/apollo-link-token-refresh
@@ -203,7 +220,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
 
       try {
-        const { exp } = jwtDecode(token);
+        const { exp }: { exp: number } = jwtDecode<any>(token);
         if (Date.now() >= exp * 1000) {
           return false;
         } else {
@@ -214,18 +231,23 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
     },
     fetchAccessToken: () => {
-      return fetch(process.env.NEXT_PUBLIC_REFRESH_TOKEN_ENDPOINT, {
+      // if (isServer) {
+      //   const path = process.env.REFRESH_TOKEN_ENDPOINT;
+      // } else {
+      //   const path = process.env.NEXT_PUBLIC_REFRESH_TOKEN_ENDPOINT;
+      // }
+      return fetch('http://localhost:4000/refresh_token', {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
       });
     },
-    handleFetch: accessToken => {
+    handleFetch: (accessToken) => {
       setAccessToken(accessToken);
     },
-    handleError: err => {
+    handleError: (err) => {
       console.warn('Your refresh token is invalid. Try to relogin');
       console.error(err);
-    }
+    },
   });
 
   const authLink = setContext((_request, { headers }) => {
@@ -233,8 +255,8 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
     return {
       headers: {
         ...headers,
-        authorization: token ? `bearer ${token}` : ''
-      }
+        authorization: token ? `bearer ${token}` : '',
+      },
     };
   });
 
@@ -246,6 +268,6 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
     link: ApolloLink.from([refreshLink, authLink, errorLink, httpLink]),
-    cache: new InMemoryCache().restore(initialState)
+    cache: new InMemoryCache().restore(initialState),
   });
 }

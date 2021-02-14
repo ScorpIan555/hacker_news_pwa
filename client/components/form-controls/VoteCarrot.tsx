@@ -1,23 +1,22 @@
 // import React from 'react';
-import { useAuthState } from 'lib/store/contexts'
-import { useEffect } from 'react'
+import { useAuthState } from 'lib/store/contexts';
+import { ILink } from 'lib/typescript/interfaces';
+import { useEffect } from 'react';
 import {
-  useAddLinktoLinksArrayMutation, useVoteUpMutation
-} from '../../generated/graphql'
-import { VoteCarrotWrapper } from './VoteCarrot.style'
+  useAddLinktoLinksArrayMutation,
+  useVoteUpMutation,
+} from '../../generated/graphql';
+import { VoteCarrotWrapper } from './VoteCarrot.style';
 
-interface VoteCarrotInput {
-  link: object
-  user: object
-  userId: number
-  linkId: number
-  email: string
-}
+// interface VoteCarrotInput {
+//   link: object;
+// }
 
-const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
-  const [voteUp] = useVoteUpMutation()
-  const [addLinktoLinksArray] = useAddLinktoLinksArrayMutation()
-  const { authStateContext } = useAuthState()
+const VoteCarrot = ({ link }: { link: ILink }) => {
+  const [voteUp] = useVoteUpMutation();
+  const [addLinktoLinksArray] = useAddLinktoLinksArrayMutation();
+  const { authStateContext } = useAuthState();
+  // const [link, setLink] = useState<ILink>(item);
   // const [linkObj, setLinkObj] = useState(link);
 
   // const
@@ -28,49 +27,53 @@ const VoteCarrot = ({ link, linkId }: VoteCarrotInput) => {
 
   useEffect(() => {
     // console.log('useEffect.linkObj', linkObj)
-    console.log('useEffect.link:::', link)
-  })
+    console.log('useEffect.link:::', link);
+    // setLink(item);
+  }),
+    [link?.id];
 
-  const handleClick = async (event) => {
-    event.preventDefault()
-    const { user } = authStateContext
+  const handleClick = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    const { user } = authStateContext;
 
-    const { id, email } = user
-    const linkId: number = link?.id
+    const { id, email } = user;
+    const linkId: number = link?.id;
     // console.log('id:::', id)
     // console.log('email:::', email);
-    console.log('linkId2:::', linkId)
+    console.log('linkId2:::', linkId);
 
     // Now, I have to set this up as a type guard.
 
     try {
-      console.log('variables:::', id, linkId, email)
-      const res = await addLinktoLinksArray({ variables: { id, linkId, email } })
-      voteUpCall({ variables: { id: linkId } })
-      return res
+      console.log('variables:::', id, linkId, email);
+      const res = await addLinktoLinksArray({
+        variables: { id, linkId, email },
+      });
+      voteUpCall({ variables: { id: linkId } });
+      return res;
     } catch (error) {
-      console.log('error:::', error)
+      console.log('error:::', error);
       // throw new Error()
     }
-  }
+  };
 
   const voteUpCall = async ({ variables: { id: linkId } }: any) => {
     try {
       const res = await voteUp({
         variables: { id: linkId },
-      })
-      return res
+      });
+      return res;
     } catch (error) {
-      console.log('error:::', error)
+      console.log('error:::', error);
     }
-  }
+  };
 
   return (
     <VoteCarrotWrapper>
       {/* {linksArray.includes(linkId) ? <a style={{visibility: "hidden"}}> ▲ </a> : <a onClick={handleClick}> ▲ </a> } */}
       <a onClick={handleClick}> ▲ </a>
     </VoteCarrotWrapper>
-  )
-}
+  );
+};
 
-export default VoteCarrot
+export default VoteCarrot;
