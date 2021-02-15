@@ -4,6 +4,7 @@ import {
   MeDocument,
   MeQuery,
   useHideLinkMutation,
+  useMeQuery,
   useRemoveLinkFromLinksArrayMutation,
   useVoteDownMutation,
 } from 'generated/graphql';
@@ -33,6 +34,7 @@ const LinkSubRow = ({
   linkId: number;
 }) => {
   const [voteDown] = useVoteDownMutation();
+  const { data } = useMeQuery();
   const [removeLinkFromLinksArray] = useRemoveLinkFromLinksArrayMutation();
   const [hideLink] = useHideLinkMutation();
   // const [hideLink, {data, error}] = useHideLinkMutation({
@@ -106,13 +108,19 @@ const LinkSubRow = ({
   const voteDownCall = async ({ linkId }: { linkId: number }) => {
     console.log('voteDownCall.linkId:::', linkId);
     try {
-      const res = await voteDown({
+      await voteDown({
         variables: { id: linkId },
       });
-      return res;
+
+      return rerunMeQuery(); // I can either keep this and try to run that process thru GQL or I can just take the response object from this call (outside the graph) and plug it in....
     } catch (error) {
       console.log('error:::', error);
+      return error;
     }
+  };
+
+  const rerunMeQuery = () => {
+    return data;
   };
 
   const handleHideClick = async (event: any) => {

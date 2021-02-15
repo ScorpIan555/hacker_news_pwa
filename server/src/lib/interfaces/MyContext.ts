@@ -9,3 +9,14 @@ export interface MyContext {
     linksArray: string;
   }; // might need to expand this for full-blown auth
 }
+
+export interface MyOtherContext {
+  req: Request;
+  res: Response;
+  payload: {
+    email: string;
+    id: string;
+    linksArray: Array<number>;
+    hiddenLinksArray: Array<number>;
+  }; // might need to expand this for full-blown auth
+}

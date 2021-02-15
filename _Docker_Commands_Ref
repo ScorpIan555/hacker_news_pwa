@@ -1,0 +1,6 @@
+
+#  To Explore a container
+docker run -it --rm=true username/image:tag /bin/bash
+
+# remember if Postgres default port is running, use sudo: https://stackoverflow.com/questions/38249434/docker-postgres-failed-to-bind-tcp-0-0-0-05432-address-already-in-use
+# sudo lsof -i:5432

@@ -1,6 +1,6 @@
 mutation VoteDown($id: Int!) {
   voteDown(id: $id) {
-    id
     votes
+    id
   }
 }

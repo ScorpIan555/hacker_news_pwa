@@ -353,7 +353,7 @@ export type VoteDownMutation = (
   { __typename?: 'Mutation' }
   & { voteDown: (
     { __typename?: 'Link' }
-    & Pick<Link, 'id' | 'votes'>
+    & Pick<Link, 'votes' | 'id'>
   ) }
 );
 
@@ -862,8 +862,8 @@ export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariable
 export const VoteDownDocument = gql`
     mutation VoteDown($id: Int!) {
   voteDown(id: $id) {
-    id
     votes
+    id
   }
 }
     `;

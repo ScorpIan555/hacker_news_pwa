@@ -58,6 +58,8 @@ export interface IItem {
   domain?: string;
 }
 
+export interface IEmptyProps {}
+
 export interface ILink {
   id: number;
   url: string;

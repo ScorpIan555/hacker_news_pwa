@@ -7,7 +7,18 @@ https://github.com/lucaschen/microservices-demo/blob/master/docker-compose.yml
 2) Discussion of deploying NextJS projects on Vercel
 https://github.com/vercel/next.js/discussions/16995
 
-3) Dockerizing a NextJS projects
+3) Dockerizing a NextJS projects (**really good**)
 https://dev.to/chrsgrrtt/dockerising-a-next-js-project-1ck5
+
+4) Multistage Build in Docker
+https://docs.docker.com/develop/develop-images/multistage-build/
+
+5) Dockerizing a NodeJS project
+https://semaphoreci.com/community/tutorials/dockerizing-a-node-js-web-application
+
+6) Package for NodeJS in production:
+https://pm2.keymetrics.io/
+
+6) 
 
 

@@ -6,7 +6,7 @@ export const InjectRTL = styled.div`
   ${({ lang }) =>
     (lang === 'ar' || lang === 'he') &&
     `
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Sans', sans-serif;
     `}
 `;
 
