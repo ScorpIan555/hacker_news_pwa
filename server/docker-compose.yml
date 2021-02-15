@@ -2,7 +2,13 @@ version: "3.9"
 
 # Use postgres/example user/password credentials
 services:
-  hacker-news-db:
+
+
+
+
+
+
+  hacker-news-db: 
     image: postgres
     container_name: hacker-news_container
     restart: always

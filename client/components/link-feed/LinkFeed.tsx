@@ -107,7 +107,7 @@ const TitleRow = styled.div`
 `;
 
 const DataRow = ({ item, index }: { item: ILink; index: number }) => {
-  console.log('DataRow.item:::', item);
+  // console.log('DataRow.item:::', item);
 
   const { id, url, description, postedBy, votes, createdAt, domain } = item;
   const { authStateContext } = useAuthState();
@@ -195,31 +195,6 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
       setHiddenLinksArray(user.hiddenLinksArray);
     }
 
-    // if (data !== undefined) {
-    //   if (data.linkFeed !== undefined) {
-    //     setLinkList(data.linkFeed);
-    //   }
-    // }
-
-    // if (hiddenLinksArray !== undefined && data?.linkFeed?.length !== undefined && data?.LinkFeed?.length> 0) {
-    // filteredLinkList = data?.linkFeed.filter((link) => {
-    //   console.log('filter.hiddenLinksArray::', hiddenLinksArray);
-    //   console.log('filter.link.id ::', link.id);
-    //   const filteredLinks = hiddenLinksArray?.includes(link.id) === false;
-    //   console.log('filteredLinks::', filteredLinks);
-    //   return filteredLinks;
-    // });
-    // console.log('ifstatement.filteredLinkList:::', filteredLinkList);
-    // // }
-
-    // console.log('filteredLinkList:::', filteredLinkList);
-    // console.log('linkList:::', linkList);
-
-    // let links = data?.linkFeed
-
-    // console.log('data was rerun:::', data)
-    // console.log('links lenght', links?.length)
-    // console.log('theme::: ', theme.palette)
     refetch();
   }),
     [data?.linkFeed];
@@ -227,7 +202,7 @@ const LinkFeed: React.FunctionComponent<Props> = ({ children }) => {
   // const handleMouseOver = (event: Event) => {
   //   event.preventDefault()
   //   // console.log('handleMouseOver:::', isFocus)
-  console.log('LinkFeed.hiddenLinksArray:::', hiddenLinksArray);
+
   //   setIsFocus(!isFocus)
   // }
 

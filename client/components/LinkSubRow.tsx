@@ -8,8 +8,7 @@ import {
   useRemoveLinkFromLinksArrayMutation,
   useVoteDownMutation,
 } from 'generated/graphql';
-import { useAuthState } from 'lib/store/contexts';
-import { useEffect } from 'react';
+import { useAuthDispatch, useAuthState } from 'lib/store/contexts';
 import styled from 'styled-components';
 
 const SubRow = styled.div`
@@ -77,23 +76,20 @@ const LinkSubRow = ({
   // const {data} = useLinkFeedQuery(); won't need this b/c I'm reading from the cache.
 
   const { authStateContext } = useAuthState();
+  const authDispatch = useAuthDispatch();
 
-  useEffect(() => {
-    console.log('LinkSubRow', votes, postedBy, hoursAgo, linksArray, linkId);
-  });
+  // useEffect(() => {
+  //   console.log('LinkSubRow', votes, postedBy, hoursAgo, linksArray, linkId);
+  // }),
+  //   [votes];
 
   const handleUnvoteClick = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const { user } = authStateContext;
 
     const { id, email }: { id: number; email: string } = user;
-    // const linkId: number = link?.id;
-    // console.log('id:::', id)
-    // console.log('email:::', email);
-    console.log('linkId2:::', linkId);
 
     try {
-      console.log('removeLinkFromLinksArray.variables:::', id, linkId, email);
       await removeLinkFromLinksArray({
         variables: { id, linkId, email },
       });
@@ -106,21 +102,24 @@ const LinkSubRow = ({
   };
 
   const voteDownCall = async ({ linkId }: { linkId: number }) => {
-    console.log('voteDownCall.linkId:::', linkId);
+    // rerunMeQuery();
+    updateStateAfterSuccessfulHandleUnvoteClickCall();
     try {
       await voteDown({
         variables: { id: linkId },
       });
 
-      return rerunMeQuery(); // I can either keep this and try to run that process thru GQL or I can just take the response object from this call (outside the graph) and plug it in....
+      return; // I can either keep this and try to run that process thru GQL or I can just take the response object from this call (outside the graph) and plug it in....
     } catch (error) {
       console.log('error:::', error);
       return error;
     }
   };
 
-  const rerunMeQuery = () => {
-    return data;
+  const updateStateAfterSuccessfulHandleUnvoteClickCall = () => {
+    if (data && data.me) {
+      authDispatch({ type: 'me-query-user-update', payload: data?.me });
+    }
   };
 
   const handleHideClick = async (event: any) => {
@@ -130,11 +129,12 @@ const LinkSubRow = ({
     const {
       id,
       email,
-    }: { id: number; email: string; hiddleLinksArray: number[] } = user;
-
-    // let data = {
-    //   email,
-    // };
+    }: {
+      id: number;
+      email: string;
+      hiddleLinksArray: number[];
+      linksArray: number[];
+    } = user;
 
     await hideLink({
       variables: { id: id, linkId: linkId, email },
@@ -146,9 +146,7 @@ const LinkSubRow = ({
 
         store.writeQuery<MeQuery>({
           query: MeDocument,
-          // data: {
-          //   me: data.login.user  // what goes here???
-          // },
+
           data: {
             me: data.hideLink.user,
           },
