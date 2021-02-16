@@ -2,8 +2,6 @@ import extractDomain from 'extract-domain';
 import {
   Arg,
   Ctx,
-
-  // Query,
   Field,
   InputType,
   Int,
@@ -20,9 +18,6 @@ class LinkInput {
   @Field()
   url: string;
 
-  // @Field()
-  // domain: string;
-
   @Field()
   description: string;
 }
@@ -37,9 +32,6 @@ class LinkUpdateInput {
 
   @Field(() => String, { nullable: true })
   description?: string;
-
-  // @Field(() => [String], { nullable: true })
-  // voters?: string[];
 
   @Field(() => Int, { nullable: true })
   votes?: number;
@@ -62,7 +54,6 @@ export class LinkResolver {
     @Ctx() { payload }: MyContext,
     @Arg('options', () => LinkInput) options: LinkInput
   ) {
-    console.log('LinkResolver.payload (User) object:::', payload);
     const postedBy: any = payload?.userEmail;
     const { url, description } = options;
     // const domain = getDomainFromUrlString(url)
@@ -76,8 +67,6 @@ export class LinkResolver {
         domain,
         postedBy,
       }).save();
-      console.log('LinkResolver.postedBy:::', postedBy);
-      console.log('link:::', link);
 
       return link;
     } catch (error) {
@@ -90,22 +79,14 @@ export class LinkResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async updateLink(
-    @Ctx() { payload }: MyContext,
     @Arg('id', () => Int) id: number,
     @Arg('input', () => LinkUpdateInput) input: LinkUpdateInput
   ) {
-    console.log('LinkResolver.payload (User) object:::', payload);
-    const updatedBy: any = payload?.userEmail;
-    console.log('updatedBy:::', updatedBy);
-    //
-    // const link = await Link.update({ id }, input).save();
     try {
       await Link.update({ id }, input);
       // return true if update successfull
       return true;
     } catch (error) {
-      console.log('LinkResolver.updateLink.error:::', error);
-      console.error('LinkResolver.updateLink.error:::', error);
       return false;
     }
   }
@@ -119,13 +100,13 @@ export class LinkResolver {
   @Mutation(() => Link)
   @UseMiddleware(isAuth)
   async voteUp(
-    @Ctx() { payload }: MyContext,
+    // @Ctx() { payload }: MyContext,
     @Arg('id', () => Int) id: number
   ) {
     // type LinkResult
     let link: Link | undefined = await Link.findOne({ id });
 
-    let user = payload;
+    // let user = payload;
 
     /*
       The user object will include an array of links the user's already voted for
@@ -144,7 +125,7 @@ export class LinkResolver {
       };
 
       try {
-        let resLink = await Link.update({ id }, input);
+        await Link.update({ id }, input);
 
         // console.log('newLink:::', newLink);
         // return newLink;
