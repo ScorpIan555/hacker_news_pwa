@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "extract-domain": "^2.2.1",
     "graphql": "^15.4.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.1",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
